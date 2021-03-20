@@ -1,0 +1,20 @@
+<!--pages/question/list/list.wxml-->
+<view class="body_gray">
+    <view bindtap="goNext" class="home_list" data-index="{{index}}" data-item="{{item}}" data-link="{{item.navi_url}}" wx:for="{{quesitonList}}" wx:key="{{index}}">
+        <view class="list_box">
+            <view class="list-left">
+                <view class="left_text">
+                    <text class="title">{{index}}、{{item.question}}</text>
+                    <view style="padding-top: 15rpx;" wx:if="{{item.gzh}}">
+                        <text class="message" wx:if="{{item.author}}">作者:{{item.author}}</text>
+                        <text class="message" wx:if="{{!item.author}}">--</text>
+                        <text class="message" decode="{{true}}" wx:if="{{item.gzh}}">&nbsp;&nbsp;&nbsp;公众号:{{item.gzh}}</text>
+                    </view>
+                </view>
+            </view>
+            <view class="list-right">
+                <image class="right_icon" src="/images/right_arrow_deep.png"></image>
+            </view>
+        </view>
+    </view>
+</view>

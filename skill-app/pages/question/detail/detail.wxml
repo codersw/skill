@@ -1,0 +1,12 @@
+<!--pages/question/detail/detail.wxml-->
+<view class="margin_box">
+    <view class="question">
+        <text selectable="true" style="height:100%">{{current}}、{{questionsItem.question}}</text>
+    </view>
+    <include src="../../../components/comi/comi.wxml"></include>
+</view>
+<view class="rowClass">
+    <view bindtap="collect" class="last_next_question" style="color:{{fav_color}}">收 藏</view>
+    <view bindtap="last_question" class="last_next_question">上一题</view>
+    <view bindtap="next_question" class="last_next_question">下一题</view>
+</view>
