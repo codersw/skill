@@ -13,12 +13,12 @@
             <image class="header_bottom_bg" src=""></image>
         </view>
     </view>
-    <view bindtap="goNext" class="home_list" data-index="{{index}}" wx:for="{{routers}}">
+    <view bindtap="goNext" class="home_list" data-item="{{item}}" wx:for="{{routers}}">
         <view class="list_box">
             <view class="list-left">
                 <image class="pay_icon" src=" {{item.icon_url}}"></image>
                 <view class="left_text">
-                    <text class="title">{{item.language}}</text>
+                    <text class="title">{{item.title}}</text>
                 </view>
             </view>
             <view class="list-right">

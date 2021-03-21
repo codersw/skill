@@ -12,19 +12,23 @@ Page({
     hasUserInfo: !1,
     canIUse: wx.canIUse("button.open-type.getUserInfo"),
     routers: [ {
-        language: "说明",
+        title: "说明",
         navi_url: "/pages/questionList/me_announcee.png",
         icon_url: "/images/me_announce.png",
         code: "10"
     }, {
-        language: "版本",
+        title: "版本",
         navi_url: "/pages/questionList/me_version.png",
         icon_url: "/images/me_version.png"
     }, {
-        language: "收藏",
+        title: "收藏",
         navi_url: "/pages/questionList/me_love.png",
         icon_url: "/images/me_love.png"
-    } ]
+    } ,{
+        title: "关于我们",
+        navi_url: "/pages/about/about",
+        icon_url: "/images/me_about.png"
+   }]
 },
 
   /**
@@ -89,6 +93,15 @@ Page({
         nickName: t.detail.userInfo.nickName,
         avatarUrl: t.detail.userInfo.avatarUrl,
         hasUserInfo: !0
+    });
+  },
+  goNext (e) {
+    const item = e.currentTarget.dataset.item;
+    console.log(item);
+    const url = "../.." + item.navi_url + "?title=" + item.title;
+    console.log(url);
+    wx.navigateTo({
+        url: url
     });
   }
 })

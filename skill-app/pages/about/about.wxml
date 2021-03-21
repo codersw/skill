@@ -1,0 +1,5 @@
+<!--pages/about/about.wxml-->
+<view class="me-content">
+    <view class="me-desc-left">不亦說乎</view>
+    <view class="me-desc-right">學而時習之</view>
+</view>

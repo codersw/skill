@@ -1,0 +1,17 @@
+/* pages/about/about.wxss */
+.me-content {
+  font-size: 55PX;
+  padding: 100PX;
+  display: flex;
+  flex-direction: row;
+  color: #0097e6;
+}
+
+.me-content .me-desc-left {
+  margin-right: auto;
+}
+
+.me-content .me-desc-right {
+  margin-left: auto;
+  margin-top: auto;
+}
