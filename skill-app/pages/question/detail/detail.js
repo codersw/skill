@@ -1,5 +1,5 @@
 // pages/question/detail/detail.js
-const WxParse = require("../../../components/comi/comi.js");
+const WxParse = require("../../../components/content/content.js");
 Page({
 
   /**

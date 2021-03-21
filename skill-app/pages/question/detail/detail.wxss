@@ -1,5 +1,5 @@
 /* pages/question/detail/detail.wxss */
-@import "../../../components/comi/comi.wxss";
+@import "../../../components/content/content.wxss";
 page {
   background-color: rgba(245,245,245,1);
   height: 100%;

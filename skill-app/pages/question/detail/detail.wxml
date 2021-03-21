@@ -3,7 +3,7 @@
     <view class="question">
         <text selectable="true" style="height:100%">{{current}}、{{questionsItem.question}}</text>
     </view>
-    <include src="../../../components/comi/comi.wxml"></include>
+    <include src="../../../components/content/content.wxml"></include>
 </view>
 <view class="rowClass">
     <view bindtap="collect" class="last_next_question" style="color:{{fav_color}}">收 藏</view>

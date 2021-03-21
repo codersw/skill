@@ -1,9 +1,9 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/inter/inter",
     "pages/question/list/list",
     "pages/question/detail/detail",
-    "pages/inter/inter",
     "pages/me/me",
     "pages/logs/logs"
   ],
@@ -11,7 +11,7 @@
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F6F6F6",
-    "navigationBarTitleText": "猿宝典",
+    "navigationBarTitleText": "程序猿宝典",
     "navigationBarTextStyle": "black",
     "enablePullDownRefresh": false
   },

@@ -1,2 +1,29 @@
 <!--pages/me/me.wxml-->
-<text>pages/me/me.wxml</text>
+<view class="body_gray">
+    <view class="header">
+        <view class="header_box">
+            <view class="header_mess">
+                <view class="avatar_box">
+                    <image class="avatar" src="{{avatarUrl}}"></image>
+                </view>
+                <view class="user_name">{{nickName}}</view>
+                <view class="user_id"></view>
+                <button bindgetuserinfo="getUserInfo" class="login" openType="getUserInfo" wx:if="{{!nickName}}">登录</button>
+            </view>
+            <image class="header_bottom_bg" src=""></image>
+        </view>
+    </view>
+    <view bindtap="goNext" class="home_list" data-index="{{index}}" wx:for="{{routers}}">
+        <view class="list_box">
+            <view class="list-left">
+                <image class="pay_icon" src=" {{item.icon_url}}"></image>
+                <view class="left_text">
+                    <text class="title">{{item.language}}</text>
+                </view>
+            </view>
+            <view class="list-right">
+                <image class="right_icon" src="/images/right_arrow_deep.png"></image>
+            </view>
+        </view>
+    </view>
+</view>
