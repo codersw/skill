@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.DouyuTokenMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.DouyuToken">
+        <result column="id" property="id" />
+        <result column="token" property="token" />
+        <result column="expire" property="expire" />
+        <result column="ctime" property="ctime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, token, expire, ctime
+    </sql>
+
+    <select id="selectToken" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ck_douyu_token order by ctime desc limit 1
+    </select>
+
+</mapper>

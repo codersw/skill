@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CourseItemPracticeAnswerBbsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CourseItemPracticeAnswerBbs">
+        <id column="bbsid" property="bbsid" />
+        <result column="feedbackid" property="feedbackid" />
+        <result column="studentid" property="studentid" />
+        <result column="ctime" property="ctime" />
+        <result column="utime" property="utime" />
+        <result column="studentname" property="studentname" />
+        <result column="teachername" property="teachername" />
+        <result column="teacherid" property="teacherid" />
+        <result column="memo" property="memo" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <resultMap id="CourseTestPaperFeedbackVo" type="com.skill.server.entity.vo.CourseTestPaperFeedbackVo" extends="BaseResultMap">
+        <result column="gradename" property="gradename" />
+        <result column="classname" property="classname" />
+    </resultMap>
+
+    <resultMap id="CourseItemPracticeAnswerBbsVo" type="com.skill.server.entity.vo.TeacherCourseItemPracticeAnswerBbsVo" extends="BaseResultMap">
+        <result column="studentphoto" property="studentphoto"/>
+        <result column="teacherphoto" property="teacherphoto"/>
+        <result column="gradename" property="gradename"/>
+        <result column="classname" property="classname"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        bbsid, feedbackid, studentid, ctime, utime, studentname, teachername, teacherid, memo, type
+    </sql>
+    <!--试卷评论列表 -->
+    <select id="selectAnswerBbsPageList" resultMap="CourseItemPracticeAnswerBbsVo">
+        SELECT
+        T.bbsid,
+        T.feedbackid,
+        T.studentid,
+        T.ctime,
+        T.utime,
+        T.studentname,
+        T.teachername,
+        T.teacherid,
+        T.memo,
+        T.type,
+        G.gradename,
+        C.classname,
+        S.photo studentphoto,
+        ct.photo teacherphoto
+        FROM
+        ck_course_item_practice_answer_bbs T
+        LEFT JOIN ck_school_studentinfo S ON T.studentid = S.studentid
+        LEFT JOIN ck_school_grade G ON S.grade = G.gradeid
+        LEFT JOIN ck_school_class C ON S.studentclass = C.classid
+        LEFT JOIN ck_teacher ct ON T.teacherid=ct.teacherid
+        <where>
+            T.feedbackid=#{feedbackid}
+            ORDER BY
+            T.utime DESC
+        </where>
+    </select>
+
+    <!--教师端获取留言列表-->
+    <select id="selectAnswerBbsListByFeedbackId" resultMap="CourseItemPracticeAnswerBbsVo">
+        SELECT
+          cipab.bbsid,
+          cipab.feedbackid,
+          cipab.studentid,
+          cipab.ctime,
+          cipab.utime,
+          cipab.studentname,
+          cipab.teachername,
+          cipab.teacherid,
+          cipab.memo,
+          cipab.type,
+          t.photo teacherphoto,
+          ss.photo studentphoto
+        FROM
+        ck_course_item_practice_answer_bbs cipab
+        LEFT JOIN ck_school_studentinfo ss ON cipab.studentid=ss.studentid
+        LEFT JOIN ck_teacher t ON t.teacherid = cipab.teacherid
+        WHERE cipab.feedbackid=#{feedbackid}
+        ORDER BY cipab.utime ASC
+    </select>
+</mapper>

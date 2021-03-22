@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CourseItemPracticeAnswerFileMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CourseItemPracticeAnswerFile">
+        <id column="id" property="id" />
+        <result column="answerid" property="answerid" />
+        <result column="teacherid" property="teacherid" />
+        <result column="studentid" property="studentid" />
+        <result column="fileurl" property="fileurl" />
+        <result column="ctime" property="ctime" />
+        <result column="utime" property="utime" />
+        <result column="filetype" property="filetype" />
+        <result column="filesize" property="filesize" />
+        <result column="filename" property="filename" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, answerid, teacherid, studentid, fileurl, ctime, utime, filetype, filesize,filename
+    </sql>
+
+    <select id="selectStudentAnswerFile" resultMap="BaseResultMap">
+         SELECT
+            id,
+            answerid,
+            teacherid,
+            studentid,
+            fileurl,
+            ctime,
+            filetype,
+            filesize,
+            filename
+        FROM
+            ck_course_item_practice_answer_file
+        WHERE
+            answerid = #{answerid}
+        ORDER BY ctime DESC
+    </select>
+    <!-- 学生-->
+    <select id="selectStudentAnswerFileStudent" resultMap="BaseResultMap">
+         SELECT
+            fileurl,
+            ctime,
+            filetype,
+            filesize,
+            filename
+        FROM
+            ck_course_item_practice_answer_file
+        WHERE
+            answerid = #{answerid}
+            and studentid = #{studentid}
+        ORDER BY ctime DESC
+    </select>
+
+</mapper>

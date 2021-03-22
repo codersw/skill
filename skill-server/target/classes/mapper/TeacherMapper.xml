@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.TeacherMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.Teacher">
+        <id column="teacherid" property="teacherid" />
+        <result column="teachername" property="teachername" />
+        <result column="schoolid" property="schoolid" />
+        <result column="teacherno" property="teacherno" />
+        <result column="account" property="account" />
+        <result column="pwd" property="pwd" />
+        <result column="photo" property="photo" />
+        <result column="type" property="type" />
+        <result column="licenseplate" property="licenseplate" />
+        <result column="ctime" property="ctime" />
+        <result column="utime" property="utime" />
+        <result column="pushid" property="pushid" />
+        <result column="phone" property="phone" />
+        <result column="openid" property="openid" />
+        <result column="position" property="position" />
+        <result column="introduce" property="introduce" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        teacherid, teachername, schoolid, teacherno, account, pwd, photo, type, licenseplate, ctime, utime, pushid, phone, openid, position, introduce
+    </sql>
+    
+    <!--教师身份验证-->
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        SELECT
+            teacherid,
+            teachername,
+            schoolid,
+            teacherno,
+            account,
+            pwd,
+            photo,
+            type,
+            licenseplate,
+            ctime,
+            utime,
+            pushid,
+            phone,
+            openid,
+            position,
+            introduce
+        FROM
+            `ck_teacher`
+        WHERE
+            teacherid =#{teacherid}
+        AND phone =#{phone}
+    </select>
+</mapper>

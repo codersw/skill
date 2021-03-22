@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CourseItemTestpaperActiveMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CourseItemTestpaperActive">
+        <id column="id" property="id" />
+        <result column="paperid" property="paperid" />
+        <result column="activenum" property="activenum" />
+        <result column="itemid" property="itemid" />
+        <result column="status" property="status" />
+        <result column="ctime" property="ctime" />
+        <result column="utime" property="utime" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, paperid, activenum, itemid, status, ctime, utime,type
+    </sql>
+
+    <insert id="insertItemPaperActive" parameterType="java.util.List" useGeneratedKeys="false">
+        insert into ck_course_item_testpaper_active (id, paperid, activenum,
+        itemid, status, ctime,type)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (REPLACE(UUID(),'-',''), #{item.paperid,jdbcType=VARCHAR}, #{item.activenum,jdbcType=VARCHAR},
+            #{item.itemid,jdbcType=VARCHAR}, #{item.status,jdbcType=VARCHAR}, #{item.ctime,jdbcType=VARCHAR}, #{item.type,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+    <!--查询试卷所在的批次号 -->
+    <select id="selectPaperid" resultMap="BaseResultMap">
+        SELECT
+            id,
+            paperid,
+            activenum,
+            itemid,
+            STATUS,
+            ctime,
+            utime,
+            type
+        FROM
+            ck_course_item_testpaper_active
+        <where>
+            paperid =#{paperid}
+        </where>
+
+    </select>
+
+    <select id="selectAlonepack" resultType="map">
+        SELECT
+            cca.acitveid,
+            cta.paperid,
+            cta.activenum,
+            ccd.id,
+            ccd.studentid
+        FROM
+            ck_course_item_testpaper_active cta
+            INNER JOIN ck_course_active cca ON cta.activenum = cca.activenum
+            AND cta.type = '1'
+            INNER JOIN ck_capital_detail ccd ON ccd.paperid = cca.acitveid
+            AND ccd.coursepaytype = '2'
+            AND ccd.studentid = #{studentid}
+            <if test="ids.size() > 0">
+                AND ccd.paperid in
+                <foreach item="id" collection="ids" separator="," open="(" close=")" index="">
+                    #{id}
+                </foreach>
+            </if>
+    </select>
+
+</mapper>

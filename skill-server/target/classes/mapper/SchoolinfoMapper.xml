@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.SchoolinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.Schoolinfo">
+        <id column="schoolid" property="schoolid" />
+        <result column="schoolname" property="schoolname" />
+        <result column="account" property="account" />
+        <result column="pwd" property="pwd" />
+        <result column="cuserid" property="cuserid" />
+        <result column="ctime" property="ctime" />
+        <result column="ctyid" property="ctyid" />
+        <result column="ctyname" property="ctyname" />
+        <result column="provid" property="provid" />
+        <result column="provname" property="provname" />
+        <result column="countid" property="countid" />
+        <result column="countname" property="countname" />
+        <result column="type" property="type" />
+        <result column="standardstatus" property="standardstatus" />
+        <result column="schoolcode" property="schoolcode" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        schoolid, schoolname, account, pwd, cuserid, ctime, ctyid, ctyname, provid, provname, countid, countname, type, standardstatus, schoolcode
+    </sql>
+
+</mapper>

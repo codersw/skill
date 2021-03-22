@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.SchoolStudentinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.SchoolStudentinfo">
+        <id column="studentid" property="studentid" />
+        <result column="schoolid" property="schoolid" />
+        <result column="studentname" property="studentname" />
+        <result column="cardtype" property="cardtype" />
+        <result column="cardno" property="cardno" />
+        <result column="birthday" property="birthday" />
+        <result column="gender" property="gender" />
+        <result column="studentno" property="studentno" />
+        <result column="grade" property="grade" />
+        <result column="studentclass" property="studentclass" />
+        <result column="balance" property="balance" />
+        <result column="status" property="status" />
+        <result column="photo" property="photo" />
+        <result column="ctime" property="ctime" />
+        <result column="height" property="height" />
+        <result column="weight" property="weight" />
+        <result column="blood" property="blood" />
+        <result column="bmi" property="bmi" />
+        <result column="fatthin" property="fatthin" />
+        <result column="tallshort" property="tallshort" />
+        <result column="photoCtime" property="photoCtime" />
+    </resultMap>
+
+    <!--自定义查询结果-->
+    <resultMap id="StudentInfoVo" type="com.skill.server.entity.vo.StudentInfoVo" extends="BaseResultMap">
+        <result column="gradename" property="gradename"/>
+        <result column="classname" property="classname"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        studentid, schoolid, studentname, cardtype, cardno, birthday, gender, studentno, grade, studentclass, balance, status, photo, ctime, height, weight, blood, bmi, fatthin, tallshort, photoCtime
+    </sql>
+    <!--学生基本信息 -->
+    <select id="selectByStudentid" resultMap="StudentInfoVo">
+        SELECT
+            ss.studentid,
+            ss.schoolid,
+            ss.studentname,
+            ss.cardtype,
+            ss.cardno,
+            ss.birthday,
+            ss.gender,
+            ss.studentno,
+            ss.grade,
+            ss.studentclass,
+            ss.balance,
+            ss.STATUS,
+            ss.photo,
+            ss.ctime,
+            ss.height,
+            ss.weight,
+            ss.blood,
+            ss.bmi,
+            ss.fatthin,
+            ss.tallshort,
+            ss.photoCtime,
+            sg.gradename,
+            sc.classname
+        FROM
+            `ck_school_studentinfo` ss
+        INNER JOIN ck_school_grade sg ON ss.grade = sg.gradeid
+        INNER JOIN ck_school_class sc ON ss.studentclass = sc.classid
+        AND ss.studentid=#{studentid}
+    </select>
+
+    <!-- 取每科目有多少学生 -->
+    <select id="subjectStudentNum" resultType="map">
+        SELECT
+        count(1) num,
+        cs.subjectid,
+        cs.subjectname
+        FROM
+        ck_school_studentinfo ss
+        INNER JOIN ck_course_subject_grade csg ON csg.gradeid = ss.grade
+        <if test="statisticsCo.gradeid != null and statisticsCo.gradeid != ''">
+            and csg.gradeid  = #{statisticsCo.gradeid}
+        </if>
+        <if test="statisticsCo.schoolid != null and statisticsCo.schoolid !=''">
+            AND ss.schoolid  = #{statisticsCo.schoolid}
+        </if>
+        INNER JOIN ck_course_subject cs ON cs.subjectid = csg.subjectid
+        AND cs.STATUS = '1'
+        INNER JOIN ck_course_item ci ON ci.subjectid = cs.subjectid
+        <if test="statisticsCo.startDate != null and statisticsCo.startDate != '' and statisticsCo.endDate != null and statisticsCo.endDate != ''">
+            AND DATE(ci.fixedtime) between #{statisticsCo.startDate} and #{statisticsCo.endDate}
+        </if>
+        AND ci.isdel = '0'
+        AND ci.STATUS = '1'
+        AND ss.grade = ci.gradeid
+        AND ci.gradeid = csg.gradeid
+        INNER JOIN ck_course_item_testpaper cit ON ci.itemid = cit.itemid
+        AND cit.courseid = ci.courseid
+        INNER JOIN ck_course_testpaper ct ON ct.subjectid = cs.subjectid
+        AND ct.paperid = cit.paperid
+        AND ct.isdel = '0'
+        AND ct.STATUS = '1'
+        GROUP BY
+        cs.subjectid
+        ORDER BY
+        cs.num + 0
+    </select>
+</mapper>

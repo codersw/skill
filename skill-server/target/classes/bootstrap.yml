@@ -1,0 +1,31 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: ck-study
+  cloud:
+    nacos:
+      discovery:
+        server-addr: https://xiaojiahuawei.zhiliangwang.net
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yml
+        shared-configs:
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          - ck-study-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+  profiles:
+    active: pre
+ribbon:
+  ConnectTimeout: 50000
+  ReadTimeout: 50000
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE

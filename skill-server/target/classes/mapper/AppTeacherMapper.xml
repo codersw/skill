@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.AppTeacherMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.AppTeacher">
+        <id column="id" property="id" />
+        <result column="explain" property="explain" />
+        <result column="status" property="status" />
+        <result column="ctime" property="ctime" />
+        <result column="ctimetow" property="ctimetow" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, `explain`, `status`, ctime, ctimetow
+    </sql>
+
+    <select id="selectCongById" resultMap="BaseResultMap">
+    SELECT
+        id,
+        `explain`,
+        `status`,
+        ctime,
+        ctimetow
+    FROM
+        ck_app_teacher
+    <where>
+        id =#{id}
+    </where>
+    </select>
+</mapper>

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CourseTestPaperFeedbackMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CourseTestPaperFeedback">
+        <id column="feedbackid" property="feedbackid" />
+        <result column="paperid" property="paperid" />
+        <result column="studentid" property="studentid" />
+        <result column="teacherid" property="teacherid" />
+        <result column="content" property="content" />
+        <result column="ctime" property="ctime" />
+        <result column="utime" property="utime" />
+        <result column="isdel" property="isdel" />
+        <result column="score" property="score" />
+    </resultMap>
+
+    <resultMap id="TeacherCourseTestPaperFeedbackVo" type="com.skill.server.entity.vo.TeacherCourseTestPaperFeedbackVo" extends="BaseResultMap">
+        <result column="teacherphoto" property="teacherphoto"/>
+        <result column="studentphoto" property="studentphoto"/>
+        <result column="classid" property="classid"/>
+        <result column="classname" property="classname"/>
+        <result column="gradeid" property="gradeid"/>
+        <result column="gradename" property="gradename"/>
+        <result column="studentname" property="studentname"/>
+        <result column="teachername" property="teachername"/>
+    </resultMap>
+
+    <resultMap id="CourseTestPaperFeedbackVo" type="com.skill.server.entity.vo.CourseTestPaperFeedbackVo" extends="BaseResultMap">
+        <result column="gradename" property="gradename"/>
+        <result column="classname" property="classname"/>
+        <result column="total" property="total"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        feedbackid, paperid, studentid, teacherid, content, ctime, utime, isdel, score
+    </sql>
+
+    <!--插入-->
+    <insert id="insertDuplicate">
+        insert into ck_course_testpaper_feedback
+        (feedbackid, paperid, studentid, teacherid, content, ctime, utime, isdel, score)
+        values
+        (#{courseTestPaperFeedback.feedbackid}, #{courseTestPaperFeedback.paperid}, #{courseTestPaperFeedback.studentid} , #{courseTestPaperFeedback.teacherid}, #{courseTestPaperFeedback.content}
+        #{courseTestPaperFeedback.ctime}, #{courseTestPaperFeedback.utime}, #{courseTestPaperFeedback.isdel}, #{courseTestPaperFeedback.score})
+        ON DUPLICATE KEY UPDATE
+        content = #{courseTestPaperFeedback.content},
+        ctime =  #{courseTestPaperFeedback.ctime},
+        utime =  #{courseTestPaperFeedback.utime},
+        isdel =  #{courseTestPaperFeedback.isdel},
+        score = #{courseTestPaperFeedback.score}
+    </insert>
+
+    <!--学生查看教师批改 -->
+    <select id="selectByStudentPaperid" resultMap="CourseTestPaperFeedbackVo">
+        SELECT
+        F.feedbackid,
+        F.paperid,
+        F.studentid,
+        T.teachername teacherid,
+        F.content,
+        F.ctime,
+        F.utime,
+        F.isdel,
+        F.score
+    FROM
+        `ck_course_testpaper_feedback` F left join ck_teacher T on F.teacherid=T.teacherid
+    <where>
+        F.paperid =#{CourseTestPaperFeedback.paperid}
+        and F.isdel='0'
+        AND F.studentid =#{CourseTestPaperFeedback.studentid}
+    </where>
+      limit 1
+    </select>
+
+    <!--教师端获取试卷留言信息-->
+    <select id="selectByStudentIdPaperId" resultMap="TeacherCourseTestPaperFeedbackVo">
+        SELECT
+          ctf.feedbackid,
+          ctf.paperid,
+          ctf.studentid,
+          ctf.teacherid,
+          ctf.content,
+          ctf.ctime,
+          ctf.utime,
+          ctf.isdel,
+          ctf.score,
+          t.teachername,
+          ss.studentname,
+          t.photo teacherphoto,
+          ss.photo studentphoto,
+          sg.gradeid,
+          sg.gradename,
+          sc.classid,
+          sc.classname
+        FROM
+          ck_course_testpaper_feedback ctf
+          inner join ck_teacher t on t.teacherid = ctf.teacherid  and ctf.paperid =#{paperid} AND ctf.studentid =#{studentid}
+          inner join ck_school_studentinfo ss on ss.studentid = ctf.studentid
+          inner join ck_school_class sc on sc.classid = ss.studentclass
+          inner join ck_school_grade sg on sg.gradeid = ss.grade
+        limit 1
+    </select>
+
+</mapper>

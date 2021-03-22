@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CoursePraiseidMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CoursePraiseid">
+        <id column="praiseid" property="praiseid" />
+        <result column="courseid" property="courseid" />
+        <result column="studentid" property="studentid" />
+        <result column="itemid" property="itemid" />
+        <result column="ctime" property="ctime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        praiseid, courseid, studentid, itemid, ctime
+    </sql>
+
+</mapper>

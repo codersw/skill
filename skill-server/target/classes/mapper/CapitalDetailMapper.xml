@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CapitalDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CapitalDetail">
+        <id column="id" property="id" />
+        <result column="schoolid" property="schoolid" />
+        <result column="studentid" property="studentid" />
+        <result column="parentid" property="parentid" />
+        <result column="operate" property="operate" />
+        <result column="bobalance" property="bobalance" />
+        <result column="aobalance" property="aobalance" />
+        <result column="amount" property="amount" />
+        <result column="operatedetail" property="operatedetail" />
+        <result column="operatetime" property="operatetime" />
+        <result column="ordernum" property="ordernum" />
+        <result column="accountsType" property="accountsType" />
+        <result column="paperid" property="paperid" />
+        <result column="coursepaytype" property="coursepaytype" />
+    </resultMap>
+
+    <!-- 自定义返回值-->
+    <resultMap id="CourseItemVo" type="com.skill.server.entity.vo.CourseItemVo" extends="BaseResultMap">
+        <result column="orderid" property="orderid" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, schoolid, studentid, parentid, operate, bobalance, aobalance, amount, operatedetail, operatetime, ordernum, accountsType, paperid,coursepaytype
+    </sql>
+
+    <!--查询试卷所在的批次号 -->
+    <select id="selectPaperidStudent" resultMap="BaseResultMap">
+        SELECT
+            id,
+            schoolid,
+            studentid,
+            parentid,
+            operate,
+            bobalance,
+            aobalance,
+            amount,
+            operatedetail,
+            operatetime,
+            ordernum,
+            accountsType,
+            paperid
+        FROM
+            ck_capital_detail
+        WHERE
+            paperid =#{paperid}
+        AND studentid =#{studentid}
+    </select>
+
+    <!--查询视频是否付费 -->
+    <select id="selectByItemid" resultMap="CourseItemVo">
+       SELECT
+            IFNULL((SELECT id
+        FROM
+            `ck_capital_detail`
+        WHERE
+            coursepaytype = '1'
+        AND paperid = #{PaymentCo.paperid}
+        AND studentid =#{PaymentCo.studentid}),'') orderid
+    </select>
+
+    <insert id="addCapitalByPaperActive" parameterType="com.skill.server.entity.pojo.CapitalDetail">
+        INSERT INTO ck_capital_detail (id, schoolid, studentid, parentid,
+        operate, bobalance, aobalance,
+        amount, operatedetail, operatetime,
+        paperid,coursepaytype)
+        VALUES (REPLACE(UUID(),'-',''),#{capitalDetail.schoolid,jdbcType=VARCHAR},#{capitalDetail.studentid,jdbcType=VARCHAR},#{capitalDetail.parentid,jdbcType=VARCHAR},
+        #{capitalDetail.operate,jdbcType=VARCHAR},#{capitalDetail.bobalance,jdbcType=DECIMAL},#{capitalDetail.aobalance,jdbcType=DECIMAL},
+        #{capitalDetail.amount,jdbcType=DECIMAL},#{capitalDetail.operatedetail,jdbcType=VARCHAR},#{capitalDetail.operatetime,jdbcType=TIMESTAMP},
+        #{capitalDetail.paperid,jdbcType=VARCHAR},#{capitalDetail.coursepaytype,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateParentBalanceByparentid">
+        update ck_parentinfo set parentbalance=#{balance} where parentid=#{parentid}
+    </update>
+</mapper>

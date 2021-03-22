@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CourseItemPracticeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CourseItemPractice">
+        <id column="practiceid" property="practiceid" />
+        <result column="paperid" property="paperid" />
+        <result column="title" property="title" />
+        <result column="type" property="type" />
+        <result column="memo" property="memo" />
+        <result column="status" property="status" />
+        <result column="num" property="num" />
+        <result column="ctime" property="ctime" />
+        <result column="utime" property="utime" />
+        <result column="isdel" property="isdel" />
+        <result column="level" property="level" />
+        <result column="parsing" property="parsing" />
+        <result column="imgurl" property="imgurl" />
+        <result column="classid" property="classid" />
+        <result column="answer" property="answer" />
+        <result column="score" property="score"/>
+    </resultMap>
+
+    <!--自定义查询结果-->
+    <resultMap id="BaseResultMapVo" type="com.skill.server.entity.vo.studentCourseItemPracticeVo" extends="BaseResultMap">
+        <result column="answerid" property="answerid" />
+        <result column="studentanswer" property="studentanswer" />
+        <result column="iscorrect" property="iscorrect" />
+        <result column="studentmemo" property="studentmemo" />
+        <result column="submit" property="submit" />
+        <result column="teachermemo" property="teachermemo" />
+    </resultMap>
+
+    <!-- 教师端查询试卷详情返回值-->
+    <resultMap id="TeacherCourseTestpaperDetailVo" type="com.skill.server.entity.vo.TeacherCourseTestpaperDetailVo" extends="BaseResultMap">
+        <result column="answerid" property="answerid"/>
+        <result column="studentanswer" property="studentanswer" />
+        <result column="iscorrect" property="iscorrect" />
+        <result column="teachermemo" property="teachermemo" />
+        <result column="teacherscore" property="teacherscore" />
+        <result column="readstatus" property="readstatus" />
+        <result column="istest" property="istest"/>
+        <result column="papertitle" property="papertitle"/>
+        <result column="marknum" property="marknum"/>
+        <result column="fraction" property="fraction"/>
+        <result column="kscore" property="kscore"/>
+        <result column="zscore" property="zscore"/>
+        <result column="adscore" property="adscore"/>
+        <association column="answerid" property="fileList" select="com.skill.server.mapper.CourseItemPracticeAnswerFileMapper.selectStudentAnswerFile">
+        </association>
+        <association column="practiceid" property="optionsList" select="com.skill.server.mapper.CourseItemPracticeOptionsMapper.selectckCourseItemPracticeOptions">
+        </association>
+    </resultMap>
+
+    <!--教师端查询试卷详情返回值 只看试卷不看学生作答-->
+    <resultMap id="TeacherCourseTestpaperDetailAllVo" type="com.skill.server.entity.vo.TeacherCourseTestpaperDetailVo" extends="BaseResultMap">
+        <result column="papertitle" property="papertitle"/>
+        <result column="istest" property="istest"/>
+        <association column="practiceid" property="optionsList" select="com.skill.server.mapper.CourseItemPracticeOptionsMapper.selectckCourseItemPracticeOptions">
+        </association>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        practiceid, paperid, title, type, memo, status, num, ctime, utime, isdel, level, parsing, imgurl, classid
+    </sql>
+    <select id="studentCourseItemPracticelist" resultMap="BaseResultMapVo">
+        SELECT
+        DISTINCT T.practiceid,
+        T.paperid,
+        TP.papertitle,
+        T.title,
+        T.type,
+        T.memo,
+        T.`status`,
+        T.num,
+        T.ctime,
+        T.utime,
+        T.isdel,
+        T.`level`,
+        T.parsing,
+        T.parsingurl,
+        T.imgurl,
+        T.classid,
+        T.answer,
+        T.score,
+        IFNULL(S.`status`,'0') submit,
+        A.answer studentanswer
+        FROM
+	        `ck_course_item_practice` T
+        INNER JOIN ck_course_item_testpaper C ON T.paperid=C.paperid
+        INNER JOIN ck_course_testpaper TP ON T.paperid=TP.paperid
+        LEFT JOIN ck_course_testpaper_student S ON T.paperid=S.paperid
+        AND S.studentid=#{CourseItemPracticeCo.studentid}
+        LEFT JOIN ck_course_item_practice_answer A ON A.practiceid=T.practiceid
+        AND A.studentid=#{CourseItemPracticeCo.studentid}
+        <where>
+            T.paperid=#{CourseItemPracticeCo.paperid}
+            and T.`status`='1'
+            and T.isdel='0'
+        ORDER BY
+            T.num+0   ASC
+        </where>
+    </select>
+
+    <!-- PC习题列表查询-->
+    <select id="studentCourseItemPracticelistPc" resultMap="BaseResultMapVo">
+        SELECT
+        DISTINCT T.practiceid,
+        T.paperid,
+        TP.papertitle,
+        T.title,
+        T.type,
+        T.memo,
+        T.`status`,
+        T.num,
+        T.ctime,
+        T.utime,
+        T.isdel,
+        T.`level`,
+        T.parsing,
+        T.parsingurl,
+        T.imgurl,
+        T.classid,
+        T.answer,
+        T.score,
+        IFNULL(S.`status`,'0') submit,
+        IFNULL(A.answer,'') studentanswer,
+        A.answerid,
+        A.iscorrect,
+        IFNULL(A.memo,'') teachermemo
+        FROM
+        `ck_course_item_practice` T
+        INNER JOIN ck_course_item_testpaper C ON T.paperid=C.paperid
+        INNER JOIN ck_course_testpaper TP ON T.paperid=TP.paperid
+        LEFT JOIN ck_course_testpaper_student S ON T.paperid=S.paperid
+        AND S.studentid=#{CourseItemPracticeCo.studentid}
+        LEFT JOIN ck_course_item_practice_answer A ON A.practiceid=T.practiceid
+        AND A.studentid=#{CourseItemPracticeCo.studentid}
+        <where>
+            T.paperid=#{CourseItemPracticeCo.paperid}
+            and T.`status`='1'
+            and T.isdel='0'
+            ORDER BY
+            T.num+0   ASC
+        </where>
+    </select>
+
+    <!--查询完成习题答题情况 -->
+    <select id="selectStudentPracticeComplete" resultMap="BaseResultMapVo">
+        SELECT
+            ccip.practiceid,
+            ccip.paperid,
+            ccip.title,
+            ccip.type,
+            ccip.memo,
+            ccip.`status`,
+            ccip.num,
+            ccip.ctime,
+            ccip.utime,
+            ccip.isdel,
+            ccip.`level`,
+            ccip.parsing,
+            ccip.parsingurl,
+            ccip.imgurl,
+            ccip.classid,
+            ccip.answer,
+            ccipa.answerid,
+            ccipa.answer studentanswer,
+            ccipa.iscorrect,
+            ccipa.memo teachermemo,
+            ccipa.score,
+            ccipa.readstatus
+        FROM
+            ck_course_item_practice ccip
+        INNER JOIN ck_course_item_practice_answer ccipa ON ccip.practiceid=ccipa.practiceid
+        and ccip.paperid=#{paperid}
+        and ccipa.studentid=#{studentid}
+        and ccip.isdel='0'
+        and ccip.`status`='1'
+    </select>
+
+    <select id="selectPracticeSum" resultType="int">
+        SELECT
+            count(1)
+        FROM
+            ck_course_item_practice
+        <where>
+            paperid=#{paperid}
+            and status='1'
+        </where>
+
+    </select>
+
+    <!--教师端查询试卷详情-->
+    <select id="teacherCourseTestpaperDatail" resultMap="TeacherCourseTestpaperDetailVo">
+         SELECT
+            ccip.practiceid,
+            ccip.paperid,
+            ccip.title,
+            ccip.type,
+            ccip.memo,
+            ccip.`status`,
+            ccip.num,
+            ccip.ctime,
+            ccip.utime,
+            ccip.isdel,
+            ccip.`level`,
+            ccip.parsing,
+            ccip.parsingurl,
+            ccip.imgurl,
+            ccip.classid,
+            ccip.answer,
+            ifnull(ccip.score, '0') score,
+            ccipa.answerid,
+            ccipa.answer studentanswer,
+            ccipa.iscorrect,
+            ifnull(ccipa.score, '0') teacherscore,
+            ccipa.readstatus,
+            ccipa.memo teachermemo,
+            cct.papertitle,
+            cct.istest,
+            IFNULL(cts.marknum, '0') marknum,
+            IFNULL(cts.fraction, '0') fraction,
+            IFNULL(cts.kscore, '0') kscore,
+            IFNULL(cts.zscore, '0') zscore,
+            IFNULL(cts.adscore, '0') adscore
+        FROM
+            ck_course_item_practice ccip
+        INNER JOIN ck_course_testpaper cct on cct.paperid = ccip.paperid and cct.isdel = '0' and cct.status = '1' and ccip.paperid = #{paperid} and ccip.isdel = '0' and ccip.status = '1'
+        <if test="typeList != null and typeList.size() > 0">
+            and ccip.type in
+            <foreach item="type" collection="typeList" separator="," open="(" close=")" index="">
+                #{type}
+            </foreach>
+        </if>
+        INNER JOIN ck_course_item_practice_answer ccipa ON ccip.practiceid = ccipa.practiceid
+        <if test="studentid != null and studentid != ''">
+            and ccipa.studentid = #{studentid}
+        </if>
+        INNER JOIN ck_course_testpaper_student cts on cts.paperid = ccip.paperid and cts.studentid = ccipa.studentid
+        order by ccip.type, ccip.num + 0
+    </select>
+    
+    <!--查询试卷题号及答题情况 -->
+    <select id="selectNumAnswerStudent" resultMap="BaseResultMap">
+        SELECT
+            ccip.practiceid,
+            ccip.num,
+            ccipa.answerid imgurl,
+            IFNULL(ccipa.answer,'') answer
+        FROM
+            ck_course_item_practice ccip
+        LEFT JOIN ck_course_item_practice_answer ccipa ON ccip.practiceid = ccipa.practiceid
+        AND ccipa.studentid=#{studentid}
+        WHERE
+        ccip.paperid=#{paperid}
+        ORDER BY
+        ccip.type ASC,ccip.num+0 ASC
+    </select>
+
+    <select id="teacherCourseTestpaperDatailAll" resultMap="TeacherCourseTestpaperDetailAllVo">
+        SELECT
+        ccip.practiceid,
+        ccip.paperid,
+        ccip.title,
+        ccip.type,
+        ccip.memo,
+        ccip.`status`,
+        ccip.num,
+        ccip.ctime,
+        ccip.utime,
+        ccip.isdel,
+        ccip.`level`,
+        ccip.parsing,
+        ccip.parsingurl,
+        ccip.imgurl,
+        ccip.classid,
+        ccip.answer,
+        ifnull(ccip.score, '0') score,
+        cct.papertitle,
+        cct.istest
+        FROM
+        ck_course_item_practice ccip
+        INNER JOIN ck_course_testpaper cct on cct.paperid = ccip.paperid and cct.isdel = '0'  and ccip.isdel = '0' and ccip.status = '1' and ccip.paperid = #{paperid}
+        order by ccip.num + 0
+    </select>
+</mapper>

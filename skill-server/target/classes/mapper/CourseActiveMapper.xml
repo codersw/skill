@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.CourseActiveMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.CourseActive">
+        <id column="acitveid" property="acitveid" />
+        <result column="actuvetitle" property="actuvetitle" />
+        <result column="activenum" property="activenum" />
+        <result column="price" property="price" />
+        <result column="fold" property="fold" />
+        <result column="gradeid" property="gradeid" />
+        <result column="status" property="status" />
+        <result column="type" property="type" />
+        <result column="subjectid" property="subjectid" />
+        <result column="refund" property="refund" />
+        <result column="ctime" property="ctime" />
+        <result column="userid" property="userid" />
+        <result column="memo" property="memo" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        acitveid, actuvetitle, activenum, price, fold, gradeid, status, type, memo
+    </sql>
+
+    <select id="getActivePrice" resultMap="BaseResultMap">
+        SELECT A.* FROM ck_course_active A
+        WHERE A.gradeid=#{gradeid}
+    </select>
+
+    <select id="getCourseActivePayList" resultMap="BaseResultMap">
+        SELECT DISTINCT A.* FROM ck_course_active A LEFT JOIN ck_capital_detail D ON A.acitveid=D.paperid AND D.coursepaytype='2'
+        WHERE D.studentid=#{studentid}
+    </select>
+
+    <select id="getParentBalance" resultType="com.skill.server.entity.co.PaymentCo">
+        select parentid parentid,nickname nickname,parentbalance payment,paypassword password from ck_parentinfo where parentid=#{parentid}
+    </select>
+
+    <select id="getCapitalDetailPaperamountByStudentAcitve" resultType="com.skill.server.entity.pojo.CapitalDetail">
+        SELECT IFNULL(CONVERT(SUM(d.amount),DECIMAL(10,2)),0) amount,d.studentid FROM ck_capital_detail d INNER JOIN ck_course_item_testpaper_active ta ON d.paperid=ta.paperid INNER JOIN ck_course_active a ON ta.activenum=a.activenum
+        WHERE d.studentid=#{studentid} AND a.acitveid=#{acitveid}
+        GROUP BY a.acitveid
+    </select>
+</mapper>

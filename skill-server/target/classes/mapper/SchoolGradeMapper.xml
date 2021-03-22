@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.server.mapper.SchoolGradeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.skill.server.entity.pojo.SchoolGrade">
+        <id column="gradeid" property="gradeid" />
+        <result column="gradename" property="gradename" />
+        <result column="gradememo" property="gradememo" />
+        <result column="ctime" property="ctime" />
+        <result column="type" property="type" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        gradeid, gradename, gradememo, ctime, type
+    </sql>
+
+    <!--查询中学所以年级 -->
+    <select id="selectGradeList" resultMap="BaseResultMap">
+        SELECT gradeid, gradename, gradememo, ctime,`type` FROM  ck_school_grade WHERE 1=1
+        <if test="teacherid != null and teacherid !=''">
+            and gradeid in (select gradeid from ck_teach where teacherid = #{teacherid} group by gradeid )
+        </if>
+        <if test="schoolid != null and schoolid != ''">
+            and gradeid in (SELECT
+            sg.gradeid
+            FROM
+            ck_course_subject_grade sg
+            inner join ck_school_class sc on sg.gradeid = sc.gradeid and sc.schoolid = #{schoolid}
+            GROUP BY sg.gradeid )
+        </if>
+        ORDER BY gradememo+0
+    </select>
+</mapper>
