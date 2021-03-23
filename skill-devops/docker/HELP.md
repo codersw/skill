@@ -6,14 +6,9 @@ curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 service docker start
 #设置国内加速
 mkdir -p /etc/docker
-tee /etc/docker/daemon.json <<-'EOF'
-{
+tee /etc/docker/daemon.json <<-'EOF'{
     "registry-mirrors": [
-      "https://nwj24vy0.mirror.aliyuncs.com",
-      "https://08d329662300f38d0f27c012d28caf60.mirror.swr.myhuaweicloud.com"
-    ],
-    "insecure-registries": [
-     "192.168.0.227:5000"
+      "https://nwj24vy0.mirror.aliyuncs.com"
     ]
 }
 EOF
