@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @RefreshScope
 @ConfigurationProperties(prefix = "ignore")
 public class IgnoreWhiteProperties {
+
     /**
      * 放行白名单配置，网关不校验此处的白名单
      */

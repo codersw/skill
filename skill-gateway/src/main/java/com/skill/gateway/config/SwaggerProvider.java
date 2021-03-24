@@ -1,14 +1,15 @@
 package com.skill.gateway.config;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.config.GatewayProperties;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.support.NameUtils;
 import org.springframework.stereotype.Component;
 import springfox.documentation.swagger.web.SwaggerResource;
 import springfox.documentation.swagger.web.SwaggerResourcesProvider;
+
+import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 聚合系统接口
@@ -17,17 +18,19 @@ import springfox.documentation.swagger.web.SwaggerResourcesProvider;
  */
 @Component
 public class SwaggerProvider implements SwaggerResourcesProvider {
+
     /**
      * Swagger2默认的url后缀
      */
     public static final String SWAGGER2URL = "/v2/api-docs";
+
     /**
      * 网关路由
      */
-    @Autowired
+    @Resource
     private RouteLocator routeLocator;
 
-    @Autowired
+    @Resource
     private GatewayProperties gatewayProperties;
 
     /**
@@ -57,7 +60,7 @@ public class SwaggerProvider implements SwaggerResourcesProvider {
         SwaggerResource swaggerResource = new SwaggerResource();
         swaggerResource.setName(name);
         swaggerResource.setLocation(location);
-        swaggerResource.setSwaggerVersion("2.0");
+        swaggerResource.setSwaggerVersion("1.0.0");
         return swaggerResource;
     }
 }

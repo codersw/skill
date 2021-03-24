@@ -1,9 +1,10 @@
 package com.skill.gateway.filter;
 
-import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicReference;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.skill.common.core.utils.StringUtils;
+import com.skill.common.core.web.domain.AjaxResult;
+import com.skill.gateway.service.ValidateCodeService;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.core.io.buffer.DataBuffer;
@@ -11,13 +12,13 @@ import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.skill.common.core.utils.StringUtils;
-import com.skill.common.core.web.domain.AjaxResult;
-import com.skill.gateway.service.ValidateCodeService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import javax.annotation.Resource;
+import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 验证码过滤器
@@ -29,7 +30,7 @@ public class ValidateCodeFilter extends AbstractGatewayFilterFactory<Object> {
 
     private final static String AUTH_URL = "/auth/login";
 
-    @Autowired
+    @Resource
     private ValidateCodeService validateCodeService;
 
     private static final String CODE = "code";

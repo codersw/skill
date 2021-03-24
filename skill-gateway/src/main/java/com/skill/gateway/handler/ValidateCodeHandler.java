@@ -1,17 +1,18 @@
 package com.skill.gateway.handler;
 
-import java.io.IOException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.skill.common.core.exception.CaptchaException;
+import com.skill.common.core.web.domain.AjaxResult;
+import com.skill.gateway.service.ValidateCodeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.HandlerFunction;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
-import com.skill.common.core.exception.CaptchaException;
-import com.skill.common.core.web.domain.AjaxResult;
-import com.skill.gateway.service.ValidateCodeService;
 import reactor.core.publisher.Mono;
+
+import javax.annotation.Resource;
+import java.io.IOException;
 
 /**
  * 验证码获取
@@ -20,7 +21,8 @@ import reactor.core.publisher.Mono;
  */
 @Component
 public class ValidateCodeHandler implements HandlerFunction<ServerResponse> {
-    @Autowired
+
+    @Resource
     private ValidateCodeService validateCodeService;
 
     @Override

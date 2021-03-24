@@ -1,9 +1,15 @@
 package com.skill.gateway.filter;
 
-import javax.annotation.Resource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.skill.common.core.constant.CacheConstants;
+import com.skill.common.core.constant.Constants;
+import com.skill.common.core.domain.R;
+import com.skill.common.core.utils.ServletUtils;
+import com.skill.common.core.utils.StringUtils;
+import com.skill.common.redis.service.RedisService;
+import com.skill.gateway.config.properties.IgnoreWhiteProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -15,16 +21,9 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.skill.common.core.constant.CacheConstants;
-import com.skill.common.core.constant.Constants;
-import com.skill.common.core.domain.R;
-import com.skill.common.core.utils.ServletUtils;
-import com.skill.common.core.utils.StringUtils;
-import com.skill.common.redis.service.RedisService;
-import com.skill.gateway.config.properties.IgnoreWhiteProperties;
 import reactor.core.publisher.Mono;
+
+import javax.annotation.Resource;
 
 /**
  * 网关鉴权
@@ -32,20 +31,20 @@ import reactor.core.publisher.Mono;
  * @author swen
  */
 @Component
+@Slf4j
 public class AuthFilter implements GlobalFilter, Ordered {
 
-    private static final Logger log = LoggerFactory.getLogger(AuthFilter.class);
-    
+
     private final static long EXPIRE_TIME = Constants.TOKEN_EXPIRE * 60;
 
     // 排除过滤的 uri 地址，nacos自行添加
-    @Autowired
+    @Resource
     private IgnoreWhiteProperties ignoreWhite;
 
-    @Resource(name = "stringRedisTemplate")
+    @Resource
     private ValueOperations<String, String> sops;
     
-    @Autowired
+    @Resource
     private RedisService redisService;
 
     @Override
@@ -102,6 +101,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
      */
     private String getToken(ServerHttpRequest request) {
         String token = request.getHeaders().getFirst(CacheConstants.HEADER);
+        assert token != null;
         if (StringUtils.isNotEmpty(token) && token.startsWith(CacheConstants.TOKEN_PREFIX)) {
             token = token.replace(CacheConstants.TOKEN_PREFIX, "");
         }
