@@ -13,7 +13,7 @@
     <description>
         skill-auth认证授权中心
     </description>
-    
+
     <dependencies>
         
         <!-- SpringCloud Ailibaba Nacos -->
