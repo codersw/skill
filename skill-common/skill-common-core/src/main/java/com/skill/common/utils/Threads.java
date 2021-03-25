@@ -4,7 +4,7 @@ import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-import java.util.concurrent.Timeskill;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,10 +46,10 @@ public class Threads
             pool.shutdown();
             try
             {
-                if (!pool.awaitTermination(120, Timeskill.SECONDS))
+                if (!pool.awaitTermination(120, TimeUnit.SECONDS))
                 {
                     pool.shutdownNow();
-                    if (!pool.awaitTermination(120, Timeskill.SECONDS))
+                    if (!pool.awaitTermination(120, TimeUnit.SECONDS))
                     {
                         logger.info("Pool did not terminate");
                     }
