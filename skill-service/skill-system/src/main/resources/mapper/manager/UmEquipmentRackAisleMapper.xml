@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.manager.mapper.UmEquipmentRackAisleMapper">
+    
+    <resultMap type="UmEquipmentRackAisle" id="UmEquipmentRackAisleResult">
+        <result property="rackAisleId"    column="rack_aisle_id"    />
+        <result property="dcRoomId"    column="dc_room_id"    />
+        <result property="datacenterId"    column="datacenter_id"    />
+        <result property="factoryId"    column="factory_id"    />
+        <result property="rackAisleName"    column="rack_aisle_name"    />
+        <result property="supplierSerialNo"    column="supplier_serial_no"    />
+        <result property="serialNo"    column="serial_no"    />
+        <result property="assetNo"    column="asset_no"    />
+        <result property="rduId"    column="rdu_id"    />
+        <result property="rackAisleType"    column="rack_aisle_type"    />
+        <result property="installationDate"    column="installation_date"    />
+        <result property="limitPower"    column="limit_power"    />
+        <result property="totalskill"    column="total_skill"    />
+        <result property="totalUsedskill"    column="total_used_skill"    />
+        <result property="limitServer"    column="limit_server"    />
+        <result property="actualServer"    column="actual_server"    />
+        <result property="relativeX"    column="relative_x"    />
+        <result property="relativeY"    column="relative_y"    />
+        <result property="relativeZ"    column="relative_z"    />
+        <result property="absoluteX"    column="absolute_x"    />
+        <result property="absoluteY"    column="absolute_y"    />
+        <result property="absoluteZ"    column="absolute_z"    />
+        <result property="relativerotX"    column="relativerot_x"    />
+        <result property="relativerotY"    column="relativerot_y"    />
+        <result property="relativerotZ"    column="relativerot_z"    />
+        <result property="absoluterotX"    column="absoluterot_x"    />
+        <result property="absoluterotY"    column="absoluterot_y"    />
+        <result property="absoluterotZ"    column="absoluterot_z"    />
+        <result property="tdModelId"    column="td_model_id"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="states"    column="states"    />
+    </resultMap>
+
+    <sql id="selectUmEquipmentRackAisleVo">
+        select f.factory_name as factoryName,dc.datacenter_name as datacenterName,dcr.dc_room_name as dcRoomName,
+          era.rack_aisle_id,  era.dc_room_id,  era.datacenter_id,  era.factory_id,
+          era.rack_aisle_name,  era.supplier_serial_no,  era.serial_no,  era.asset_no,  era.rdu_id,
+          era.rack_aisle_type,  era.installation_date,  era.limit_power,  era.total_skill,
+          era.total_used_skill,  era.limit_server,  era.actual_server,  era.relative_x,
+          era.relative_y,  era.relative_z,  era.absolute_x, era.absolute_y,  era.absolute_z,
+          era.relativerot_x,  era.relativerot_y,  era.relativerot_z,  era.absoluterot_x,
+          era.absoluterot_y,  era.absoluterot_z,  era.td_model_id,  era.status,
+          era.create_by,  era.create_time,  era.update_by,  era.update_time ,era.states
+          from um_equipment_rack_aisle era
+          left join um_scene_datacenter dc on era.datacenter_id = dc.datacenter_id
+          left join um_scene_factory f on era.factory_id = f.factory_id
+          left join um_scene_datacenter_room  dcr on era.dc_room_id = dcr.dc_room_id
+    </sql>
+
+    <select id="selectUmEquipmentRackAisleList" parameterType="UmEquipmentRackAisle" resultMap="UmEquipmentRackAisleResult">
+        <include refid="selectUmEquipmentRackAisleVo"/>
+        <where>
+            and  era.status = '0'
+            <if test="assetNo != null  and assetNo != ''"> and era.asset_no like concat('%', #{assetNo}, '%')</if>
+            <if test="states != null  and states != ''"> and era.states = #{states}</if>
+            <if test="dcRoomId != null  and dcRoomId != ''"> and era.dc_room_id = #{dcRoomId}</if>
+            <if test="datacenterId != null  and datacenterId != ''"> and era.datacenter_id = #{datacenterId}</if>
+            <if test="factoryId != null  and factoryId != ''"> and era.factory_id = #{factoryId}</if>
+            <if test="rackAisleName != null  and rackAisleName != ''"> and era.rack_aisle_name like concat('%', #{rackAisleName}, '%')</if>
+            <if test="supplierSerialNo != null  and supplierSerialNo != ''"> and era.supplier_serial_no like concat('%', #{supplierSerialNo}, '%')</if>
+            <if test="serialNo != null  and serialNo != ''"> and era.serial_no like concat('%', #{serialNo}, '%')</if>
+            <if test="rduId != null  and rduId != ''"> and era.rdu_id like concat('%', #{rduId}, '%')</if>
+            <if test="rackAisleType != null  and rackAisleType != ''"> and era.rack_aisle_type = #{rackAisleType}</if>
+            <if test="beginInstallationDate != null and beginInstallationDate != '' and endInstallationDate != null and endInstallationDate != ''"> and era.installation_date between #{beginInstallationDate} and #{endInstallationDate}</if>
+        </where>
+        order by  era.create_time desc
+    </select>
+    
+    <select id="selectUmEquipmentRackAisleById" parameterType="String" resultMap="UmEquipmentRackAisleResult">
+        <include refid="selectUmEquipmentRackAisleVo"/>
+        where  era.rack_aisle_id = #{rackAisleId}
+    </select>
+
+    <select id="selectUmEquipmentRackAisleBydatacenterId" parameterType="UmEquipmentRackAisle" resultMap="UmEquipmentRackAisleResult">
+        SELECT dc_room_id AS 'pId',rack_aisle_id AS 'key',rack_aisle_name AS 'title' FROM um_equipment_rack_aisle
+        <where>
+            status='0'
+        </where>
+    </select>
+
+    <insert id="insertUmEquipmentRackAisle" parameterType="UmEquipmentRackAisle">
+        insert into um_equipment_rack_aisle
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rackAisleId != null  and rackAisleId != ''">rack_aisle_id,</if>
+            <if test="dcRoomId != null  and dcRoomId != ''">dc_room_id,</if>
+            <if test="datacenterId != null  and datacenterId != ''">datacenter_id,</if>
+            <if test="factoryId != null  and factoryId != ''">factory_id,</if>
+            <if test="rackAisleName != null  and rackAisleName != ''">rack_aisle_name,</if>
+            <if test="supplierSerialNo != null  and supplierSerialNo != ''">supplier_serial_no,</if>
+            <if test="serialNo != null  and serialNo != ''">serial_no,</if>
+            <if test="assetNo != null  and assetNo != ''">asset_no,</if>
+            <if test="rduId != null  and rduId != ''">rdu_id,</if>
+            <if test="rackAisleType != null  and rackAisleType != ''">rack_aisle_type,</if>
+            <if test="installationDate != null ">installation_date,</if>
+            <if test="limitPower != null ">limit_power,</if>
+            <if test="totalskill != null ">total_skill,</if>
+            <if test="totalUsedskill != null ">total_used_skill,</if>
+            <if test="limitServer != null ">limit_server,</if>
+            <if test="actualServer != null ">actual_server,</if>
+            <if test="relativeX != null ">relative_x,</if>
+            <if test="relativeY != null ">relative_y,</if>
+            <if test="relativeZ != null ">relative_z,</if>
+            <if test="absoluteX != null ">absolute_x,</if>
+            <if test="absoluteY != null ">absolute_y,</if>
+            <if test="absoluteZ != null ">absolute_z,</if>
+            <if test="relativerotX != null ">relativerot_x,</if>
+            <if test="relativerotY != null ">relativerot_y,</if>
+            <if test="relativerotZ != null ">relativerot_z,</if>
+            <if test="absoluterotX != null ">absoluterot_x,</if>
+            <if test="absoluterotY != null ">absoluterot_y,</if>
+            <if test="absoluterotZ != null ">absoluterot_z,</if>
+            <if test="tdModelId != null  and tdModelId != ''">td_model_id,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="states != null  and states != ''">states,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rackAisleId != null  and rackAisleId != ''">#{rackAisleId},</if>
+            <if test="dcRoomId != null  and dcRoomId != ''">#{dcRoomId},</if>
+            <if test="datacenterId != null  and datacenterId != ''">#{datacenterId},</if>
+            <if test="factoryId != null  and factoryId != ''">#{factoryId},</if>
+            <if test="rackAisleName != null  and rackAisleName != ''">#{rackAisleName},</if>
+            <if test="supplierSerialNo != null  and supplierSerialNo != ''">#{supplierSerialNo},</if>
+            <if test="serialNo != null  and serialNo != ''">#{serialNo},</if>
+            <if test="assetNo != null  and assetNo != ''">#{assetNo},</if>
+            <if test="rduId != null  and rduId != ''">#{rduId},</if>
+            <if test="rackAisleType != null  and rackAisleType != ''">#{rackAisleType},</if>
+            <if test="installationDate != null ">#{installationDate},</if>
+            <if test="limitPower != null ">#{limitPower},</if>
+            <if test="totalskill != null ">#{totalskill},</if>
+            <if test="totalUsedskill != null ">#{totalUsedskill},</if>
+            <if test="limitServer != null ">#{limitServer},</if>
+            <if test="actualServer != null ">#{actualServer},</if>
+            <if test="relativeX != null ">#{relativeX},</if>
+            <if test="relativeY != null ">#{relativeY},</if>
+            <if test="relativeZ != null ">#{relativeZ},</if>
+            <if test="absoluteX != null ">#{absoluteX},</if>
+            <if test="absoluteY != null ">#{absoluteY},</if>
+            <if test="absoluteZ != null ">#{absoluteZ},</if>
+            <if test="relativerotX != null ">#{relativerotX},</if>
+            <if test="relativerotY != null ">#{relativerotY},</if>
+            <if test="relativerotZ != null ">#{relativerotZ},</if>
+            <if test="absoluterotX != null ">#{absoluterotX},</if>
+            <if test="absoluterotY != null ">#{absoluterotY},</if>
+            <if test="absoluterotZ != null ">#{absoluterotZ},</if>
+            <if test="tdModelId != null  and tdModelId != ''">#{tdModelId},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="states != null  and states != ''">#{states},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUmEquipmentRackAisle" parameterType="UmEquipmentRackAisle">
+        update um_equipment_rack_aisle
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dcRoomId != null ">dc_room_id = #{dcRoomId},</if>
+            <if test="datacenterId != null ">datacenter_id = #{datacenterId},</if>
+            <if test="factoryId != null  ">factory_id = #{factoryId},</if>
+            <if test="rackAisleName != null ">rack_aisle_name = #{rackAisleName},</if>
+            <if test="supplierSerialNo != null ">supplier_serial_no = #{supplierSerialNo},</if>
+            <if test="serialNo != null  ">serial_no = #{serialNo},</if>
+            <if test="assetNo != null ">asset_no = #{assetNo},</if>
+            <if test="rduId != null  ">rdu_id = #{rduId},</if>
+            <if test="rackAisleType != null ">rack_aisle_type = #{rackAisleType},</if>
+            <if test="installationDate != null ">installation_date = #{installationDate},</if>
+            <if test="limitPower != null ">limit_power = #{limitPower},</if>
+            <if test="totalskill != null ">total_skill = #{totalskill},</if>
+            <if test="totalUsedskill != null ">total_used_skill = #{totalUsedskill},</if>
+            <if test="limitServer != null ">limit_server = #{limitServer},</if>
+            <if test="actualServer != null ">actual_server = #{actualServer},</if>
+            <if test="relativeX != null ">relative_x = #{relativeX},</if>
+            <if test="relativeY != null ">relative_y = #{relativeY},</if>
+            <if test="relativeZ != null ">relative_z = #{relativeZ},</if>
+            <if test="absoluteX != null ">absolute_x = #{absoluteX},</if>
+            <if test="absoluteY != null ">absolute_y = #{absoluteY},</if>
+            <if test="absoluteZ != null ">absolute_z = #{absoluteZ},</if>
+            <if test="relativerotX != null ">relativerot_x = #{relativerotX},</if>
+            <if test="relativerotY != null ">relativerot_y = #{relativerotY},</if>
+            <if test="relativerotZ != null ">relativerot_z = #{relativerotZ},</if>
+            <if test="absoluterotX != null ">absoluterot_x = #{absoluterotX},</if>
+            <if test="absoluterotY != null ">absoluterot_y = #{absoluterotY},</if>
+            <if test="absoluterotZ != null ">absoluterot_z = #{absoluterotZ},</if>
+            <if test="tdModelId != null ">td_model_id = #{tdModelId},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="states != null ">states = #{states},</if>
+        </trim>
+        where rack_aisle_id = #{rackAisleId}
+    </update>
+
+    <!--删除实际上是逻辑删除-->
+    <update id="deleteUmEquipmentRackAisleByIds" parameterType="String">
+        update um_equipment_rack_aisle
+        <trim prefix="SET" suffixOverrides=",">
+            status = '1'
+        </trim>
+        where rack_aisle_id in
+        <foreach item="rackAisleId" collection="array" open="(" separator="," close=")">
+            #{rackAisleId}
+        </foreach>
+    </update>
+
+    <delete id="deleteUmEquipmentRackAisleById" parameterType="String">
+        delete from um_equipment_rack_aisle where rack_aisle_id = #{rackAisleId}
+    </delete>
+
+<!--    <delete id="deleteUmEquipmentRackAisleByIds" parameterType="String">-->
+<!--        delete from um_equipment_rack_aisle where rack_aisle_id in -->
+<!--        <foreach item="rackAisleId" collection="array" open="(" separator="," close=")">-->
+<!--            #{rackAisleId}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+    
+</mapper>

@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.skill.system.api.factory.RemoteUserFallbackFactory,\
-  com.skill.system.api.factory.RemoteLogFallbackFactory, \
-  com.skill.system.api.factory.RemoteFileFallbackFactory

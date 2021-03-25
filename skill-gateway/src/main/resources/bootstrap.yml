@@ -1,17 +1,91 @@
 server:
-  port: 8080
+  port: 9527
 spring:
   application:
     name: @artifactId@
+  profiles:
+    active: @profiles.active@
   cloud:
     nacos:
-      discovery:
-        server-addr: @config.uri@
       config:
         server-addr: ${spring.cloud.nacos.discovery.server-addr}
         file-extension: yml
         shared-configs:
-          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
           - @artifactId@-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
-  profiles:
-    active: @profiles.active@
+      discovery:
+        server-addr: @config.uri@
+    gateway:
+      enabled: true
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      routes:
+        # 认证中心
+        - id: skill-auth
+          uri: lb://skill-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            # 验证码处理
+            - CacheRequest
+            - StripPrefix=1
+            # 限流配置
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                #允许用户每秒处理多少个请求
+                redis-rate-limiter.replenishRate: 2
+                #令牌桶的容量,允许在一秒钟内完成的最大请求
+                redis-rate-limiter.burstCapacity: 20
+        # 代码生成
+        - id: skill-gen
+          uri: lb://skill-gen
+          predicates:
+            - Path=/gen/**
+          filters:
+            - StripPrefix=1
+        # dfs
+        - id: skill-dfs
+          uri: lb://skill-dfs
+          predicates:
+            - Path=/dfs/**
+          filters:
+            - StripPrefix=1
+        # act
+        - id: skill-activiti
+          uri: lb://skill-activiti
+          predicates:
+            - Path=/act/**
+          filters:
+            - StripPrefix=1
+        # job
+        - id: skill-job
+          uri: lb://skill-job
+          predicates:
+            - Path=/job/**
+          filters:
+            - StripPrefix=1
+        #system 模块
+        - id: skill-system
+          uri: lb://skill-system
+          predicates:
+            - Path=/system/**
+          filters:
+            - StripPrefix=1
+            # 限流配置
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+hystrix:
+  command:
+    default:  #default全局有效，service id指定应用有效
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000 #断路器超时时间，默认1000ms
+

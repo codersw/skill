@@ -1,28 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>com.skill</groupId>
-        <artifactId>skill</artifactId>
-        <version>1.0.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <modules>
-        <module>skill-common-log</module>
-        <module>skill-common-core</module>
-        <module>skill-common-redis</module>
-        <module>skill-common-swagger</module>
-        <module>skill-common-security</module>
-        <module>skill-common-datascope</module>
-		<module>skill-common-datasource</module>
-    </modules>
-
+    <parent>
+        <groupId>com.skill.cloud</groupId>
+        <artifactId>skill-cloud</artifactId>
+        <version>1.1.0-SNAPSHOT</version>
+    </parent>
     <artifactId>skill-common</artifactId>
     <packaging>pom</packaging>
-
-    <description>
-	    skill-common通用模块
-    </description>
-
+    <modules>
+        <module>skill-common-core</module>
+        <module>skill-common-redis</module>
+        <module>skill-common-log</module>
+        <module>skill-common-auth</module>
+        <module>skill-common-swagger</module>
+    </modules>
 </project>

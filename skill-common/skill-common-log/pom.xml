@@ -1,27 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>com.skill</groupId>
-        <artifactId>skill-common</artifactId>
-        <version>1.0.0</version>
-    </parent>
-    <modelVersion>4.0.0</modelVersion>
-    
-    <artifactId>skill-common-log</artifactId>
-	
-    <description>
-        skill-common-log日志记录
-    </description>
-
-    <dependencies>
-		
-        <!-- skill Common Security -->
-        <dependency>
-            <groupId>com.skill</groupId>
-            <artifactId>skill-common-security</artifactId>
-        </dependency>
-        
-    </dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.skill.cloud</groupId>
+		<artifactId>skill-common</artifactId>
+		<version>1.1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>skill-common-log</artifactId>
+	<dependencies>
+		<!-- 系统模块 -->
+		<dependency>
+			<groupId>com.skill.cloud</groupId>
+			<artifactId>skill-system-api</artifactId>
+			<version>1.1.0-SNAPSHOT</version>
+		</dependency>
+		<!-- 解析客户端操作系统、浏览器等 -->
+		<dependency>
+			<groupId>eu.bitwalker</groupId>
+			<artifactId>UserAgentUtils</artifactId>
+		</dependency>
+	</dependencies>
 </project>

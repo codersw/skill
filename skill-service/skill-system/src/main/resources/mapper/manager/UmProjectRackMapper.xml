@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.manager.mapper.UmProjectRackMapper">
+    
+    <resultMap type="UmProjectRack" id="UmProjectRackResult">
+        <result property="id"    column="id"    />
+        <result property="projectId"    column="project_id"    />
+        <result property="rackId"    column="rack_id"    />
+    </resultMap>
+
+    <sql id="selectUmProjectRackVo">
+        select id, project_id, rack_id from um_project_rack
+    </sql>
+
+    <select id="selectUmProjectRackList" parameterType="UmProjectRack" resultMap="UmProjectRackResult">
+        <include refid="selectUmProjectRackVo"/>
+        <where>  
+            <if test="projectId != null  and projectId != ''"> and project_id = #{projectId}</if>
+            <if test="rackId != null  and rackId != ''"> and rack_id = #{rackId}</if>
+        </where>
+    </select>
+
+    <select id="selectUmProjectRackByprojeckList" parameterType="UmProjectRack" resultMap="UmProjectRackResult">
+        SELECT rack_id FROM um_project_rack WHERE  project_id=#{projectId}
+    </select>
+    
+    <select id="selectUmProjectRackById" parameterType="String" resultMap="UmProjectRackResult">
+        <include refid="selectUmProjectRackVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertUmProjectRack" parameterType="UmProjectRack">
+        insert into um_project_rack
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="projectId != null  and projectId != ''">project_id,</if>
+            <if test="rackId != null  and rackId != ''">rack_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="projectId != null  and projectId != ''">#{projectId},</if>
+            <if test="rackId != null  and rackId != ''">#{rackId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUmProjectRack" parameterType="UmProjectRack">
+        update um_project_rack
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="projectId != null ">project_id = #{projectId},</if>
+            <if test="rackId != null ">rack_id = #{rackId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--逻辑删除时使用该语句
+    <update id="deleteUmProjectRackByIds" parameterType="String">
+        update um_project_rack
+        <trim prefix="SET" suffixOverrides=",">
+            status = '1'
+        </trim>
+        where  id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>-->
+
+    <delete id="deleteUmProjectRackById" parameterType="String">
+        delete from um_project_rack where id = #{id}
+    </delete>
+
+    <delete id="deleteUmProjectRackByprojectId" parameterType="String">
+        delete from um_project_rack where  project_id= #{projectId}
+    </delete>
+
+    <delete id="deleteUmProjectRackByIds" parameterType="String">
+        delete from um_project_rack where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

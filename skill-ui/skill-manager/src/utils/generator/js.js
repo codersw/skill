@@ -2,7 +2,7 @@ import { isArray } from 'util'
 import { exportDefault, titleCase } from '@/utils/index'
 import { trigger } from './config'
 
-const units = {
+const skills = {
   KB: '1024',
   MB: '1024 / 1024',
   GB: '1024 / 1024 / 1024'
@@ -167,12 +167,12 @@ function buildProps(conf, propsList) {
 }
 
 function buildBeforeUpload(conf) {
-  const unitNum = units[conf.sizeUnit]; let rightSizeCode = ''; let acceptCode = ''; const
+  const skillNum = skills[conf.sizeskill]; let rightSizeCode = ''; let acceptCode = ''; const
     returnList = []
   if (conf.fileSize) {
-    rightSizeCode = `let isRightSize = file.size / ${unitNum} < ${conf.fileSize}
+    rightSizeCode = `let isRightSize = file.size / ${skillNum} < ${conf.fileSize}
     if(!isRightSize){
-      this.$message.error('文件大小超过 ${conf.fileSize}${conf.sizeUnit}')
+      this.$message.error('文件大小超过 ${conf.fileSize}${conf.sizeskill}')
     }`
     returnList.push('isRightSize')
   }

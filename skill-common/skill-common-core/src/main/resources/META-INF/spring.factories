@@ -1,4 +1,4 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.skill.common.core.utils.SpringUtils
+  com.skill.common.utils.spring.SpringUtils
 
   

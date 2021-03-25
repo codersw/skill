@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.manager.mapper.UmSceneFactoryMapper">
+    
+    <resultMap type="UmSceneFactory" id="UmSceneFactoryResult">
+        <result property="factoryId"    column="factory_id"    />
+        <result property="factoryName"    column="factory_name"    />
+        <result property="imgUrl"    column="img_url"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="factoryAddress"    column="factory_address"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUmSceneFactoryVo">
+        select d.name provinceName,dd.name cityName,f.factory_id, f.factory_name, f.img_url, f.province, f.city, f.factory_address, f.longitude
+        , f.latitude, f.status, f.create_by, f.create_time, f.update_by, f.update_time
+        from um_scene_factory f
+        left join districts d on f.province = d.id
+        left join districts dd on f.city = dd.id
+    </sql>
+
+    <select id="selectUmSceneFactoryList" parameterType="UmSceneFactory" resultMap="UmSceneFactoryResult">
+        <include refid="selectUmSceneFactoryVo"/>
+        <where>
+            and  status = '0'
+            <if test="factoryName != null  and factoryName != ''"> and f.factory_name like concat('%', #{factoryName}, '%')</if>
+            <if test="factoryAddress != null  and factoryAddress != ''"> and f.factory_address like concat('%', #{factoryAddress}, '%')</if>
+            <if test="province != null  and province != ''"> and f.province = #{province} </if>
+            <if test="city != null  and city != ''"> and f.city = #{city} </if>
+            <if test="longitude != null  and longitude != ''"> and f.longitude = #{longitude} </if>
+            <if test="latitude != null  and latitude != ''"> and f.latitude = #{latitude} </if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectUmSceneFactoryById" parameterType="String" resultMap="UmSceneFactoryResult">
+        <include refid="selectUmSceneFactoryVo"/>
+        where f.factory_id = #{factoryId}
+    </select>
+        
+    <insert id="insertUmSceneFactory" parameterType="UmSceneFactory">
+        insert into um_scene_factory
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="factoryId != null  and factoryId != ''">factory_id,</if>
+            <if test="factoryName != null  and factoryName != ''">factory_name,</if>
+            <if test="imgUrl != null  and imgUrl != ''">img_url,</if>
+            <if test="province != null  and province != ''">province,</if>
+            <if test="city != null  and city != ''">city,</if>
+            <if test="factoryAddress != null  and factoryAddress != ''">factory_address,</if>
+            <if test="longitude != null  and longitude != ''">longitude,</if>
+            <if test="latitude != null  and latitude != ''">latitude,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="factoryId != null  and factoryId != ''">#{factoryId},</if>
+            <if test="factoryName != null  and factoryName != ''">#{factoryName},</if>
+            <if test="imgUrl != null  and imgUrl != ''">#{imgUrl},</if>
+            <if test="province != null  and province != ''">#{province},</if>
+            <if test="city != null  and city != ''">#{city},</if>
+            <if test="factoryAddress != null  and factoryAddress != ''">#{factoryAddress},</if>
+            <if test="longitude != null  and longitude != ''">#{longitude},</if>
+            <if test="latitude != null  and latitude != ''">#{latitude},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUmSceneFactory" parameterType="UmSceneFactory">
+        update um_scene_factory
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="factoryName != null ">factory_name = #{factoryName},</if>
+            img_url = #{imgUrl},
+            <if test="province != null ">province = #{province},</if>
+            <if test="city != null ">city = #{city},</if>
+            <if test="factoryAddress != null">factory_address = #{factoryAddress},</if>
+            <if test="longitude != null ">longitude = #{longitude},</if>
+            <if test="latitude != null ">latitude = #{latitude},</if>
+            <if test="status != null  ">status = #{status},</if>
+            <if test="createBy != null ">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null ">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where factory_id = #{factoryId}
+    </update>
+
+    <!--删除实际上是逻辑删除-->
+    <update id="deleteUmSceneFactoryByIds" parameterType="String">
+        update um_scene_factory
+        <trim prefix="SET" suffixOverrides=",">
+            status = '1'
+        </trim>
+        where factory_id in
+        <foreach item="factoryId" collection="array" open="(" separator="," close=")">
+         #{factoryId}
+        </foreach>
+    </update>
+
+    <delete id="deleteUmSceneFactoryById" parameterType="String">
+        delete from um_scene_factory where factory_id = #{factoryId}
+    </delete>
+
+<!--    <delete id="deleteUmSceneFactoryByIds" parameterType="String">-->
+<!--        delete from um_scene_factory where factory_id in -->
+<!--        <foreach item="factoryId" collection="array" open="(" separator="," close=")">-->
+<!--            #{factoryId}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+    
+</mapper>

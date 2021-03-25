@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.manager.mapper.UmAlarmNoticeReciverMapper">
+    
+    <resultMap type="UmAlarmNoticeReciver" id="UmAlarmNoticeReciverResult">
+        <result property="id"    column="id"    />
+        <result property="alarmNoticeId"    column="alarm_notice_id"    />
+        <result property="reciverId"    column="reciver_id"    />
+        <result property="email"    column="email"    />
+        <result property="reciverName"    column="reciver_name"    />
+        <result property="reciverType"    column="reciver_type"    />
+        <result property="remark"    column="remark"    />
+        <result property="reciverTypeName" column="reciver_type_name" />
+        <result property="factoryId"    column="factory_id"    />
+        <result property="datacenterId"    column="datacenter_id"    />
+    </resultMap>
+
+    <sql id="selectUmAlarmNoticeReciverVo">
+        SELECT
+            T.id,
+            T.alarm_notice_id,
+            T.reciver_id,
+            T.email,
+            T.reciver_name,
+            T.reciver_type,
+            T.factory_id,
+            T.datacenter_id,
+            D.dict_label AS reciver_type_name,
+            fa.factory_name factoryname,
+            da.datacenter_name datacentername
+        FROM
+            um_alarm_notice_reciver T
+                left join (select * from sys_dict_data where dict_type = 'reciver_type')  D on T.reciver_type = D.dict_value
+                left join um_scene_factory fa on fa.factory_id = T.factory_id
+                left join um_scene_datacenter da on da.datacenter_id = T.datacenter_id
+    </sql>
+
+    <select id="selectUmAlarmNoticeReciverList" parameterType="UmAlarmNoticeReciver" resultMap="UmAlarmNoticeReciverResult">
+        <include refid="selectUmAlarmNoticeReciverVo"/>
+        <where>  
+            <if test="alarmNoticeId != null  and alarmNoticeId != ''"> and T.alarm_notice_id = #{alarmNoticeId}</if>
+            <if test="reciverName != null  and reciverName != ''"> and T.reciver_name like concat('%', #{reciverName}, '%')</if>
+            <if test="reciverType != null  and reciverType != ''"> and T.reciver_type = #{reciverType}</if>
+            <if test="factoryId != null and factoryId != ''">and T.factory_id =#{factoryId}</if>
+            <if test="datacenterId != null and datacenterId != ''">and T.datacenter_id =#{datacenterId}</if>
+        </where>
+    </select>
+    
+    <select id="selectUmAlarmNoticeReciverById" parameterType="String" resultMap="UmAlarmNoticeReciverResult">
+        <include refid="selectUmAlarmNoticeReciverVo"/>
+        where T.id = #{id}
+    </select>
+
+        
+    <insert id="insertUmAlarmNoticeReciver" parameterType="UmAlarmNoticeReciver">
+        insert into um_alarm_notice_reciver
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">id,</if>
+            <if test="alarmNoticeId != null  and alarmNoticeId != ''">alarm_notice_id,</if>
+            <if test="reciverId != null  and reciverId != ''">reciver_id,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="reciverName != null  and reciverName != ''">reciver_name,</if>
+            <if test="reciverType != null  and reciverType != ''">reciver_type,</if>
+            <if test="factoryId != null and factoryId != ''">factory_id,</if>
+            <if test="datacenterId != null and datacenterId != ''">datacenter_id,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null  and id != ''">#{id},</if>
+            <if test="alarmNoticeId != null  and alarmNoticeId != ''">#{alarmNoticeId},</if>
+            <if test="reciverId != null  and reciverId != ''">#{reciverId},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="reciverName != null  and reciverName != ''">#{reciverName},</if>
+            <if test="reciverType != null  and reciverType != ''">#{reciverType},</if>
+            <if test="factoryId != null and factoryId != ''">#{factoryId},</if>
+            <if test="datacenterId != null and datacenterId != ''">#{datacenterId},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUmAlarmNoticeReciver" parameterType="UmAlarmNoticeReciver">
+        update um_alarm_notice_reciver
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="alarmNoticeId != null  and alarmNoticeId != ''">alarm_notice_id = #{alarmNoticeId},</if>
+            <if test="reciverId != null  and reciverId != ''">reciver_id = #{reciverId},</if>
+            <if test="email != null ">email = #{email},</if>
+            <if test="reciverName != null ">reciver_name = #{reciverName},</if>
+            <if test="reciverType != null ">reciver_type = #{reciverType},</if>
+            <if test="factoryId != null ">factory_id = #{factoryId},</if>
+            <if test="datacenterId != null ">datacenter_id = #{datacenterId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <!--逻辑删除时使用该语句
+    <update id="deleteUmAlarmNoticeReciverByIds" parameterType="String">
+        update um_alarm_notice_reciver
+        <trim prefix="SET" suffixOverrides=",">
+            status = '1'
+        </trim>
+        where  id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>-->
+
+    <delete id="deleteUmAlarmNoticeReciverById" parameterType="String">
+        delete from um_alarm_notice_reciver where id = #{id}
+    </delete>
+
+    <delete id="deleteUmAlarmNoticeReciverByIds" parameterType="String">
+        delete from um_alarm_notice_reciver where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

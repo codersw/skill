@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.manager.mapper.UmEquipmentMonitoringDataMapper">
+    
+    <resultMap type="UmEquipmentMonitoringData" id="UmEquipmentMonitoringDataResult">
+        <result property="monitoringDataId"    column="monitoring_data_id"    />
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="dcRoomId"    column="dc_room_id"    />
+        <result property="datacenterId"    column="datacenter_id"    />
+        <result property="factoryId"    column="factory_id"    />
+        <result property="roomDataType"    column="room_data_type"    />
+        <result property="monitoringData"    column="monitoring_data"    />
+        <result property="dataskill"    column="data_skill"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="dataParam"    column="data_param"    />
+        <result property="monNo"    column="mon_no"    />
+    </resultMap>
+
+    <sql id="selectUmEquipmentMonitoringDataVo">
+        select monitoring_data_id, sensor_id, dc_room_id, datacenter_id, factory_id, room_data_type, monitoring_data, data_skill, create_time, data_param, mon_no from um_equipment_monitoring_data
+    </sql>
+
+    <select id="selectUmEquipmentMonitoringDataList" parameterType="UmEquipmentMonitoringData" resultMap="UmEquipmentMonitoringDataResult">
+        <include refid="selectUmEquipmentMonitoringDataVo"/>
+        <where>  
+        </where>
+    </select>
+    
+    <select id="selectUmEquipmentMonitoringDataById" parameterType="String" resultMap="UmEquipmentMonitoringDataResult">
+        <include refid="selectUmEquipmentMonitoringDataVo"/>
+        where monitoring_data_id = #{monitoringDataId}
+    </select>
+        
+    <insert id="insertUmEquipmentMonitoringData" parameterType="UmEquipmentMonitoringData">
+        insert into um_equipment_monitoring_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="monitoringDataId != null  and monitoringDataId != ''">monitoring_data_id,</if>
+            <if test="sensorId != null  and sensorId != ''">sensor_id,</if>
+            <if test="dcRoomId != null  and dcRoomId != ''">dc_room_id,</if>
+            <if test="datacenterId != null  and datacenterId != ''">datacenter_id,</if>
+            <if test="factoryId != null  and factoryId != ''">factory_id,</if>
+            <if test="roomDataType != null  and roomDataType != ''">room_data_type,</if>
+            <if test="monitoringData != null ">monitoring_data,</if>
+            <if test="dataskill != null  and dataskill != ''">data_skill,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="dataParam != null  and dataParam != ''">data_param,</if>
+            <if test="monNo != null  and monNo != ''">mon_no,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="monitoringDataId != null  and monitoringDataId != ''">#{monitoringDataId},</if>
+            <if test="sensorId != null  and sensorId != ''">#{sensorId},</if>
+            <if test="dcRoomId != null  and dcRoomId != ''">#{dcRoomId},</if>
+            <if test="datacenterId != null  and datacenterId != ''">#{datacenterId},</if>
+            <if test="factoryId != null  and factoryId != ''">#{factoryId},</if>
+            <if test="roomDataType != null  and roomDataType != ''">#{roomDataType},</if>
+            <if test="monitoringData != null ">#{monitoringData},</if>
+            <if test="dataskill != null  and dataskill != ''">#{dataskill},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="dataParam != null  and dataParam != ''">#{dataParam},</if>
+            <if test="monNo != null  and monNo != ''">#{monNo},</if>
+         </trim>
+    </insert>
+
+    <update id="updateUmEquipmentMonitoringData" parameterType="UmEquipmentMonitoringData">
+        update um_equipment_monitoring_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sensorId != null  and sensorId != ''">sensor_id = #{sensorId},</if>
+            <if test="dcRoomId != null  and dcRoomId != ''">dc_room_id = #{dcRoomId},</if>
+            <if test="datacenterId != null  and datacenterId != ''">datacenter_id = #{datacenterId},</if>
+            <if test="factoryId != null  and factoryId != ''">factory_id = #{factoryId},</if>
+            <if test="roomDataType != null  and roomDataType != ''">room_data_type = #{roomDataType},</if>
+            <if test="monitoringData != null ">monitoring_data = #{monitoringData},</if>
+            <if test="dataskill != null  and dataskill != ''">data_skill = #{dataskill},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="dataParam != null  and dataParam != ''">data_param = #{dataParam},</if>
+            <if test="monNo != null  and monNo != ''">mon_no = #{monNo},</if>
+        </trim>
+        where monitoring_data_id = #{monitoringDataId}
+    </update>
+
+    <!--逻辑删除时使用该语句
+    <update id="deleteUmEquipmentMonitoringDataByIds" parameterType="String">
+        update um_equipment_monitoring_data
+        <trim prefix="SET" suffixOverrides=",">
+            status = '1'
+        </trim>
+        where  monitoring_data_id in
+        <foreach item="monitoringDataId" collection="array" open="(" separator="," close=")">
+            #{monitoringDataId}
+        </foreach>
+    </update>-->
+
+    <delete id="deleteUmEquipmentMonitoringDataById" parameterType="String">
+        delete from um_equipment_monitoring_data where monitoring_data_id = #{monitoringDataId}
+    </delete>
+
+    <delete id="deleteUmEquipmentMonitoringDataByIds" parameterType="String">
+        delete from um_equipment_monitoring_data where monitoring_data_id in 
+        <foreach item="monitoringDataId" collection="array" open="(" separator="," close=")">
+            #{monitoringDataId}
+        </foreach>
+    </delete>
+    
+</mapper>

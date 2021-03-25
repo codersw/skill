@@ -3,10 +3,10 @@ package com.skill.common.log.enums;
 /**
  * 业务操作类型
  * 
- * @author swen
+ * @author zy
  */
-public enum BusinessType {
-
+public enum BusinessType
+{
     /**
      * 其它
      */
@@ -51,9 +51,9 @@ public enum BusinessType {
      * 生成代码
      */
     GENCODE,
-
+    
     /**
-     * 清空数据
+     * 清空
      */
     CLEAN,
 }

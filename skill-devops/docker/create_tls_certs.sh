@@ -10,7 +10,7 @@ COUNTRY="CN"
 STATE="LiaoNing"
 CITY="ShenYang"
 ORGANIZATION="ZNZLKJ"
-ORGANIZATIONAL_UNIT="Dev"
+ORGANIZATIONAL_skill="Dev"
 EMAIL="shaowen@znzlkj.com"
 
 ###开始生成文件###
@@ -21,7 +21,7 @@ cd /etc/docker
 #生成ca私钥(使用aes256加密)
 openssl genrsa -aes256 -passout pass:$PASSWORD  -out ca-key.pem 2048
 #生成ca证书，填写配置信息
-openssl req -new -x509 -passin "pass:$PASSWORD" -days 3650 -key ca-key.pem -sha256 -out ca.pem -subj "/C=$COUNTRY/ST=$STATE/L=$CITY/O=$ORGANIZATION/OU=$ORGANIZATIONAL_UNIT/CN=$SERVER/emailAddress=$EMAIL"
+openssl req -new -x509 -passin "pass:$PASSWORD" -days 3650 -key ca-key.pem -sha256 -out ca.pem -subj "/C=$COUNTRY/ST=$STATE/L=$CITY/O=$ORGANIZATION/OU=$ORGANIZATIONAL_skill/CN=$SERVER/emailAddress=$EMAIL"
 
 #生成server证书私钥文件
 openssl genrsa -out server-key.pem 2048

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.manager.mapper.UmEquipmentSensorMapper">
+    
+    <resultMap type="UmEquipmentSensor" id="UmEquipmentSensorResult">
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="dceId"    column="dce_id"    />
+        <result property="sensorType"    column="sensor_type"    />
+        <result property="sensorName"    column="sensor_name"    />
+        <result property="distState"    column="dist_state"    />
+        <result property="brand"    column="brand"    />
+        <result property="model"    column="model"    />
+        <result property="description"    column="description"    />
+        <result property="equipmentId"    column="equipment_id"    />
+        <result property="rackId"    column="rack_id"    />
+        <result property="rackAisleId"    column="rack_aisle_id"    />
+        <result property="dcRoomId"    column="dc_room_id"    />
+        <result property="datacenterId"    column="datacenter_id"    />
+        <result property="factoryId"    column="factory_id"    />
+        <result property="sensorLocation"    column="sensor_location"    />
+        <result property="dataState"    column="data_state"    />
+        <result property="sensorLevel"    column="sensor_level"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectUmEquipmentSensorVo">
+        select era.sensor_id,
+               era.dce_id,
+               era.sensor_type,
+               era.sensor_name,
+               era.dist_state,
+               era.brand,
+               era.model,
+               era.description,
+               era.equipment_id,
+               era.rack_id,
+               era.rack_aisle_id,
+               era.dc_room_id,
+               era.datacenter_id,
+               era.factory_id,
+               era.sensor_location,
+               era.data_state,
+               era.sensor_level,
+               era.relative_x,
+               era.relative_y,
+               era.relative_z,
+               era.absolute_x,
+               era.absolute_y,
+               era.absolute_z,
+               era.relativerot_x,
+               era.relativerot_y,
+               era.relativerot_z,
+               era.absoluterot_x,
+               era.absoluterot_y,
+               era.absoluterot_z,
+               era.status,
+               era.create_by,
+               era.create_time,
+               era.update_by,
+               era.update_time,
+               dc.datacenter_name as datacentername ,
+               f.factory_name as factoryname ,
+               dcr.dc_room_name as dcroomname,
+               rack.rack_name as rackname,
+               aisle.rack_aisle_name as rackaislename,
+               ent.equipment_name as equipmentname,
+               location.dict_label as location,
+               model.dict_label as labelmodel,
+               brand.dict_label as labebrand,
+               diststate.dict_label as labediststate,
+               sensortype.dict_label as labesensortype,
+               status.dict_label as labestatus,
+               sensorlevel.dict_label as labesensorlevel,
+               datastate.dict_label as labedatastate,
+               dce.equipment_name as decName
+        from um_equipment_sensor era
+                 left join um_scene_datacenter dc on era.datacenter_id = dc.datacenter_id
+                 left join um_scene_factory f on era.factory_id = f.factory_id
+                 left join um_scene_datacenter_room  dcr on era.dc_room_id = dcr.dc_room_id
+                 left join um_equipment_rack rack on era.rack_id = rack.rack_id
+                 left join um_equipment_rack_aisle aisle on aisle.rack_aisle_id = era.rack_aisle_id
+                 left join um_equipment ent on era.equipment_id=ent.equipment_id
+                 left join ( select equipment_name,equipment_id from um_equipment where equipment_type ='14') dce on era.dce_id = dce.equipment_id
+                 left join ( select * from sys_dict_data WHERE dict_type = 'sensor_location' ) location ON era.sensor_location = location.dict_value
+                 left join ( select * from sys_dict_data WHERE dict_type = 'model' ) model ON era.model = model.dict_value
+                 left join ( select * from sys_dict_data WHERE dict_type = 'brand' ) brand ON era.brand = brand.dict_value
+                 left join ( select * from sys_dict_data WHERE dict_type = 'dist_state' ) diststate ON era.dist_state = diststate.dict_value
+                 left join ( select * from sys_dict_data WHERE dict_type = 'sensor_type' ) sensortype ON era.sensor_type = sensortype.dict_value
+                 left join ( select * from sys_dict_data WHERE dict_type = 'skstatus' ) status ON era.status = status.dict_value
+                 left join ( select * from sys_dict_data WHERE dict_type = 'sensor_level' ) sensorlevel ON era.sensor_level = sensorlevel.dict_value
+                 left join ( select * from sys_dict_data WHERE dict_type = 'data_state' ) datastate ON era.data_state = datastate.dict_value
+    </sql>
+
+    <select id="selectUmEquipmentSensorList" parameterType="UmEquipmentSensor" resultMap="UmEquipmentSensorResult">
+        <include refid="selectUmEquipmentSensorVo"/>
+        <where>
+            and  era.status = '0'
+            <if test="sensorName != null  and sensorName != ''"> and sensor_name like concat('%', #{sensorName}, '%')</if>
+            <if test="status != null "> and era.status = #{status}</if>
+            <if test="distState != null "> and era.dist_state = #{distState}</if>
+            <if test="brand != null "> and era.brand = #{brand}</if>
+            <if test="model != null "> and era.model = #{model}</if>
+            <if test="factoryId != null "> and era.factory_id = #{factoryId}</if>
+            <if test="datacenterId != null "> and era.datacenter_id = #{datacenterId}</if>
+            <if test="dcRoomId != null "> and era.dc_room_id = #{dcRoomId}</if>
+            <if test="rackAisleId != null "> and era.rack_aisle_id = #{rackAisleId}</if>
+            <if test="rackId != null "> and era.rack_id = #{rackId}</if>
+            <if test="equipmentId != null "> and era.equipment_id = #{equipmentId}</if>
+            <if test="sensorLevel != null "> and era.sensor_level = #{sensorLevel}</if>
+            <if test="sensorLocation != null "> and era.sensor_location = #{sensorLocation}</if>
+            <if test="dceId != null and dceId !=''"> and era.dce_id = #{dceId}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectUmEquipmentSensorById" parameterType="String" resultMap="UmEquipmentSensorResult">
+        <include refid="selectUmEquipmentSensorVo"/>
+        where sensor_id = #{sensorId}
+    </select>
+    <!--查询房间下dce设备的传感器-->
+    <select id="selectUmEquipmentSensorByDceRoomId" parameterType="String" resultMap="UmEquipmentSensorResult">
+        <include refid="selectUmEquipmentSensorVo"/>
+        LEFT JOIN um_equipment e
+        ON era.dce_id = e.equipment_id
+        <where>
+            and  era.status = '0' and e.equipment_type = '14'
+            <if test="datacenterId != null "> and e.datacenter_id = #{datacenterId}</if>
+            <if test="dcRoomId != null "> and e.dc_room_id = #{dcRoomId}</if>
+            <if test="sensorName != null  and sensorName != ''"> and sensor_name like concat('%', #{sensorName}, '%')</if>
+            <if test="status != null "> and era.status = #{status}</if>
+            <if test="distState != null "> and era.dist_state = #{distState}</if>
+            <if test="brand != null "> and era.brand = #{brand}</if>
+            <if test="model != null "> and era.model = #{model}</if>
+            <if test="rackAisleId != null "> and era.rack_aisle_id = #{rackAisleId}</if>
+            <if test="rackId != null "> and era.rack_id = #{rackId}</if>
+            <if test="equipmentId != null "> and era.equipment_id = #{equipmentId}</if>
+            <if test="sensorLevel != null "> and era.sensor_level = #{sensorLevel}</if>
+            <if test="sensorLocation != null "> and era.sensor_location = #{sensorLocation}</if>
+            <if test="dceId != null and dceId !=''"> and era.dce_id = #{dceId}</if>
+        </where>
+        order by era.dc_room_id,era.dce_id ,era.create_time desc
+    </select>
+    <!--查询多个传感器ID查询-->
+    <select id="selectUmEquipmentSensorByIds" parameterType="String" resultMap="UmEquipmentSensorResult">
+        <include refid="selectUmEquipmentSensorVo"/>
+        where  era.sensor_id in
+        <foreach item="sensorId" collection="array" open="(" separator="," close=")">
+            #{sensorId}
+        </foreach>
+    </select>
+
+    <insert id="insertUmEquipmentSensor" parameterType="UmEquipmentSensor">
+        insert into um_equipment_sensor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sensorId != null  and sensorId != ''">sensor_id,</if>
+            <if test="dceId != null  and dceId != ''">dce_id,</if>
+            <if test="sensorType != null  and sensorType != ''">sensor_type,</if>
+            <if test="sensorName != null  and sensorName != ''">sensor_name,</if>
+            <if test="distState != null  and distState != ''">dist_state,</if>
+            <if test="brand != null  and brand != ''">brand,</if>
+            <if test="model != null  and model != ''">model,</if>
+            <if test="description != null  and description != ''">description,</if>
+            <if test="equipmentId != null  and equipmentId != ''">equipment_id,</if>
+            <if test="rackId != null  and rackId != ''">rack_id,</if>
+            <if test="rackAisleId != null  and rackAisleId != ''">rack_aisle_id,</if>
+            <if test="dcRoomId != null  and dcRoomId != ''">dc_room_id,</if>
+            <if test="datacenterId != null  and datacenterId != ''">datacenter_id,</if>
+            <if test="factoryId != null  and factoryId != ''">factory_id,</if>
+            <if test="sensorLocation != null  and sensorLocation != ''">sensor_location,</if>
+            <if test="dataState != null  and dataState != ''">data_state,</if>
+            <if test="sensorLevel != null  and sensorLevel != ''">sensor_level,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sensorId != null  and sensorId != ''">#{sensorId},</if>
+            <if test="dceId != null  and dceId != ''">#{dceId},</if>
+            <if test="sensorType != null  and sensorType != ''">#{sensorType},</if>
+            <if test="sensorName != null  and sensorName != ''">#{sensorName},</if>
+            <if test="distState != null  and distState != ''">#{distState},</if>
+            <if test="brand != null  and brand != ''">#{brand},</if>
+            <if test="model != null  and model != ''">#{model},</if>
+            <if test="description != null  and description != ''">#{description},</if>
+            <if test="equipmentId != null  and equipmentId != ''">#{equipmentId},</if>
+            <if test="rackId != null  and rackId != ''">#{rackId},</if>
+            <if test="rackAisleId != null  and rackAisleId != ''">#{rackAisleId},</if>
+            <if test="dcRoomId != null  and dcRoomId != ''">#{dcRoomId},</if>
+            <if test="datacenterId != null  and datacenterId != ''">#{datacenterId},</if>
+            <if test="factoryId != null  and factoryId != ''">#{factoryId},</if>
+            <if test="sensorLocation != null  and sensorLocation != ''">#{sensorLocation},</if>
+            <if test="dataState != null  and dataState != ''">#{dataState},</if>
+            <if test="sensorLevel != null  and sensorLevel != ''">#{sensorLevel},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateUmEquipmentSensor" parameterType="UmEquipmentSensor">
+        update um_equipment_sensor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dceId != null ">dce_id = #{dceId},</if>
+            <if test="sensorType != null ">sensor_type = #{sensorType},</if>
+            <if test="sensorName != null ">sensor_name = #{sensorName},</if>
+            <if test="distState != null ">dist_state = #{distState},</if>
+            <if test="brand != null">brand = #{brand},</if>
+            <if test="model != null ">model = #{model},</if>
+            <if test="description != null ">description = #{description},</if>
+            <if test="equipmentId != null or equipmentId == null ">equipment_id = #{equipmentId},</if>
+            <if test="rackId != null or rackId == null ">rack_id = #{rackId},</if>
+            <if test="rackAisleId != null  or rackAisleId == null ">rack_aisle_id = #{rackAisleId},</if>
+            <if test="dcRoomId != null ">dc_room_id = #{dcRoomId},</if>
+            <if test="datacenterId != null ">datacenter_id = #{datacenterId},</if>
+            <if test="factoryId != null ">factory_id = #{factoryId},</if>
+            <if test="sensorLocation != null  ">sensor_location = #{sensorLocation},</if>
+            <if test="dataState != null ">data_state = #{dataState},</if>
+            <if test="sensorLevel != null  ">sensor_level = #{sensorLevel},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="createBy != null ">create_by = #{createBy},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateBy != null ">update_by = #{updateBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where sensor_id = #{sensorId}
+    </update>
+
+    <!--逻辑删除时使用该语句-->
+    <update id="deleteUmEquipmentSensorByIds" parameterType="String">
+        update um_equipment_sensor
+        <trim prefix="SET" suffixOverrides=",">
+            status = '1'
+        </trim>
+        where  sensor_id in
+        <foreach item="sensorId" collection="array" open="(" separator="," close=")">
+            #{sensorId}
+        </foreach>
+    </update>
+
+    <!--批量更新-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update um_equipment_sensor
+            <set>
+                <if test="item.dceId != null ">dce_id = #{item.dceId},</if>
+                <if test="item.sensorType != null ">sensor_type = #{item.sensorType},</if>
+                <if test="item.sensorName != null ">sensor_name = #{item.sensorName},</if>
+                <if test="item.distState != null ">dist_state = #{item.distState},</if>
+                <if test="item.brand != null">brand = #{item.brand},</if>
+                <if test="item.model != null ">model = #{item.model},</if>
+                <if test="item.description != null ">description = #{item.description},</if>
+                <if test="item.equipmentId != null ">equipment_id = #{item.equipmentId},</if>
+                <if test="item.rackId != null ">rack_id = #{item.rackId},</if>
+                <if test="item.rackAisleId != null ">rack_aisle_id = #{item.rackAisleId},</if>
+                <if test="item.dcRoomId != null ">dc_room_id = #{item.dcRoomId},</if>
+                <if test="item.datacenterId != null ">datacenter_id = #{item.datacenterId},</if>
+                <if test="item.factoryId != null ">factory_id = #{item.factoryId},</if>
+                <if test="item.sensorLocation != null  ">sensor_location = #{item.sensorLocation},</if>
+                <if test="item.dataState != null ">data_state = #{item.dataState},</if>
+                <if test="item.sensorLevel != null  ">sensor_level = #{item.sensorLevel},</if>
+                <if test="item.status != null ">status = #{item.status},</if>
+                <if test="item.updateBy != null ">update_by = #{item.updateBy},</if>
+                <if test="item.updateTime != null ">update_time = #{item.updateTime},</if>
+            </set>
+            where sensor_id = #{item.sensorId}
+        </foreach>
+    </update>
+
+    <delete id="deleteUmEquipmentSensorById" parameterType="String">
+        delete from um_equipment_sensor where sensor_id = #{sensorId}
+    </delete>
+
+<!--    <delete id="deleteUmEquipmentSensorByIds" parameterType="String">-->
+<!--        delete from um_equipment_sensor where sensor_id in-->
+<!--        <foreach item="sensorId" collection="array" open="(" separator="," close=")">-->
+<!--            #{sensorId}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+    
+</mapper>

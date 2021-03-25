@@ -369,7 +369,7 @@ export const selectComponents = [{
     showTip: false,
     buttonText: '点击上传',
     fileSize: 2,
-    sizeUnit: 'MB',
+    sizeskill: 'MB',
     'list-type': 'text',
     multiple: false,
     regList: [],

@@ -1,12 +1,12 @@
 package com.skill.gateway.config;
 
 import java.util.Random;
+
 import com.google.code.kaptcha.text.impl.DefaultTextCreator;
 
 /**
- * 验证码文本生成器
- * 
- * @author swen
+ * 验证码构造
+ * @author zy
  */
 public class KaptchaTextCreator extends DefaultTextCreator {
 
@@ -14,7 +14,7 @@ public class KaptchaTextCreator extends DefaultTextCreator {
 
     @Override
     public String getText() {
-        int result = 0;
+        Integer result = 0;
         Random random = new Random();
         int x = random.nextInt(10);
         int y = random.nextInt(10);
@@ -49,7 +49,8 @@ public class KaptchaTextCreator extends DefaultTextCreator {
                 suChinese.append("-");
                 suChinese.append(CNUMBERS[x]);
             }
-        } else {
+        }
+        else {
             result = x + y;
             suChinese.append(CNUMBERS[x]);
             suChinese.append("+");

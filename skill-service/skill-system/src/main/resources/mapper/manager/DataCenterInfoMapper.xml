@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.skill.manager.mapper.DataCenterInfoMapper">
+
+    <resultMap type="UmEquipmentMonitoringData" id="UmEquipmentMonitoringDataResult">
+        <result property="monitoringDataId"    column="monitoring_data_id"    />
+        <result property="sensorId"    column="sensor_id"    />
+        <result property="dcRoomId"    column="dc_room_id"    />
+        <result property="datacenterId"    column="datacenter_id"    />
+        <result property="factoryId"    column="factory_id"    />
+        <result property="roomDataType"    column="room_data_type"    />
+        <result property="monitoringData"    column="monitoring_data"    />
+        <result property="dataskill"    column="data_skill"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="dataParam"    column="data_param"    />
+        <result property="monNo"    column="mon_no"    />
+    </resultMap>
+
+    <select id="selectUmEquipmentMonitoringDataList" parameterType="UmEquipmentSensor" resultMap="UmEquipmentMonitoringDataResult">
+        select
+        dc.datacenter_name as datacenterName ,
+        f.factory_name as factoryName ,
+        dcr.dc_room_name as dcRoomName,
+        rack.rack_name as rackName,
+        aisle.rack_aisle_name as rackAisleName,
+        ent.equipment_name as equipmentName,
+        d.sensor_type as sensorType,
+        d.sensor_location as sensorLocation,
+        d.equipment_id as equipmentId,
+        d.rack_id as rackId,
+        d.rack_aisle_id as rackAisleId,
+        s.monitoring_data_id, s.sensor_id, s.dc_room_id, s.datacenter_id,
+        s.factory_id, s.room_data_type, s.monitoring_data, s.data_skill,
+        s.create_time, s.data_param, s.mon_no
+        from um_equipment_monitoring_data s
+        left join um_equipment_sensor d on s.sensor_id = d.sensor_id
+        left join um_scene_datacenter dc on d.datacenter_id = dc.datacenter_id
+        left join um_scene_factory f on d.factory_id = f.factory_id
+        left join um_scene_datacenter_room  dcr on d.dc_room_id = dcr.dc_room_id
+        left join um_equipment_rack rack on d.rack_id = rack.rack_id
+        left join um_equipment_rack_aisle aisle on d.rack_aisle_id = aisle.rack_aisle_id
+        left join um_equipment ent on d.equipment_id=ent.equipment_id
+        <where>
+            <if test="dataState != null  and dataState != ''"> and d.data_state = #{dataState}</if>
+            <if test="datacenterId != null "> and d.datacenter_id = #{datacenterId}</if>
+            <if test="dcRoomId != null "> and d.dc_room_id = #{dcRoomId}</if>
+            <if test="rackAisleId != null "> and d.rack_aisle_id = #{rackAisleId}</if>
+            <if test="rackId != null "> and d.rack_id = #{rackId}</if>
+            <if test="equipmentId != null "> and d.equipment_id = #{equipmentId}</if>
+            <if test="createTime != null and createTime != ''"> and DATE_FORMAT(d.create_time,'%Y-%d-%m') = DATE_FORMAT(#{createTime},'%Y-%d-%m')</if>
+        </where>
+        order by s.create_time desc
+    </select>
+
+</mapper>
