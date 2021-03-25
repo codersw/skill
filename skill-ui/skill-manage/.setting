@@ -1,0 +1,16 @@
+{
+    "editor.mouseWheelScrollSensitivity": 1.14,
+    "editor.tabSize": 2,
+    "editor.tabCompletion": "on",
+    // 设置 eslint 保存时自动修复
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "workbench.tree.indent": 12,
+    "search.showLineNumbers": true,
+    "search.quickOpen.includeHistory": false,
+    "workbench.iconTheme": "vscode-icons",
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": false,
+    "editor.formatOnType": false,
+}
