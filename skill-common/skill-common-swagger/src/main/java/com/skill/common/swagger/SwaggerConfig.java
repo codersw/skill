@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * swagger配置
- * @author zy
+ * @author swen
  */
 @Configuration
 @EnableSwagger2
@@ -43,8 +43,7 @@ public class SwaggerConfig {
                 .contact(new Contact("wind", "", "")).version("1.0.1").build();
     }
 
-    private ApiKey apiKey()
-    {
+    private ApiKey apiKey() {
         return new ApiKey("TOKEN", "token", "header");
     }
 
