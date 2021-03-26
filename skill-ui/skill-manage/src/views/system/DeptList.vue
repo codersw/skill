@@ -1,25 +1,33 @@
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
-      <PageWrapperSearch>
-        <a-form-item :label="this.$t('dept.deptName')" >
-          <a-input v-model="queryParam.deptName" :placeholder="this.$t('dept.deptName')"/>
-        </a-form-item>
-        <a-form-item :label="this.$t('dept.status')">
-          <a-select v-model="queryParam.status" :placeholder="this.$t('dept.status')">
-            <a-select-option value="">全部</a-select-option>
-            <a-select-option value="0">正常</a-select-option>
-            <a-select-option value="1">停用</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item slot="buttons">
-          <a-button type="primary" @click="this.fetch">{{ 'global.button.search' | i18n }}</a-button>
-          <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ 'global.button.reset' | i18n }}</a-button>
-        </a-form-item>
-      </PageWrapperSearch>
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="5" :sm="15">
+            <a-form-item label="部门名称" >
+              <a-input placeholder="请输入" v-model="queryParam.deptName"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="状态">
+              <a-select placeholder="请选择" v-model="queryParam.status">
+                <a-select-option value="">全部</a-select-option>
+                <a-select-option value="0">正常</a-select-option>
+                <a-select-option value="1">停用</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="this.fetch">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
     <div class="table-operator">
-      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">{{ 'global.button.new' | i18n }}</a-button>
+      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">新建</a-button>
     </div>
     <a-table
       ref="table"
@@ -38,16 +46,11 @@
       </span>
 
       <span slot="action" slot-scope="text, record">
-        <a v-if="editEnabel" @click="handleEdit(record)">{{ 'global.button.edit' | i18n }}</a>
-        <a-divider v-if="addEnable" type="vertical" />
-        <a v-if="addEnable" @click="handleAdd(record.deptId+'')">{{ 'global.button.new' | i18n }}</a>
-        <a-divider v-if="removeEnable" type="vertical" />
-        <a-popconfirm
-          v-if="removeEnable"
-          :title="deleteAsk"
-          @confirm="delById(record.deptId)">
-          <a>{{ 'global.button.delete' | i18n }}</a>
-        </a-popconfirm>
+        <a v-if="editEnabel" @click="handleEdit(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a v-if="addEnable" @click="handleAdd(record.deptId+'')">新增</a>
+        <a-divider type="vertical" />
+        <a v-if="removeEnable" @click="delById(record.deptId)">删除</a>
       </span>
     </a-table>
 
@@ -70,6 +73,7 @@ export default {
   data () {
     return {
       description: '列表使用场景：后台管理中的权限管理以及角色管理，可用于基于 RBAC 设计的角色权限控制，颗粒度细到每一个操作类型。',
+
       visible: false,
       labelCol: {
         xs: { span: 24 },
@@ -85,6 +89,32 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {},
+      // 表头
+      columns: [
+        {
+          title: '权限名称',
+          dataIndex: 'deptName'
+        },
+        {
+          title: '排序',
+          dataIndex: 'orderNum'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime'
+        },
+        {
+          title: '操作',
+          width: '150px',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
       data: [],
       pagination: false,
       loading: false,
@@ -136,52 +166,25 @@ export default {
     fetch () {
       this.loading = true
       getDeptList(Object.assign(this.queryParam)).then(res => {
-        // 如果名称索索,不去构建树结构了
-        if (this.queryParam.deptName) {
-            this.data = res.rows
-            this.loading = false
-            return
-        }
         this.data = treeData(res.rows, 'deptId')
         this.loading = false
         console.log(this.data)
       })
     }
   },
-  computed: {
-    deleteAsk () {
-      return this.$t('global.message.delete.ask')
-    },
-    // 表头
-      columns () {
-        return [
-          {
-            title: this.$t('dept.deptName'),
-            dataIndex: 'deptName'
-          },
-          {
-            title: this.$t('dept.orderNum'),
-            dataIndex: 'orderNum'
-          },
-          {
-            title: this.$t('dept.status'),
-            dataIndex: 'status',
-            scopedSlots: { customRender: 'status' }
-          },
-          // {
-          //   title: '创建时间',
-          //   dataIndex: 'createTime'
-          // },
-          {
-            title: this.$t('global.action'),
-            width: '180px',
-            dataIndex: 'action',
-            scopedSlots: { customRender: 'action' }
-          }
-        ]
-      }
-  },
   watch: {
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

@@ -24,12 +24,12 @@
       </a-list-item-meta>
       <template v-slot:actions>
         <div style="height: 20px">
-          <a-tooltip v-for="(item, index) in colorList" :key="index" class="setting-drawer-theme-color-colorBlock">
+          <a-tooltip class="setting-drawer-theme-color-colorBlock" v-for="(item, index) in colorList" :key="index">
             <template slot="title">
               {{ item.key }}
             </template>
             <a-tag :color="item.color" @click="changeColor(item.color)">
-              <a-icon v-if="item.color === primaryColor" type="check"></a-icon>
+              <a-icon type="check" v-if="item.color === primaryColor"></a-icon>
             </a-tag>
           </a-tooltip>
         </div>

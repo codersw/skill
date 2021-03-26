@@ -1,7 +1,7 @@
 <template>
   <page-header-wrapper content="富文本编辑器演示，QuillEditor不能图片缩放，如果对图片没什么操作的用户，推荐使用,上传为公共API，比较慢">
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
-      <a-form :form="form" @submit="handleSubmit">
+      <a-form @submit="handleSubmit" :form="form">
         <a-form-item
           label="quill"
           :labelCol="{lg: {span: 3}, sm: {span: 3}}"

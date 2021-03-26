@@ -3,7 +3,7 @@
     <a-row :gutter="24">
       <a-col :md="4">
         <a-list itemLayout="vertical" :dataSource="roles">
-          <a-list-item slot="renderItem" :key="index" slot-scope="item, index">
+          <a-list-item slot="renderItem" slot-scope="item, index" :key="index">
             <a-list-item-meta :style="{ marginBottom: '0' }">
               <span slot="description" style="text-align: center; display: block">{{ item.describe }}</span>
               <a slot="title" style="text-align: center; display: block" @click="edit(item)">{{ item.name }}</a>
@@ -34,11 +34,11 @@
             </a-form-item>
 
             <a-form-item label="备注说明">
-              <a-textarea v-decorator="[ 'describe', {rules: [{ required: true, message: 'Please input role name!' }]} ]" :row="3" placeholder="请填写角色名称" />
+              <a-textarea :row="3" v-decorator="[ 'describe', {rules: [{ required: true, message: 'Please input role name!' }]} ]" placeholder="请填写角色名称" />
             </a-form-item>
 
             <a-form-item label="拥有权限">
-              <a-row v-for="(permission, index) in permissions" :key="index" :gutter="16">
+              <a-row :gutter="16" v-for="(permission, index) in permissions" :key="index">
                 <a-col :xl="4" :lg="24">
                   {{ permission.name }}：
                 </a-col>
@@ -50,7 +50,7 @@
                     @change="onChangeCheckAll($event, permission)">
                     全选
                   </a-checkbox>
-                  <a-checkbox-group v-model="permission.selected" :options="permission.actionsOptions" @change="onChangeCheck(permission)" />
+                  <a-checkbox-group :options="permission.actionsOptions" v-model="permission.selected" @change="onChangeCheck(permission)" />
                 </a-col>
               </a-row>
             </a-form-item>

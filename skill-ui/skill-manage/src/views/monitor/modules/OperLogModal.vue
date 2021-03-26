@@ -1,10 +1,10 @@
 <template>
   <a-modal
-    v-model="visible"
     title="操作"
     style="top: 20px;"
     :width="800"
     :footer="null"
+    v-model="visible"
   >
     <a-card :bordered="false">
       <detail-list size="small" :col="2" >
@@ -23,7 +23,7 @@
       </detail-list>
       <a-divider style="margin-bottom: 32px"/>
       <detail-list title="参数" size="small" >
-        <a-textarea v-model="mdl.operParam" :rows="15" disabled style="color:#000"/>
+        <a-textarea :rows="15" v-model="mdl.operParam" disabled style="color:#000"/>
       </detail-list>
       <a-divider style="margin-bottom: 32px"/>
     </a-card>

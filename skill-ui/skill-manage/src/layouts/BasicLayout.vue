@@ -9,25 +9,30 @@
     :i18nRender="i18nRender"
     v-bind="settings"
   >
+    <!-- Ads begin
+      广告代码 真实项目中请移除
+      production remove this Ads
+    -->
+    <!-- <ads v-if="isProPreviewSite&&!collapsed"/> -->
+    <ads v-if="!collapsed" />
+    <!-- Ads end -->
 
     <!-- 1.0.0+ 版本 pro-layout 提供 API，我们推荐使用这种方式进行 LOGO 和 title 自定义 -->
     <template v-slot:menuHeaderRender>
       <div>
-        <!-- <logo-svg /> -->
-        <h1 style="margin-left:0">{{ 'app.setting.title' | i18n }}</h1>
+        <logo-svg />
+        <h1>{{ title }}</h1>
       </div>
     </template>
 
-    <!-- <setting-drawer :settings="settings" @change="handleSettingChange" /> -->
+    <setting-drawer :settings="settings" @change="handleSettingChange" />
     <template v-slot:rightContentRender>
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
-    <!-- <template v-slot:footerRender>
+    <template v-slot:footerRender>
       <global-footer />
-    </template> -->
-    <keep-alive :include="['DataCenter']">
-      <router-view />
-    </keep-alive>
+    </template>
+    <router-view />
   </pro-layout>
 </template>
 
@@ -46,6 +51,7 @@ import {
 import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
+import Ads from '@/components/Other/CarbonAds'
 import LogoSvg from '@/assets/logo.svg?inline'
 
 export default {
@@ -54,6 +60,7 @@ export default {
     SettingDrawer,
     RightContent,
     GlobalFooter,
+    Ads,
     LogoSvg
   },
   data () {
@@ -116,7 +123,7 @@ export default {
     // first update color
     // TIPS: THEME COLOR HANDLER!! PLEASE CHECK THAT!!
     // if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'true') {
-    // updateTheme(this.settings.primaryColor) // 正在切换主题
+    updateTheme(this.settings.primaryColor)
     // }
   },
   methods: {

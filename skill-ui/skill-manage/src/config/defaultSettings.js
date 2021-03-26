@@ -13,18 +13,17 @@
  */
 
 export default {
-  navTheme: 'light', // theme for nav menu
-  theme: 'light',
-  primaryColor: '#1c69d4', // primary color of ant design
-  layout: 'topmenu', // nav menu position: `sidemenu` or `topmenu`
+  navTheme: 'dark', // theme for nav menu
+  primaryColor: '#1890ff', // primary color of ant design
+  layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
   contentWidth: 'Fluid', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
-  fixedHeader: true, // sticky header
+  fixedHeader: false, // sticky header
   fixSiderbar: false, // sticky siderbar
   colorWeak: false,
   menu: {
     locale: true
   },
-  title: 'U位管理系统',
+  title: 'RuoYi Ant',
   pwa: false,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'

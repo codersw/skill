@@ -6,14 +6,14 @@
       :multiple="true"
       action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       :headers="headers"
-      :beforeUpload="quillImgBefore"
       @change="quillImgSuccess"
+      :beforeUpload="quillImgBefore"
     >
     </a-upload>
     <quill-editor
-      ref="myQuillEditor"
-      v-model="content"
       class="ql-editor-class"
+      v-model="content"
+      ref="myQuillEditor"
       :options="editorOption"
       @blur="onEditorBlur($event)"
       @focus="onEditorFocus($event)"

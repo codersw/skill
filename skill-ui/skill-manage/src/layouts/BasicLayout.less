@@ -2,30 +2,13 @@
 
 .ant-pro-global-header-index-right {
   margin-right: 8px;
-  
-  .ant-pro-global-header-index-action {
-    &:hover {
-      color: #1890ff;
-      background: transparent;
-      .ant-avatar-icon {
-        color: #1890ff;
-        background: transparent;
-      }
-    }
-    .ant-avatar-icon {
-      transition: all 0.3s;
-    }
-    .anticon-global {
-      vertical-align: -0.25em;
-    }
-  }
 
   &.ant-pro-global-header-index-dark {
     .ant-pro-global-header-index-action {
       color: hsla(0, 0%, 100%, .85);
 
       &:hover {
-        background: #1c69d4;
+        background: #1890ff;
       }
     }
   }
@@ -34,7 +17,7 @@
     .antd-pro-global-header-index-avatar {
       margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
       margin-right: 8px;
-      color: rgba(0, 0, 0, 0.65);
+      color: @primary-color;
       vertical-align: top;
       background: rgba(255, 255, 255, 0.85);
     }
@@ -47,24 +30,7 @@
 
     .ant-dropdown-menu-item {
       min-width: 100px;
-      &:hover {
-        background-color: transparent;
-      }
     }
   }
 }
 
-.ant-pro-top-nav-header-logo {
-  width: initial;
-}
-.ant-pro-top-nav-header-menu {
-  flex: initial !important;
-  max-width: initial !important;
-  margin-left: auto;
-}
-.ant-pro-global-header-index-right {
-  margin-left: initial;
-}
-.ant-page-header {
-  padding: 10px 24px;
-}

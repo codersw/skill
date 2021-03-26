@@ -40,14 +40,14 @@
         <a-row
           :gutter="24"
           :style="{ marginBottom: '12px' }">
-          <a-col v-for="(role, index) in record.permissions" :key="index" :span="12" :style="{ marginBottom: '12px' }">
+          <a-col :span="12" v-for="(role, index) in record.permissions" :key="index" :style="{ marginBottom: '12px' }">
             <a-col :span="4">
               <span>{{ role.permissionName }}：</span>
             </a-col>
-            <a-col v-if="role.actionEntitySet.length > 0" :span="20">
-              <a-tag v-for="(action, k) in role.actionEntitySet" :key="k" color="cyan">{{ action.describe }}</a-tag>
+            <a-col :span="20" v-if="role.actionEntitySet.length > 0">
+              <a-tag color="cyan" v-for="(action, k) in role.actionEntitySet" :key="k">{{ action.describe }}</a-tag>
             </a-col>
-            <a-col v-else :span="20">-</a-col>
+            <a-col :span="20" v-else>-</a-col>
           </a-col>
         </a-row>
       </div>

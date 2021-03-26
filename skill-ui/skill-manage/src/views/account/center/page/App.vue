@@ -6,9 +6,9 @@
       <a-list-item slot="renderItem" slot-scope="item">
         <a-card :hoverable="true">
           <a-card-meta>
-            <div slot="title" style="margin-bottom: 3px">{{ item.title }}</div>
-            <a-avatar slot="avatar" class="card-avatar" :src="item.avatar" size="small"/>
-            <div slot="description" class="meta-cardInfo">
+            <div style="margin-bottom: 3px" slot="title">{{ item.title }}</div>
+            <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="small"/>
+            <div class="meta-cardInfo" slot="description">
               <div>
                 <p>活跃用户</p>
                 <p>
@@ -21,7 +21,7 @@
               </div>
             </div>
           </a-card-meta>
-          <template slot="actions" class="ant-card-actions">
+          <template class="ant-card-actions" slot="actions">
             <a>
               <a-icon type="download"/>
             </a>

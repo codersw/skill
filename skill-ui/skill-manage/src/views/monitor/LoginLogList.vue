@@ -1,42 +1,52 @@
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
-      <PageWrapperSearch>
-        <a-form-item :label="this.$t('login.ipaddr')">
-          <a-input v-model="queryParam.ipaddr" :placeholder="this.$t('login.ipaddr')"/>
-        </a-form-item>
-        <a-form-item :label="this.$t('login.loginName')">
-          <a-input v-model="queryParam.loginName" :placeholder="this.$t('login.loginName')"/>
-        </a-form-item>
-        <a-form-item :label="this.$t('login.status')">
-          <a-select v-model="queryParam.status" :placeholder="this.$t('login.status')" default-value="0">
-            <a-select-option :value="''">全部</a-select-option>
-            <a-select-option v-for="(d, index) in commonStatus" :key="index" :value="d.dictValue">{{ d.dictLabel }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="this.$t('login.loginTime')">
-          <a-range-picker v-model="range"/>
-        </a-form-item>
-        <a-form-item slot="buttons">
-          <a-button type="primary" @click="$refs.table.refresh(true)">{{ 'global.button.search' | i18n }}</a-button>
-          <a-button style="margin-left: 8px" @click="reset">{{ 'global.button.reset' | i18n }}</a-button>
-        </a-form-item>
-      </PageWrapperSearch>
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="5" :sm="15">
+            <a-form-item label="登陆地址">
+              <a-input placeholder="请输入" v-model="queryParam.ipaddr"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="登陆名称">
+              <a-input placeholder="请输入" v-model="queryParam.loginName"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="12">
+            <a-form-item label="登陆状态">
+              <a-select placeholder="请选择" v-model="queryParam.status" default-value="0">
+                <a-select-option :value="''">全部</a-select-option>
+                <a-select-option v-for="(d, index) in commonStatus" :key="index" :value="d.dictValue">{{ d.dictLabel }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="18">
+            <a-form-item label="登陆时间">
+              <a-range-picker v-model="range"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="12">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
     <div class="table-operator">
-      <!-- <a-popconfirm v-has="'monitor:logininfor:remove'" title="确认清空吗？" @confirm="clean(selectedRowKeys)">
+      <a-popconfirm v-has="'monitor:logininfor:remove'" title="确认清空吗？" @confirm="clean">
         <a-icon slot="icon" type="question-circle-o" style="color: red" />
-        <a-button type="danger" ghost icon="close">{{ 'global.button.clear' | i18n }}</a-button>
-      </a-popconfirm> -->
-      <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'monitor:logininfor:remove'">
-        <a-popconfirm v-has="'monitor:logininfor:remove'" :title="this.$t('global.message.delete.ask')" @confirm="delByIds(selectedRowKeys)">
-          <a-button type="danger" icon="delete" >{{ 'global.button.delete' | i18n }}</a-button>
-        </a-popconfirm>
+        <a-button type="danger" ghost icon="close">清空</a-button>
+      </a-popconfirm>
+      <a-dropdown v-has="'monitor:logininfor:remove'" v-if="selectedRowKeys.length > 0">
+        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
       </a-dropdown>
     </div>
     <s-table
-      ref="table"
       size="default"
+      ref="table"
       rowKey="infoId"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
@@ -54,7 +64,7 @@
 <script>
 import { STable } from '@/components'
 // import { getLoginLogList, delLoginLog, cleanLoginLog } from '@/api/monitor'
-import { getLoginLogList, delLoginLog } from '@/api/monitor'
+import { getLoginLogList } from '@/api/monitor'
 import { getDictArray } from '../../utils/dict'
 const commonStatusMap = {}
 export default {
@@ -80,6 +90,47 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {},
+      // 表头
+      columns: [
+        {
+          title: '访问编号',
+          dataIndex: 'infoId'
+        },
+        {
+          title: '登录名称',
+          dataIndex: 'loginName'
+        },
+        {
+          title: '登录地址',
+          dataIndex: 'ipaddr'
+        },
+        {
+          title: '登录地点',
+          dataIndex: 'loginLocation'
+        },
+        {
+          title: '浏览器',
+          dataIndex: 'browser'
+        },
+        {
+          title: '操作系统',
+          dataIndex: 'os'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
+        },
+        {
+          title: '操作信息',
+          dataIndex: 'msg'
+        },
+        {
+          title: '操作时间',
+          dataIndex: 'loginTime',
+          sorter: true
+        }
+      ],
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
@@ -113,10 +164,6 @@ export default {
     })
   },
   methods: {
-    reset () {
-      this.queryParam = {}
-      this.range = null
-    },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -125,74 +172,37 @@ export default {
       this.$refs.table.refresh(true)
     },
     delByIds (ids) {
-      delLoginLog({ ids: ids.join(',') }).then(res => {
-        if (res.code === 0) {
-          this.$message.success(`删除成功`)
-          this.handleOk()
-        } else {
-          this.$message.error(res.msg)
-        }
-        this.selectedRowKeys = []
-      })
+      this.$message.success(`你删除了` + ids)
+      // delLoginLog({ ids: ids.join(',') }).then(res => {
+      //   if (res.code === 0) {
+      //     this.$message.success(`删除成功`)
+      //     this.handleOk()
+      //   } else {
+      //     this.$message.error(res.msg)
+      //   }
+      //   this.selectedRowKeys = []
+      // })
     },
-    clean (ids) {
-      delLoginLog({ ids: ids.join(',') }).then(res => {
-        if (res.code === 0) {
-          this.$message.success(`删除成功`)
-          this.handleOk()
-        } else {
-          this.$message.error(res.msg)
-        }
-        this.selectedRowKeys = []
-      })
-    }
-  },
-  computed: {
-    // 表头
-    columns () {
-      return [
-        {
-          title: this.$t('login.infoId'),
-          dataIndex: 'infoId'
-        },
-        {
-          title: this.$t('login.loginName'),
-          dataIndex: 'loginName'
-        },
-        {
-          title: this.$t('login.ipaddr'),
-          dataIndex: 'ipaddr'
-        },
-        {
-          title: this.$t('login.loginLocation'),
-          dataIndex: 'loginLocation'
-        },
-        {
-          title: this.$t('login.browser'),
-          dataIndex: 'browser'
-        },
-        {
-          title: this.$t('login.os'),
-          dataIndex: 'os'
-        },
-        {
-          title: this.$t('login.status'),
-          dataIndex: 'status',
-          scopedSlots: { customRender: 'status' }
-        },
-        {
-          title: this.$t('login.msg'),
-          dataIndex: 'msg'
-        },
-        {
-          title: this.$t('login.loginTime'),
-          dataIndex: 'loginTime',
-          sorter: true
-        }
-      ]
+    clean () {
+      this.$message.success(`你点击了清空`)
+      // cleanLoginLog().then(res => {
+      //   this.handleOk()
+      // })
     }
   },
   watch: {
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

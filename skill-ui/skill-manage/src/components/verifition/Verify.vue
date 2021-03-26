@@ -1,7 +1,7 @@
 <template>
-  <div v-show="showBox" :class="mode=='pop'?'mask':''">
+  <div :class="mode=='pop'?'mask':''" v-show="showBox">
     <div :class="mode=='pop'?'verifybox':''" :style="{'max-width':parseInt(imgSize.width)+30+'px'}">
-      <div v-if="mode=='pop'" class="verifybox-top">
+      <div class="verifybox-top" v-if="mode=='pop'">
         请完成安全验证
         <span class="verifybox-close" @click="closeBox(true)">
           <i class="iconfont icon-close"></i>
@@ -10,9 +10,8 @@
       <div class="verifybox-bottom" :style="{padding:mode=='pop'?'15px':'0'}">
         <!-- 验证码容器 -->
         <components
-          :is="componentType"
           v-if="componentType"
-          ref="instance"
+          :is="componentType"
           :captchaType="captchaType"
           :type="verifyType"
           :figure="figure"
@@ -22,7 +21,8 @@
           :explain="explain"
           :imgSize="imgSize"
           :blockSize="blockSize"
-          :barSize="barSize"></components>
+          :barSize="barSize"
+          ref="instance"></components>
       </div>
     </div>
   </div>
@@ -125,10 +125,11 @@ export default {
     i18n (text) {
       if (this.$t) {
         return this.$t(text)
+      } else {
+        // 兼容不存在的语言
+        const i18n = this.$options.i18n.messages[this.locale] || this.$options.i18n.messages['en-US']
+        return i18n[text]
       }
-      // 兼容不存在的语言
-      const i18n = this.$options.i18n.messages[this.locale] || this.$options.i18n.messages['en-US']
-      return i18n[text]
     },
     /**
      * refresh
@@ -156,8 +157,9 @@ export default {
     showBox () {
       if (this.mode === 'pop') {
         return this.clickShow
+      } else {
+        return true
       }
-      return true
     }
   },
   watch: {

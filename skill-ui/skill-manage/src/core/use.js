@@ -13,7 +13,6 @@ import PageLoading from '@/components/PageLoading'
 import PermissionHelper from '@/utils/helper/permission'
 // import '@/components/use'
 import './directives/action'
-import mixins from './mixins'
 
 VueClipboard.config.autoSetContainer = true
 
@@ -24,6 +23,5 @@ Vue.use(PageLoading)
 Vue.use(VueClipboard)
 Vue.use(PermissionHelper)
 Vue.use(VueCropper)
-Vue.use(mixins)
 
-process.env.NODE_ENV !== 'production' && console.warn('[uwmanage] WARNING: Antd now use fulled imported.')
+process.env.NODE_ENV !== 'production' && console.warn('[ruoyi-ant] WARNING: Antd now use fulled imported.')

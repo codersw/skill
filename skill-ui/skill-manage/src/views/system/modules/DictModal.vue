@@ -1,9 +1,9 @@
 <template>
   <a-modal
-    v-model="visible"
-    :title="this.$t('global.action')"
+    title="操作"
     style="top: 20px;"
     :width="800"
+    v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
@@ -14,25 +14,25 @@
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dict.dictName')"
+        label="字典名称"
       >
-        <a-input v-decorator="['dictName', {rules: [{ required: true, message: this.$t('dict.dictName.msg') }]}]" :placeholder="this.$t('dict.dictName')" />
+        <a-input placeholder="字典名称" v-decorator="['dictName', {rules: [{ required: true, message: '请输入字典名称' }]}]" />
       </a-form-item>
 
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dict.dictType')"
+        label="字典类型"
       >
-        <a-input v-decorator="['dictType',{rules: [{ required: true, message: this.$t('dict.dictType.msg') }]}]" :placeholder="this.$t('dict.dictType')"/>
+        <a-input v-decorator="['dictType',{rules: [{ required: true, message: '请输入字典类型' }]}]" placeholder="字典类型"/>
       </a-form-item>
 
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dict.status')"
+        label="状态"
       >
-        <a-select v-decorator="['status', {initialValue:'0',rules: [{ required: true, message: this.$t('dict.status.msg') }]}]">
+        <a-select v-decorator="['status', {initialValue:'0',rules: [{ required: true, message: '请选择状态' }]}]">
           <a-select-option :value="'0'">正常</a-select-option>
           <a-select-option :value="'1'">禁用</a-select-option>
         </a-select>
@@ -41,9 +41,9 @@
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dict.remark')"
+        label="备注"
       >
-        <a-textarea v-decorator="['remark']" :rows="5" placeholder="..."/>
+        <a-textarea :rows="5" placeholder="..." v-decorator="['remark']"/>
       </a-form-item>
 
     </a-form>
@@ -60,6 +60,7 @@ export default {
   },
   data () {
     return {
+      description: '列表使用场景：后台管理中的权限管理以及角色管理，可用于基于 RBAC 设计的角色权限控制，颗粒度细到每一个操作类型。',
       visible: false,
       labelCol: {
         xs: { span: 24 },
@@ -99,14 +100,14 @@ export default {
           this.confirmLoading = true
           saveDictType(values).then(res => {
             if (res.code === 0) {
-              this.$message.success(this.$t('global.message.save.success'))
+              this.$message.success('保存成功')
               this.$emit('ok')
               this.visible = false
             } else {
               this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
             this.confirmLoading = false
           })
@@ -115,6 +116,18 @@ export default {
     }
   },
   watch: {
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

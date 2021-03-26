@@ -12,6 +12,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 @MapperScan("com.skill.*.mapper")
 @EnableSkillFeignClients
 public class SkillGenApp {
+
     public static void main(String[] args) {
         SpringApplication.run(SkillGenApp.class, args);
     }

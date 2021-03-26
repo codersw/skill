@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import mixins from './mixins'
 
 // base library
 import {
@@ -12,10 +11,8 @@ import {
   Radio,
   Checkbox,
   Select,
-  TreeSelect,
   Card,
   Form,
-  FormModel,
   Row,
   Col,
   Modal,
@@ -38,7 +35,6 @@ import {
   Divider,
   DatePicker,
   TimePicker,
-  Tree,
   Upload,
   Progress,
   Skeleton,
@@ -48,13 +44,7 @@ import {
   Statistic,
   Descriptions,
   message,
-  notification,
-  Collapse,
-  AutoComplete,
-  Transfer,
-  Pagination,
-  Empty,
-  Slider
+  notification
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -65,9 +55,7 @@ import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
 import PermissionHelper from '@/utils/helper/permission'
 import './directives/action'
-import { PageWrapperSearch, DictSelectTag, MultiSelectTag, ELImage } from '@/components'
 
-Vue.use(mixins)
 Vue.use(ConfigProvider)
 Vue.use(Layout)
 Vue.use(Input)
@@ -77,10 +65,8 @@ Vue.use(Switch)
 Vue.use(Radio)
 Vue.use(Checkbox)
 Vue.use(Select)
-Vue.use(TreeSelect)
 Vue.use(Card)
 Vue.use(Form)
-Vue.use(FormModel)
 Vue.use(Row)
 Vue.use(Col)
 Vue.use(Modal)
@@ -103,7 +89,6 @@ Vue.use(Tag)
 Vue.use(Divider)
 Vue.use(DatePicker)
 Vue.use(TimePicker)
-Vue.use(Tree)
 Vue.use(Upload)
 Vue.use(Progress)
 Vue.use(Skeleton)
@@ -112,14 +97,7 @@ Vue.use(PageHeader)
 Vue.use(Result)
 Vue.use(Statistic)
 Vue.use(Descriptions)
-Vue.use(Collapse)
-Vue.use(AutoComplete)
-Vue.use(Transfer)
-Vue.use(Pagination)
-Vue.use(Empty)
-Vue.use(Slider)
 
-message.config({ top: '45px', maxCount: 3 })
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message
 Vue.prototype.$notification = notification
@@ -134,10 +112,5 @@ Vue.use(MultiTab)
 Vue.use(PageLoading)
 Vue.use(PermissionHelper)
 Vue.use(VueCropper)
-Vue.component('PageWrapperSearch', PageWrapperSearch)
-Vue.component('DictSelectTag', DictSelectTag)
-Vue.component('MultiSelectTag', MultiSelectTag)
-Vue.component('ElImage', ELImage)
 
-
-process.env.NODE_ENV !== 'production' && console.warn('[uwmanage] NOTICE: Antd use lazy-load.')
+process.env.NODE_ENV !== 'production' && console.warn('[ruoyi-ant] NOTICE: Antd use lazy-load.')

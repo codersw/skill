@@ -1,5 +1,5 @@
 <template>
-  <a-form :form="form" class="form" @submit="handleSubmit">
+  <a-form @submit="handleSubmit" :form="form" class="form">
     <a-row class="form-row" :gutter="24">
       <a-col :lg="{span: 6, offset: 6}" :md="12" :sm="24">
         <a-form-item >
@@ -19,16 +19,16 @@
       <a-col :lg="{span: 6, offset: 1}" :md="12" :sm="24">
         <a-form-item>
           <span slot="label">生成包路径
-            <a-tooltip title="生成在哪个java包下，例如 com.xxxx.xxx">
+            <a-tooltip title="生成在哪个java包下，例如 com.ruoyi.system">
               <a-icon type="question-circle-o" />
             </a-tooltip>
           </span>
           <a-input
+            placeholder="请输入"
             v-decorator="[
               'packageName',
               {rules: [{ required: true, message: '请输入表描述', whitespace: true}]}
-            ]"
-            placeholder="请输入" />
+            ]" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -41,11 +41,11 @@
             </a-tooltip>
           </span>
           <a-input
+            placeholder="请输入生成模块名"
             v-decorator="[
               'moduleName',
               {rules: [{ required: true, message: '请输入生成模块名', whitespace: true}]}
-            ]"
-            placeholder="请输入生成模块名" />
+            ]" />
         </a-form-item>
       </a-col>
       <a-col :lg="{span: 6, offset: 1}" :md="12" :sm="24">
@@ -56,11 +56,11 @@
             </a-tooltip>
           </span>
           <a-input
+            placeholder="请输入"
             v-decorator="[
               'businessName',
               {rules: [{ required: true, message: '请输入生成业务名', whitespace: true}]}
-            ]"
-            placeholder="请输入" />
+            ]" />
         </a-form-item>
       </a-col>
     </a-row>
@@ -73,15 +73,15 @@
             </a-tooltip>
           </span>
           <a-input
+            placeholder="请输入"
             v-decorator="[
               'functionName',
               {rules: [{ required: true, message: '请输入生成功能名', whitespace: true}]}
-            ]"
-            placeholder="请输入" />
+            ]" />
         </a-form-item>
       </a-col>
     </a-row>
-    <a-card v-if="other" class="card" title="其他信息" :bordered="false">
+    <a-card class="card" v-if="other" title="其他信息" :bordered="false">
       <a-row class="form-row" :gutter="24">
         <a-col :lg="{span: 6, offset: 6}" :md="12" :sm="24">
           <a-form-item>

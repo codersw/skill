@@ -2,7 +2,7 @@
   <!-- hidden PageHeaderWrapper title demo -->
   <page-header-wrapper :title="false" content="表单页用于向用户收集或验证信息，基础表单常见于数据项较少的表单场景。">
     <a-card :body-style="{padding: '24px 32px'}" :bordered="false">
-      <a-form :form="form" @submit="handleSubmit">
+      <a-form @submit="handleSubmit" :form="form">
         <a-form-item
           label="标题"
           :labelCol="{lg: {span: 7}, sm: {span: 7}}"
@@ -20,47 +20,47 @@
           :labelCol="{lg: {span: 7}, sm: {span: 7}}"
           :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
           <a-range-picker
+            name="buildTime"
+            style="width: 100%"
             v-decorator="[
               'buildTime',
               {rules: [{ required: true, message: '请选择起止日期' }]}
-            ]"
-            name="buildTime"
-            style="width: 100%" />
+            ]" />
         </a-form-item>
         <a-form-item
           label="目标描述"
           :labelCol="{lg: {span: 7}, sm: {span: 7}}"
           :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
           <a-textarea
+            rows="4"
+            placeholder="请输入你阶段性工作目标"
             v-decorator="[
               'description',
               {rules: [{ required: true, message: '请输入目标描述' }]}
-            ]"
-            rows="4"
-            placeholder="请输入你阶段性工作目标" />
+            ]" />
         </a-form-item>
         <a-form-item
           label="衡量标准"
           :labelCol="{lg: {span: 7}, sm: {span: 7}}"
           :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
           <a-textarea
+            rows="4"
+            placeholder="请输入衡量标准"
             v-decorator="[
               'type',
               {rules: [{ required: true, message: '请输入衡量标准' }]}
-            ]"
-            rows="4"
-            placeholder="请输入衡量标准" />
+            ]" />
         </a-form-item>
         <a-form-item
           label="客户"
           :labelCol="{lg: {span: 7}, sm: {span: 7}}"
           :wrapperCol="{lg: {span: 10}, sm: {span: 17} }">
           <a-input
+            placeholder="请描述你服务的客户，内部客户直接 @姓名／工号"
             v-decorator="[
               'customer',
               {rules: [{ required: true, message: '请描述你服务的客户' }]}
-            ]"
-            placeholder="请描述你服务的客户，内部客户直接 @姓名／工号" />
+            ]" />
         </a-form-item>
         <a-form-item
           label="邀评人"

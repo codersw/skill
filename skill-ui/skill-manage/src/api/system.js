@@ -8,11 +8,8 @@ const api = {
   dictType: '/system/dict/type',
   dictData: '/system/dict/data',
   dist: '/system/districts',
-  equipmentRackAisle: '/system/rackaisle',
   config: '/system/config',
-  oss: '/system/oss',
-  rack: '/system/rack'
-
+  oss: '/system/oss'
 }
 
 export default api
@@ -23,20 +20,6 @@ export function getUserList (parameter) {
     url: api.user + '/list',
     method: 'get',
     params: parameter
-  })
-}
-// type
-export function getTypeList (parameter) {
-  return axios({
-    url: api.dictData + '/type?dictType=' + parameter,
-    method: 'get'
-  })
-}
-// rack
-export function getRackList () {
-  return axios({
-    url: api.rack + '/list',
-    method: 'get'
   })
 }
 
@@ -255,21 +238,6 @@ export function delDictData (parameter) {
     params: parameter
   })
 }
-/**
-	 * 获取字典数据
-	 * @param parameter 字典code
-	 * @param parameter 表名,文本字段,code字段  | 举例：sys_user,realname,id
-   * @param parameter 表名,文本字段,code字段,过滤条件  | 举例：sys_user,realname,id,realname=张三
-	 * @return
-	 */
-export function getDictItems (parameter) {
-  return axios({
-    url: api.dictData + '/getDictItems/' + parameter,
-    method: 'get',
-    params: parameter
-  })
-}
-
 // dist 地区
 export function getDistList (parameter) {
   return axios({
@@ -278,29 +246,6 @@ export function getDistList (parameter) {
     params: parameter
   })
 }
-
-export function getDistListBypId (parameter) {
-  return axios({
-    url: api.dist + '/listBypId',
-    method: 'get',
-    params: parameter
-  })
-}
-
-export function getEquipmentRackAisle () {
-  return axios({
-    url: api.equipmentRackAisle + '/list',
-    method: 'get'
-  })
-}
-// 机柜信息
-export function getEquipmentRack () {
-  return axios({
-    url: api.equipmentRack + '/list',
-    method: 'get'
-  })
-}
-
 export function saveDist (parameter) {
   return axios({
     url: api.dist + (parameter.id > 0 ? '/update' : '/save'),

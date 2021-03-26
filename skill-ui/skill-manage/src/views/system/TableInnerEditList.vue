@@ -51,7 +51,7 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary">查询</a-button>
               <a-button style="margin-left: 8px">重置</a-button>
-              <a style="margin-left: 8px" @click="toggleAdvanced">
+              <a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? '收起' : '展开' }}
                 <a-icon :type="advanced ? 'up' : 'down'"/>
               </a>

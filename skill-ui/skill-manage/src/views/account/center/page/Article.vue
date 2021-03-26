@@ -16,16 +16,16 @@
         <a slot="title" href="https://vue.ant.design/">{{ item.title }}</a>
         <template slot="description">
           <span>
-            <a-tag>一</a-tag>
-            <a-tag>二</a-tag>
-            <a-tag>三</a-tag>
+            <a-tag>Ant Design</a-tag>
+            <a-tag>设计语言</a-tag>
+            <a-tag>蚂蚁金服</a-tag>
           </span>
         </template>
       </a-list-item-meta>
       <article-list-content :description="item.description" :owner="item.owner" :avatar="item.avatar" :href="item.href" :updateAt="item.updatedAt" />
     </a-list-item>
-    <div v-if="data.length > 0" slot="footer" style="text-align: center; margin-top: 16px;">
-      <a-button :loading="loadingMore" @click="loadMore">加载更多</a-button>
+    <div slot="footer" v-if="data.length > 0" style="text-align: center; margin-top: 16px;">
+      <a-button @click="loadMore" :loading="loadingMore">加载更多</a-button>
     </div>
   </a-list>
 </template>

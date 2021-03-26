@@ -24,9 +24,9 @@
         </a-row>
         <a-steps :current="1" :direction="isMobile && directionType.vertical || directionType.horizontal" progressDot>
           <a-step >
-            <span slot="title" style="font-size: 14px">创建项目</span>
+            <span style="font-size: 14px" slot="title">创建项目</span>
             <template slot="description">
-              <div slot="description" style="fontSize: 12px; color: rgba(0, 0, 0, 0.45); position: relative; left: 42px;text-align: left;" >
+              <div style="fontSize: 12px; color: rgba(0, 0, 0, 0.45); position: relative; left: 42px;text-align: left;" slot="description" >
                 <div style="margin: 8px 0 4px">
                   曲丽丽
                   <a-icon style="margin-left: 8px" type="dingding-o" />
@@ -36,9 +36,9 @@
             </template>
           </a-step>
           <a-step title="部门初审">
-            <span slot="title" style="font-size: 14px">部门初审</span>
+            <span style="font-size: 14px" slot="title">部门初审</span>
             <template slot="description">
-              <div slot="description" style="fontSize: 12px; color: rgba(0, 0, 0, 0.45); position: relative; left: 42px;text-align: left;" >
+              <div style="fontSize: 12px; color: rgba(0, 0, 0, 0.45); position: relative; left: 42px;text-align: left;" slot="description" >
                 <div style="margin: 8px 0 4px">
                   周毛毛
                   <a-icon style="margin-left: 8px; color: #00A0E9" type="dingding-o" />
@@ -48,10 +48,10 @@
             </template>
           </a-step>
           <a-step title="财务复核">
-            <span slot="title" style="font-size: 14px">财务复核</span>
+            <span style="font-size: 14px" slot="title">财务复核</span>
           </a-step>
           <a-step title="完成" >
-            <span slot="title" style="font-size: 14px">完成</span>
+            <span style="font-size: 14px" slot="title">完成</span>
           </a-step>
         </a-steps>
       </div>

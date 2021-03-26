@@ -1,4 +1,3 @@
-/* eslint-disable consistent-this */
 export const PERMISSION_ENUM = {
   'add': { key: 'add', label: '新增' },
   'delete': { key: 'delete', label: '删除' },

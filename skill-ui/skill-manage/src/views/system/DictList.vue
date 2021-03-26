@@ -1,38 +1,45 @@
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
-      <PageWrapperSearch>
-        <a-form-item :label="this.$t('dict.dictName')">
-          <a-input v-model="queryParam.dictName" :placeholder="this.$t('dict.dictName')"/>
-        </a-form-item>
-        <a-form-item :label="this.$t('dict.dictType')">
-          <a-input v-model="queryParam.dictType" :placeholder="this.$t('dict.dictType')"/>
-        </a-form-item>
-        <a-form-item :label="this.$t('dict.status')">
-          <a-select v-model="queryParam.status" :placeholder="this.$t('dict.status')" default-value="0">
-            <a-select-option :value="''">全部</a-select-option>
-            <a-select-option :value="0">正常</a-select-option>
-            <a-select-option :value="1">禁用</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item slot="buttons">
-          <a-button type="primary" @click="$refs.table.refresh(true)">{{ 'global.button.search' | i18n }}</a-button>
-          <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ 'global.button.reset' | i18n }}</a-button>
-        </a-form-item>
-      </PageWrapperSearch>
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="5" :sm="15">
+            <a-form-item label="字典名称">
+              <a-input placeholder="请输入" v-model="queryParam.dictName"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="字典类型">
+              <a-input placeholder="请输入" v-model="queryParam.dictType"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="状态">
+              <a-select placeholder="请选择" v-model="queryParam.status" default-value="0">
+                <a-select-option :value="''">全部</a-select-option>
+                <a-select-option :value="0">正常</a-select-option>
+                <a-select-option :value="1">禁用</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
     <div class="table-operator">
-      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">{{ 'global.button.new' | i18n }}</a-button>
+      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">新建</a-button>
       <a-dropdown v-if="removeEnable&&selectedRowKeys.length > 0">
-        <!-- <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">{{ 'global.button.delete' | i18n }}</a-button> -->
-        <a-popconfirm :title="deleteAsk" @confirm="delByIds(selectedRowKeys)">
-          <a-button type="danger" icon="delete">{{ 'global.button.delete' | i18n }}</a-button>
-        </a-popconfirm>
+        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
       </a-dropdown>
     </div>
     <s-table
-      ref="table"
       size="default"
+      ref="table"
       rowKey="dictId"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
@@ -43,17 +50,11 @@
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </span>
       <span slot="action" slot-scope="text, record">
-        <a v-if="editEnabel" @click="handleEdit(record)">{{ 'global.button.edit' | i18n }}</a>
-        <a-divider v-if="editEnabel" type="vertical" />
-        <a v-if="editEnabel" @click="dataModal(record.dictType)"><a-icon type="bars" />{{ 'global.button.list' | i18n }}</a>
-        <a-divider v-if="removeEnable" type="vertical" />
-        <!-- <a v-if="removeEnable" @click="delByIds([record.dictId])">{{ 'global.button.delete' | i18n }}</a> -->
-        <a-popconfirm
-          v-if="removeEnable"
-          :title="deleteAsk"
-          @confirm="delByIds([record.dictId])">
-          <a>{{ 'global.button.delete' | i18n }}</a>
-        </a-popconfirm>
+        <a v-if="editEnabel" @click="handleEdit(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a v-if="editEnabel" @click="dataModal(record.dictType)"><a-icon type="bars" />列表</a>
+        <a-divider type="vertical" />
+        <a v-if="removeEnable" @click="delByIds([record.dictId])">删除</a>
       </span>
     </s-table>
     <dict-modal ref="modal" @ok="handleOk" />
@@ -104,7 +105,41 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {},
-
+      // 表头
+      columns: [
+        {
+          title: '字典主键',
+          dataIndex: 'dictId'
+        },
+        {
+          title: '字典名称',
+          dataIndex: 'dictName'
+        },
+        {
+          title: '字典类型',
+          dataIndex: 'dictType'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
+        },
+        {
+          title: '备注',
+          dataIndex: 'remark'
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime',
+          sorter: true
+        },
+        {
+          title: '操作',
+          width: '200px',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         return getDictTypeList(Object.assign(parameter, this.queryParam))
@@ -155,41 +190,19 @@ export default {
       })
     }
   },
-  computed: {
-    deleteAsk () {
-      return this.$t('global.message.delete.ask')
-    },
-    // 表头
-    columns () {
-      return [
-        {
-          title: this.$t('dict.dictName'),
-          dataIndex: 'dictName'
-        },
-        {
-          title: this.$t('dict.dictType'),
-          dataIndex: 'dictType'
-        },
-        {
-          title: this.$t('dict.list.status'),
-          dataIndex: 'status',
-          scopedSlots: { customRender: 'status' }
-        },
-        {
-          title: this.$t('dict.remark'),
-          dataIndex: 'remark'
-        },
-        {
-          title: this.$t('global.action'),
-          width: '200px',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
-    }
-  },
   watch: {
-
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

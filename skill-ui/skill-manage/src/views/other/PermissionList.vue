@@ -60,9 +60,9 @@
     </s-table>
 
     <a-modal
-      v-model="visible"
       title="操作"
       :width="800"
+      v-model="visible"
       @ok="handleOk"
     >
       <a-form :autoFormCreate="(form)=>{this.form = form}">
@@ -74,7 +74,7 @@
           hasFeedback
           validateStatus="success"
         >
-          <a-input id="no" v-model="mdl.id" placeholder="唯一识别码" disabled="disabled" />
+          <a-input placeholder="唯一识别码" v-model="mdl.id" id="no" disabled="disabled" />
         </a-form-item>
 
         <a-form-item
@@ -84,7 +84,7 @@
           hasFeedback
           validateStatus="success"
         >
-          <a-input id="permission_name" v-model="mdl.name" placeholder="起一个名字" />
+          <a-input placeholder="起一个名字" v-model="mdl.name" id="permission_name" />
         </a-form-item>
 
         <a-form-item
@@ -106,7 +106,7 @@
           label="描述"
           hasFeedback
         >
-          <a-textarea id="describe" v-model="mdl.describe" :rows="5" placeholder="..."/>
+          <a-textarea :rows="5" v-model="mdl.describe" placeholder="..." id="describe"/>
         </a-form-item>
 
         <a-divider />
@@ -118,9 +118,9 @@
           hasFeedback
         >
           <a-select
-            v-model="mdl.actions"
             style="width: 100%"
             mode="multiple"
+            v-model="mdl.actions"
             :allowClear="true"
           >
             <a-select-option v-for="(action, index) in permissionList" :key="index" :value="action.value">{{ action.label }}</a-select-option>

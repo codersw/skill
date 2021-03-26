@@ -1,11 +1,11 @@
 <template>
   <a-card :bordered="false">
-    <a-form :form="form" @submit="handleSubmit">
-      <a-tabs defaultActiveKey="2" type="card" @change="callback">
-        <a-tab-pane key="1" tab="基本信息">
+    <a-form @submit="handleSubmit" :form="form">
+      <a-tabs @change="callback" defaultActiveKey="2" type="card">
+        <a-tab-pane tab="基本信息" key="1">
           <basic-info-form ref="basicinfo" :showSubmit="false" :info="info" />
         </a-tab-pane>
-        <a-tab-pane key="2" tab="字段信息">
+        <a-tab-pane tab="字段信息" key="2">
           <a-table
             :pagination="false"
             :columns="columns"
@@ -62,7 +62,7 @@
           </a-table>
           <br>
         </a-tab-pane>
-        <a-tab-pane key="3" tab="生成信息">
+        <a-tab-pane tab="生成信息" key="3">
           <gen-info-form ref="geninfo" :showSubmit="false" :info="info" />
         </a-tab-pane>
       </a-tabs>
@@ -70,7 +70,7 @@
         :wrapperCol="{ span: 24 }"
         style="text-align: center"
       >
-        <a-button icon="check" type="primary" :loading="loading" @click="validate">提交</a-button>
+        <a-button icon="check" type="primary" @click="validate" :loading="loading">提交</a-button>
         <a-button icon="rollback" style="margin-left: 8px" @click="rollback">关闭</a-button>
       </a-form-item>
     </a-form>
@@ -266,13 +266,13 @@ export default {
         this.loading = true
         editSaveGen(genTable).then(res => {
           if (res.code === 0) {
-            this.$message.success(this.$t('global.message.save.success'))
+            this.$message.success('保存成功')
             this.rollback()
           } else {
             this.$message.success(res.msg)
           }
         }).catch(() => {
-          this.$message.success(this.$t('global.message.error'))
+          this.$message.error('系统错误，请稍后再试')
         }).finally(() => {
           this.loading = false
         })

@@ -72,8 +72,7 @@ export default {
         autoCropHeight: 200,
         fixedBox: true
       },
-      previews: {},
-      headers: ''
+      previews: {}
     }
   },
   methods: {
@@ -116,6 +115,7 @@ export default {
     // 上传图片（点击上传按钮）
     finish (type) {
       console.log('finish')
+      const _this = this
       const formData = new FormData()
       // 输出
       if (type === 'blob') {
@@ -135,9 +135,9 @@ export default {
               //   _this.$message.success('上传成功')
               //   this.visible = false
               // }
-              this.$message.success('上传成功')
-              this.$emit('ok', response.url)
-              this.visible = false
+              _this.$message.success('上传成功')
+              _this.$emit('ok', response.url)
+              _this.visible = false
             })
         })
       } else {
@@ -148,11 +148,13 @@ export default {
       }
     },
     okHandel () {
-      this.confirmLoading = true
+      const vm = this
+
+      vm.confirmLoading = true
       setTimeout(() => {
-        this.confirmLoading = false
-        this.close()
-        this.$message.success('上传头像成功')
+        vm.confirmLoading = false
+        vm.close()
+        vm.$message.success('上传头像成功')
       }, 2000)
     },
 

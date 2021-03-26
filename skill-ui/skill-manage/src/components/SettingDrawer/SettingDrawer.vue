@@ -1,11 +1,11 @@
 <template>
-  <div ref="settingDrawer" class="setting-drawer">
+  <div class="setting-drawer" ref="settingDrawer">
     <a-drawer
       width="300"
       placement="right"
+      @close="onClose"
       :closable="false"
       :visible="visible"
-      @close="onClose"
     >
       <div class="setting-drawer-index-content">
 
@@ -19,7 +19,7 @@
               </template>
               <div class="setting-drawer-index-item" @click="handleMenuTheme('dark')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/LCkqqYNmvBEbokSDscrm.svg" alt="dark">
-                <div v-if="navTheme === 'dark'" class="setting-drawer-index-selectIcon">
+                <div class="setting-drawer-index-selectIcon" v-if="navTheme === 'dark'">
                   <a-icon type="check"/>
                 </div>
               </div>
@@ -31,7 +31,7 @@
               </template>
               <div class="setting-drawer-index-item" @click="handleMenuTheme('light')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/jpRkZQMyYRryryPNtyIC.svg" alt="light">
-                <div v-if="navTheme !== 'dark'" class="setting-drawer-index-selectIcon">
+                <div class="setting-drawer-index-selectIcon" v-if="navTheme !== 'dark'">
                   <a-icon type="check"/>
                 </div>
               </div>
@@ -43,12 +43,12 @@
           <h3 class="setting-drawer-index-title">主题色</h3>
 
           <div style="height: 20px">
-            <a-tooltip v-for="(item, index) in colorList" :key="index" class="setting-drawer-theme-color-colorBlock">
+            <a-tooltip class="setting-drawer-theme-color-colorBlock" v-for="(item, index) in colorList" :key="index">
               <template slot="title">
                 {{ item.key }}
               </template>
               <a-tag :color="item.color" @click="changeColor(item.color)">
-                <a-icon v-if="item.color === primaryColor" type="check"></a-icon>
+                <a-icon type="check" v-if="item.color === primaryColor"></a-icon>
               </a-tag>
             </a-tooltip>
 
@@ -66,7 +66,7 @@
               </template>
               <div class="setting-drawer-index-item" @click="handleLayout('sidemenu')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/JopDzEhOqwOjeNTXkoje.svg" alt="sidemenu">
-                <div v-if="layoutMode === 'sidemenu'" class="setting-drawer-index-selectIcon">
+                <div class="setting-drawer-index-selectIcon" v-if="layoutMode === 'sidemenu'">
                   <a-icon type="check"/>
                 </div>
               </div>
@@ -78,7 +78,7 @@
               </template>
               <div class="setting-drawer-index-item" @click="handleLayout('topmenu')">
                 <img src="https://gw.alipayobjects.com/zos/rmsportal/KDNDBbriJhLwuqMoxcAr.svg" alt="topmenu">
-                <div v-if="layoutMode !== 'sidemenu'" class="setting-drawer-index-selectIcon">
+                <div class="setting-drawer-index-selectIcon" v-if="layoutMode !== 'sidemenu'">
                   <a-icon type="check"/>
                 </div>
               </div>
@@ -93,7 +93,7 @@
                   </template>
                   <a-select size="small" style="width: 80px;" :defaultValue="contentWidth" @change="handleContentWidthChange">
                     <a-select-option value="Fixed">固定</a-select-option>
-                    <a-select-option v-if="layoutMode !== 'sidemenu'" value="Fluid">流式</a-select-option>
+                    <a-select-option value="Fluid" v-if="layoutMode !== 'sidemenu'">流式</a-select-option>
                   </a-select>
                 </a-tooltip>
                 <a-list-item-meta>
@@ -148,9 +148,9 @@
         <a-divider />
         <div :style="{ marginBottom: '24px' }">
           <a-button
+            @click="doCopy"
             icon="copy"
             block
-            @click="doCopy"
           >拷贝设置</a-button>
           <a-alert type="warning" :style="{ marginTop: '24px' }">
             <span slot="message">
@@ -160,9 +160,9 @@
           </a-alert>
         </div>
       </div>
-      <div slot="handle" class="setting-drawer-index-handle" @click="toggle">
-        <a-icon v-if="!visible" type="setting"/>
-        <a-icon v-else type="close"/>
+      <div class="setting-drawer-index-handle" @click="toggle" slot="handle">
+        <a-icon type="setting" v-if="!visible"/>
+        <a-icon type="close" v-else/>
       </div>
     </a-drawer>
   </div>
@@ -291,7 +291,7 @@ export default {
           padding-top: 15px;
           padding-left: 24px;
           height: 100%;
-          color: #1c69d4;
+          color: #1890ff;
           font-size: 14px;
           font-weight: 700;
         }
@@ -319,7 +319,7 @@ export default {
   .setting-drawer-index-handle {
     position: absolute;
     top: 240px;
-    background: #1c69d4;
+    background: #1890ff;
     width: 48px;
     height: 48px;
     right: 300px;

@@ -1,5 +1,5 @@
 import storage from 'store'
-import { login, getInfo, logout, ssoLogin } from '@/api/login'
+import { login, getInfo, logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
@@ -12,8 +12,7 @@ const user = {
     avatar: '',
     roles: [],
     buttons: [], // 按钮权限
-    info: {},
-    dicData: {} // 数据字典缓存
+    info: {}
   },
 
   mutations: {
@@ -38,9 +37,6 @@ const user = {
     },
     SET_USERID: (state, userId) => {
       state.userId = userId
-    },
-    UPDATE_DIC_DATA (state, data) {
-      state.dicData = data
     }
   },
 
@@ -49,19 +45,6 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
-          const result = response
-          storage.set(ACCESS_TOKEN, result.token, 12 * 60 * 60 * 1000)
-          commit('SET_TOKEN', result.token)
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-    // sso登录
-    SsoLogin ({ commit }, ssoinfo) {
-      return new Promise((resolve, reject) => {
-        ssoLogin(ssoinfo.code, ssoinfo.state).then(response => {
           const result = response
           storage.set(ACCESS_TOKEN, result.token, 12 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)

@@ -14,7 +14,7 @@ export default {
     return lightens.concat(colorPalettes).concat(rgb)
   },
   changeColor (newColor) {
-    const options = {
+    var options = {
       newColors: this.getAntdSerials(newColor), // new colors array, one-to-one corresponde with `matchColors`
       changeUrl (cssUrl) {
         return `/${cssUrl}` // while router is not `hash` mode, it needs absolute path

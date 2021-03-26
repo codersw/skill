@@ -10,12 +10,12 @@
                  'background-size' : setSize.imgWidth + ' '+ setSize.imgHeight,
                  'margin-bottom': vSpace + 'px'}"
       >
-        <div v-show="showRefresh" class="verify-refresh" style="z-index:3" @click="refresh">
+        <div class="verify-refresh" style="z-index:3" @click="refresh" v-show="showRefresh">
           <i class="iconfont icon-refresh"></i>
         </div>
         <img
-          ref="canvas"
           :src="'data:image/png;base64,'+pointBackImgBase"
+          ref="canvas"
           alt=""
           style="width:100%;height:100%;display:block"
           @click="bindingClick?canvasClick($event):undefined">
@@ -148,7 +148,7 @@ export default {
         setTimeout(() => {
           // var flag = this.comparePos(this.fontPos, this.checkPosArr);
           // 发送后端请求
-          const captchaVerification = this.secretKey ? aesEncrypt(this.backToken + '---' + JSON.stringify(this.checkPosArr), this.secretKey) : this.backToken + '---' + JSON.stringify(this.checkPosArr)
+          var captchaVerification = this.secretKey ? aesEncrypt(this.backToken + '---' + JSON.stringify(this.checkPosArr), this.secretKey) : this.backToken + '---' + JSON.stringify(this.checkPosArr)
           const data = {
             captchaType: this.captchaType,
             'pointJson': this.secretKey ? aesEncrypt(JSON.stringify(this.checkPosArr), this.secretKey) : JSON.stringify(this.checkPosArr),
@@ -186,8 +186,8 @@ export default {
 
     // 获取坐标
     getMousePos: function (obj, e) {
-      const x = e.offsetX
-      const y = e.offsetY
+      var x = e.offsetX
+      var y = e.offsetY
       return { x, y }
     },
     // 创建坐标点
@@ -227,7 +227,7 @@ export default {
     },
     // 坐标转换函数
     pointTransfrom (pointArr, imgSize) {
-      const newPointArr = pointArr.map(p => {
+      var newPointArr = pointArr.map(p => {
         const x = Math.round(310 * p.x / parseInt(imgSize.imgWidth))
         const y = Math.round(155 * p.y / parseInt(imgSize.imgHeight))
         return { x, y }

@@ -33,7 +33,7 @@
       </div>
 
       <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
-        <a-list-item v-for="(item, index) in data" :key="index">
+        <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.description">
             <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
             <a slot="title">{{ item.title }}</a>

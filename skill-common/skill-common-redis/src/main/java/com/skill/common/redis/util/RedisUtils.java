@@ -1,6 +1,6 @@
 package com.skill.common.redis.util;
 
-import java.util.concurrent.Timeskill;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
@@ -16,17 +16,18 @@ import com.alibaba.fastjson.JSON;
  */
 @Component
 public class RedisUtils {
-    @Autowired
-    private RedisTemplate<String, Object>   redisTemplate;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Resource(name = "stringRedisTemplate")
     private ValueOperations<String, String> valueOperations;
 
     /**  默认过期时长，单位：秒 */
-    public final static long                DEFAULT_EXPIRE = 60 * 60 * 24;
+    public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
 
     /**  不设置过期时长 */
-    public final static long                NOT_EXPIRE     = -1;
+    public final static long NOT_EXPIRE     = -1;
 
     /**
      * 插入缓存默认时间
@@ -47,7 +48,7 @@ public class RedisUtils {
      */
     public void set(String key, Object value, long expire) {
         valueOperations.set(key, toJson(value));
-        redisTemplate.expire(key, expire, Timeskill.SECONDS);
+        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
     }
 
     /**

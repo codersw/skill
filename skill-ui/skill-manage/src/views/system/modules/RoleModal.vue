@@ -1,7 +1,6 @@
 <template>
   <a-modal
-    v-if="visible"
-    :title="this.$t('global.action')"
+    title="操作"
     style="top: 20px;"
     :width="900"
     :visible="visible"
@@ -18,42 +17,42 @@
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('role.roleName')"
+        label="角色名称"
       >
         <a-input
           v-decorator="[
             'roleName',
             {
-              rules: [{ required: true, message: this.$t('role.roleName.msg') }]
+              rules: [{ required: true, message: '请输入角色名称' }]
             }
           ]"
-          :placeholder="this.$t('role.roleName')"/>
+          placeholder="起一个名字"/>
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('role.roleKey')"
+        label="权限字符"
       >
         <a-input
-          v-decorator="['roleKey',{rules: [{ required: true, message: this.$t('role.roleKey.msg') }]}]"
-          :placeholder="this.$t('role.roleKey')"/>
+          v-decorator="['roleKey',{rules: [{ required: true, message: '请输入权限字符' }]}]"
+          placeholder="权限字符"/>
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('role.roleSort')"
+        label="显示顺序"
       >
         <a-input
-          v-decorator="['roleSort',{rules: [{ required: true, message: this.$t('role.roleSort.msg') }]}]"
-          :placeholder="this.$t('role.roleSort')"/>
+          v-decorator="['roleSort',{rules: [{ required: true, message: '请输入顺序' }]}]"
+          placeholder="显示顺序"/>
       </a-form-item>
 
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('role.status')"
+        label="状态"
       >
-        <a-select v-decorator="['status', {initialValue:'0',rules: [{ required: true, message: this.$t('role.status.msg') }]}]">
+        <a-select v-decorator="['status', {initialValue:'0',rules: [{ required: true, message: '请选择状态' }]}]">
           <a-select-option :value="'0'">正常</a-select-option>
           <a-select-option :value="'1'">禁用</a-select-option>
         </a-select>
@@ -63,7 +62,7 @@
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('role.permissions')"
+        label="拥有权限"
       >
 
         <!-- v-decorator="['parentId',{initialValue:'0'}]" -->
@@ -80,10 +79,10 @@
           :treeData="permissions"
         > -->
         <a-tree
-          v-model="checkedKeys"
           checkable
-          :treeData="permissions"
+          v-model="checkedKeys"
           @check="onCheck"
+          :treeData="permissions"
         >
         </a-tree>
       </a-form-item>
@@ -121,7 +120,7 @@ export default {
     }
   },
   created () {
-    // this.loadPermissions()
+    this.loadPermissions()
   },
   methods: {
     add () {
@@ -131,7 +130,6 @@ export default {
       this.edit({ })
     },
     edit (record) {
-      this.loadPermissions()
       if (record.roleId) {
         getRolePermIds(record.roleId).then(res => {
           const pidSet = new Set(res.map(m => m.parentId).filter(id => id > 0))
@@ -154,32 +152,31 @@ export default {
       this.visible = false
     },
     onExpand (expandedKeys) {
-      // console.log('onExpand', expandedKeys)
+      console.log('onExpand', expandedKeys)
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
     },
     onCheck (checkedKeys, info) {
       if (!this.treeCheck) this.treeCheck = true
-      // console.log('onCheck', info)
+      console.log('onCheck', info)
       this.checkedKeys = checkedKeys
       this.halfCheckedKeys = info.halfCheckedKeys
     },
     onSelect (selectedKeys, info) {
-      // console.log('onSelect', info)
+      console.log('onSelect', info)
       this.selectedKeys = selectedKeys
     },
     loadPermissions () {
       getPermissions().then(res => {
-        this.permissions = []
         this.buildtree(res.rows, this.permissions, 0)
       })
     },
     buildtree (list, permissions, parentId) {
       list.forEach(item => {
         if (item.parentId === parentId) {
-          const child = {
+          var child = {
             key: item.menuId,
-            title: this.$t(item.menuName),
+            title: item.menuName,
             children: []
           }
           this.buildtree(list, child.children, item.menuId)
@@ -188,10 +185,11 @@ export default {
       })
     },
     handleOk (e) {
+      const _this = this
       // 如果没有check过，半选节点是拿不到的，只能通过预先设置的pidSet获取
-      const checkedAll = this.treeCheck ? this.checkedKeys.concat(this.halfCheckedKeys) : this.checkedKeys.concat(Array.from(this.pidSet))
+      const checkedAll = this.treeCheck ? _this.checkedKeys.concat(_this.halfCheckedKeys) : _this.checkedKeys.concat(Array.from(_this.pidSet))
       if (!checkedAll.length > 0) {
-        this.$message.warning(this.$t('role.permissions.msg'))
+        _this.$message.warning('请至少选择一个权限')
         return
       }
       // 触发表单验证
@@ -199,19 +197,19 @@ export default {
         // 验证表单没错误
         if (!err) {
           values.menuIds = checkedAll
-          this.confirmLoading = true
+          _this.confirmLoading = true
           saveRole(Object.assign(values)).then(res => {
             if (res.code === 0) {
-              this.$message.success(this.$t('global.message.save.success'))
-              this.$emit('ok')
-              this.visible = false
+              _this.$message.success('保存成功')
+              _this.$emit('ok')
+              _this.visible = false
             } else {
-              this.$message.success(res.msg)
+              _this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            _this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
-            this.confirmLoading = false
+            _this.confirmLoading = false
           })
         }
       })
@@ -221,7 +219,6 @@ export default {
     }
 
   }
-
 }
 </script>
 

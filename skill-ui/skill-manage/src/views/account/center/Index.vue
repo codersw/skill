@@ -1,6 +1,6 @@
 <template>
   <div class="page-header-index-wide page-header-wrapper-grid-content-main">
-    <a-row :gutter="gutterGutter">
+    <a-row :gutter="24">
       <a-col :md="24" :lg="7">
         <a-card :bordered="false">
           <div class="account-center-avatarHolder">
@@ -15,7 +15,7 @@
               <i class="title"></i>交互专家
             </p>
             <p>
-              <i class="group"></i>
+              <i class="group"></i>蚂蚁金服－某某某事业群－某某平台部－某某技术部－UED
             </p>
             <p>
               <i class="address"></i>
@@ -54,7 +54,7 @@
                 @blur="handleTagInputConfirm"
                 @keyup.enter="handleTagInputConfirm"
               />
-              <a-tag v-else style="background: #fff; borderStyle: dashed;" @click="showTagInput">
+              <a-tag v-else @click="showTagInput" style="background: #fff; borderStyle: dashed;">
                 <a-icon type="plus"/>New Tag
               </a-tag>
             </div>
@@ -66,7 +66,7 @@
             <a-spin :spinning="teamSpinning">
               <div class="members">
                 <a-row>
-                  <a-col v-for="(item, index) in teams" :key="index" :span="12">
+                  <a-col :span="12" v-for="(item, index) in teams" :key="index">
                     <a>
                       <a-avatar size="small" :src="item.avatar"/>
                       <span class="member">{{ item.name }}</span>
@@ -272,7 +272,7 @@ export default {
         }
         &:hover {
           span {
-            color: #1c69d4;
+            color: #1890ff;
           }
         }
       }

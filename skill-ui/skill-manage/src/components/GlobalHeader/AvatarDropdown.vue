@@ -1,18 +1,18 @@
 <template>
   <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
     <span class="ant-pro-account-avatar">
-      <a-avatar size="small" :src="avatar" icon="user" class="antd-pro-global-header-index-avatar" />
+      <a-avatar size="small" :src="avatar" class="antd-pro-global-header-index-avatar" />
       <span>{{ nickname }}</span>
     </span>
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
-        <!-- <a-menu-item v-if="menu" key="center" @click="handleToCenter">
+        <a-menu-item v-if="menu" key="center" @click="handleToCenter">
           <a-icon type="user" />{{ i18nRender('menu.account.center') }}
         </a-menu-item>
         <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
           <a-icon type="setting" />{{ i18nRender('menu.account.center') }}
         </a-menu-item>
-        <a-menu-divider v-if="menu" /> -->
+        <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
           <a-icon type="logout" />{{ i18nRender('logout') }}
         </a-menu-item>
@@ -58,11 +58,9 @@ export default {
         onOk: () => {
           return this.Logout({})
             .then(() => {
-              location.replace('/user/login')
-              // this.$router.replace('/user/login')
-              // setTimeout(() => {
-              //   window.location.reload()
-              // }, 100)
+              setTimeout(() => {
+                window.location.reload()
+              }, 16)
             })
             .catch(err => {
               this.$message.error({

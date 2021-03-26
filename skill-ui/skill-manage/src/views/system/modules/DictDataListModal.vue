@@ -1,23 +1,20 @@
 <template>
   <a-modal
-    v-model="visible"
-    :title="this.$t('dictData.title')"
+    title="字典数据"
     style="top: 20px;"
     :width="1100"
+    v-model="visible"
     :footer="null"
   >
     <div class="table-operator">
-      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add(dictType)">{{ 'global.button.new' | i18n }}</a-button>
+      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add(dictType)">新建</a-button>
       <a-dropdown v-if="removeEnable&&selectedRowKeys.length > 0">
-        <!-- <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">{{ 'global.button.delete' | i18n }}</a-button> -->
-        <a-popconfirm :title="deleteAsk" @confirm="delByIds(selectedRowKeys)">
-          <a-button type="danger" icon="delete">{{ 'global.button.delete' | i18n }}</a-button>
-        </a-popconfirm>
+        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
       </a-dropdown>
     </div>
     <s-table
-      ref="table"
       size="default"
+      ref="table"
       rowKey="dictCode"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
@@ -27,15 +24,9 @@
         <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
       </span>
       <span slot="action" slot-scope="text, record">
-        <a v-if="editEnabel" @click="handleEdit(record)">{{ 'global.button.edit' | i18n }}</a>
-        <a-divider v-if="removeEnable" type="vertical" />
-        <!-- <a v-if="removeEnable" @click="delByIds([record.dictCode])">{{ 'global.button.delete' | i18n }}</a> -->
-        <a-popconfirm
-          v-if="removeEnable"
-          :title="deleteAsk"
-          @confirm="delByIds([record.dictCode])">
-          <a>{{ 'global.button.delete' | i18n }}</a>
-        </a-popconfirm>
+        <a v-if="editEnabel" @click="handleEdit(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a v-if="removeEnable" @click="delByIds([record.dictCode])">删除</a>
       </span>
     </s-table>
     <dict-data-modal ref="modal" @ok="handleOk" />
@@ -83,6 +74,45 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: { },
+      // 表头
+      columns: [
+        {
+          title: '字典编码',
+          dataIndex: 'dictCode'
+        },
+        {
+          title: '字典标签',
+          dataIndex: 'dictLabel'
+        },
+        {
+          title: '字典键值',
+          dataIndex: 'dictValue'
+        },
+        {
+          title: '字典排序',
+          dataIndex: 'dictSort'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
+        },
+        {
+          title: '备注',
+          dataIndex: 'remark'
+        },
+        {
+          title: '创建时间',
+          dataIndex: 'createTime',
+          sorter: true
+        },
+        {
+          title: '操作',
+          width: '150px',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         return getDictDataList(Object.assign(parameter, this.queryParam))
@@ -134,44 +164,19 @@ export default {
       })
     }
   },
-  computed: {
-    deleteAsk () {
-      return this.$t('global.message.delete.ask')
-    },
-    // 表头
-    columns () {
-      return [
-        {
-          title: this.$t('dictData.dictLabel'),
-          dataIndex: 'dictLabel'
-        },
-        {
-          title: this.$t('dictData.dictValue'),
-          dataIndex: 'dictValue'
-        },
-        {
-          title: this.$t('dictData.dictSort'),
-          dataIndex: 'dictSort'
-        },
-        {
-          title: this.$t('dictData.status'),
-          dataIndex: 'status',
-          scopedSlots: { customRender: 'status' }
-        },
-        {
-          title: this.$t('dictData.remark'),
-          dataIndex: 'remark'
-        },
-        {
-          title: this.$t('global.action'),
-          width: '150px',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
-    }
-  },
   watch: {
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

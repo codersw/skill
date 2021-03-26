@@ -1,29 +1,38 @@
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
-      <PageWrapperSearch>
-        <a-form-item :label="'app.system.table.route' | i18n">
-          <a-input v-model="queryParam.menuKey" :placeholder="'global.form.placeholder.input' | i18n"/>
-        </a-form-item>
-        <a-form-item :label="'app.system.table.permissionName' | i18n">
-          <a-input v-model="queryParam.menuName" :placeholder="'global.form.placeholder.input' | i18n"/>
-        </a-form-item>
-        <a-form-item :label="'global.form.status' | i18n">
-          <a-select v-model="queryParam.visible" :placeholder="'global.form.placeholder.select' | i18n">
-            <a-select-option value="">{{ 'app.system.table.all' | i18n }}</a-select-option>
-            <a-select-option value="0">{{ 'app.system.table.show' | i18n }}</a-select-option>
-            <a-select-option value="1">{{ 'app.system.table.hide' | i18n }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item slot="buttons">
-          <a-button type="primary" @click="this.fetch">{{ 'global.button.search' | i18n }}</a-button>
-          <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ 'global.button.reset' | i18n }}</a-button>
-        </a-form-item>
-      </PageWrapperSearch>
-
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="5" :sm="15">
+            <a-form-item label="唯一键">
+              <a-input placeholder="请输入" v-model="queryParam.menuKey"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="权限名称">
+              <a-input placeholder="请输入" v-model="queryParam.menuName"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="状态">
+              <a-select placeholder="请选择" v-model="queryParam.visible">
+                <a-select-option value="">全部</a-select-option>
+                <a-select-option value="0">显示</a-select-option>
+                <a-select-option value="1">隐藏</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="this.fetch">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
     <div class="table-operator">
-      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">{{ 'global.button.new' | i18n }}</a-button>
+      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">新建</a-button>
     </div>
     <a-table
       ref="table"
@@ -34,24 +43,19 @@
       :dataSource="data">
 
       <span slot="menuType" slot-scope="text">
-        {{ text | menuTypeFilter | i18n }}
+        {{ text | menuTypeFilter }}
       </span>
 
       <span slot="visible" slot-scope="text">
-        {{ text | statusFilter | i18n }}
+        {{ text | statusFilter }}
       </span>
 
       <span slot="action" slot-scope="text, record">
-        <a v-if="editEnabel" @click="handleEdit(record)">{{ 'global.button.edit' | i18n }}</a>
-        <a-divider v-if="addEnable" type="vertical" />
-        <a v-if="addEnable" @click="handleAdd(record.menuId+'')">{{ 'global.button.new' | i18n }}</a>
-        <a-divider v-if="removeEnable" type="vertical" />
-        <a-popconfirm
-          v-if="removeEnable"
-          :title="deleteAsk"
-          @confirm="delById(record.menuId)">
-          <a>{{ 'global.button.delete' | i18n }}</a>
-        </a-popconfirm>
+        <a v-if="editEnabel" @click="handleEdit(record)">编辑</a>
+        <a-divider type="vertical" />
+        <a v-if="addEnable" @click="handleAdd(record.menuId+'')">新增</a>
+        <a-divider type="vertical" />
+        <a v-if="removeEnable" @click="delById(record.menuId)">删除</a>
       </span>
     </a-table>
 
@@ -65,7 +69,6 @@ import { getPermissions, delPerm } from '@/api/system'
 import PermissionModal from './modules/PermissionModal.vue'
 import { treeData } from '@/utils/treeutil'
 import { checkPermission } from '@/utils/permissions'
-import { i18nRender } from '@/locales'
 export default {
   name: 'TableList',
   components: {
@@ -75,6 +78,7 @@ export default {
   data () {
     return {
       description: '菜单管理，只有menuKey(唯一)不为空才生效',
+
       visible: false,
       labelCol: {
         xs: { span: 24 },
@@ -91,6 +95,53 @@ export default {
       // 查询参数
       queryParam: {},
 
+      // 表头
+      columns: [
+        {
+          title: '权限名称',
+          dataIndex: 'menuName'
+        },
+        {
+          title: '路由唯一键',
+          dataIndex: 'menuKey'
+        },
+        {
+          title: '组件',
+          dataIndex: 'component'
+        },
+        {
+          title: '排序',
+          dataIndex: 'orderNum'
+        },
+        {
+          title: '按钮类型',
+          dataIndex: 'menuType',
+          scopedSlots: { customRender: 'menuType' }
+        },
+        {
+          title: '链接',
+          dataIndex: 'path'
+        },
+        {
+          title: '重定向',
+          dataIndex: 'redirect'
+        },
+        {
+          title: '权限标识',
+          dataIndex: 'perms'
+        },
+        {
+          title: '状态',
+          dataIndex: 'visible',
+          scopedSlots: { customRender: 'visible' }
+        },
+        {
+          title: '操作',
+          width: '150px',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
       data: [],
       pagination: false,
       loading: false,
@@ -102,74 +153,18 @@ export default {
   filters: {
     statusFilter (status) {
       const statusMap = {
-        '1': 'app.system.table.hide',
-        '0': 'app.system.table.show'
+        '1': '隐藏',
+        '0': '显示'
       }
       return statusMap[status]
     },
     menuTypeFilter (type) {
       const menuMap = {
-        'M': 'app.system.table.catalogue',
-        'F': 'app.system.table.button',
-        'C': 'app.system.table.menu'
+        'M': '目录',
+        'F': '按钮',
+        'C': '菜单'
       }
       return menuMap[type]
-    }
-  },
-  computed: {
-    deleteAsk () {
-      return this.$t('global.message.delete.ask')
-    },
-    // 表头
-    columns () {
-      return [
-        {
-          title: this.$t('app.system.table.permissionName'),
-          dataIndex: 'menuName',
-          customRender: (text) => this.$t(text)
-        },
-        {
-          title: this.$t('app.system.table.route'),
-          dataIndex: 'menuKey'
-        },
-        {
-          title: this.$t('app.system.table.widget'),
-          dataIndex: 'component',
-          width: '160px'
-        },
-        {
-          title: this.$t('app.system.table.sort'),
-          dataIndex: 'orderNum'
-        },
-        {
-          title: this.$t('app.system.table.buttontype'),
-          dataIndex: 'menuType',
-          scopedSlots: { customRender: 'menuType' }
-        },
-        {
-          title: this.$t('app.system.table.link'),
-          dataIndex: 'path'
-        },
-        {
-          title: this.$t('app.system.table.redirect'),
-          dataIndex: 'redirect'
-        },
-        {
-          title: this.$t('app.system.table.permissionIdentification'),
-          dataIndex: 'perms'
-        },
-        {
-          title: this.$t('app.system.table.status'),
-          dataIndex: 'visible',
-          scopedSlots: { customRender: 'visible' }
-        },
-        {
-          title: this.$t('app.system.table.action'),
-          width: '180px',
-          dataIndex: 'action',
-          scopedSlots: { customRender: 'action' }
-        }
-      ]
     }
   },
   created () {
@@ -200,19 +195,24 @@ export default {
     fetch () {
       this.loading = true
       getPermissions(Object.assign(this.queryParam)).then(res => {
-        console.log(res, '==========')
-        // 如果名称索索,不去构建树结构了
-        // if (this.queryParam.menuKey || this.queryParam.menuName) {
-        //     this.data = res.rows
-        //     this.loading = false
-        //     return
-        // }
         this.data = treeData(res.rows, 'menuId')
         this.loading = false
       })
     }
   },
   watch: {
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

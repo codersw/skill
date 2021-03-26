@@ -1,9 +1,9 @@
 <template>
   <a-modal
-    v-model="visible"
     title="操作"
     style="top: 20px;"
     :width="800"
+    v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
@@ -13,7 +13,7 @@
         :wrapperCol="wrapperCol"
         label="编号"
       >
-        <a-input v-decorator="['id', {rules: [{ required: true, message: '请输入编号' }]}]" placeholder="编号" />
+        <a-input placeholder="编号" v-decorator="['id', {rules: [{ required: true, message: '请输入编号' }]}]" />
       </a-form-item>
 
       <a-form-item
@@ -21,7 +21,7 @@
         :wrapperCol="wrapperCol"
         label="层级"
       >
-        <a-select v-decorator="['deep', {initialValue:0,rules: [{ required: true, message: '请选择层级' }]}]" placeholder="层级">
+        <a-select placeholder="层级" v-decorator="['deep', {initialValue:0,rules: [{ required: true, message: '请选择层级' }]}]">
           <a-select-option v-for="(d, index) in deeps" :key="index" :value="d.value">{{ d.label }}</a-select-option>
         </a-select>
       </a-form-item>
@@ -31,7 +31,7 @@
         :wrapperCol="wrapperCol"
         label="名称"
       >
-        <a-input v-decorator="['name', {rules: [{ required: true, message: '请输入名称' }]}]" placeholder="名称" />
+        <a-input placeholder="名称" v-decorator="['name', {rules: [{ required: true, message: '请输入名称' }]}]" />
       </a-form-item>
 
       <a-form-item
@@ -58,18 +58,18 @@
         <a-input v-decorator="['extName']" placeholder="扩展名"/>
       </a-form-item>
       <a-form-item
-        v-if="mdl.createTime"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="创建时间"
+        v-if="mdl.createTime"
       >
         <span>{{ mdl.createTime }}</span>
       </a-form-item>
       <a-form-item
-        v-if="mdl.updateTime"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="最后更新时间"
+        v-if="mdl.updateTime"
       >
         <span>{{ mdl.updateTime }}</span>
       </a-form-item>
@@ -79,7 +79,7 @@
         :wrapperCol="wrapperCol"
         label="演示demo"
       >
-        <a-cascader v-model="city" :options="options" :loadData="loadData" placeholder="Please select" changeOnSelect/>
+        <a-cascader :options="options" :loadData="loadData" placeholder="Please select" v-model="city" changeOnSelect/>
       </a-form-item>
     </a-form>
   </a-modal>
@@ -157,14 +157,14 @@ export default {
           this.confirmLoading = true
           saveDist(values).then(res => {
             if (res.code === 0) {
-              this.$message.success(this.$t('global.message.save.success'))
+              this.$message.success('保存成功')
               this.$emit('ok')
               this.visible = false
             } else {
               this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
             this.confirmLoading = false
           })

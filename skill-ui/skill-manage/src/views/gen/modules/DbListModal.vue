@@ -1,9 +1,9 @@
 <template>
   <a-modal
-    v-model="visible"
     title="导入表结构"
     style="top: 20px;"
     :width="800"
+    v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
@@ -12,12 +12,12 @@
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
             <a-form-item label="表名称">
-              <a-input v-model="queryParam.tableName" placeholder="请输入"/>
+              <a-input placeholder="请输入" v-model="queryParam.tableName"/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-item label="表描述">
-              <a-input v-model="queryParam.tableComment" placeholder="请输入"/>
+              <a-input placeholder="请输入" v-model="queryParam.tableComment"/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
@@ -30,8 +30,8 @@
       </a-form>
     </div>
     <s-table
-      ref="table"
       size="default"
+      ref="table"
       rowKey="tableName"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
@@ -134,14 +134,14 @@ export default {
       this.confirmLoading = true
       importTable({ tables: this.selectedRowKeys.join(',') }).then(res => {
         if (res.code === 0) {
-          this.$message.success(this.$t('global.message.save.success'))
+          this.$message.success('保存成功')
           this.$emit('ok')
           this.visible = false
         } else {
           this.$message.success(res.msg)
         }
       }).catch(() => {
-        this.$message.success(this.$t('global.message.error'))
+        this.$message.error('系统错误，请稍后再试')
       }).finally(() => {
         this.confirmLoading = false
       })

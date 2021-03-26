@@ -7,10 +7,7 @@ import Vue from 'vue'
 
 const colorList = [
   {
-    key: 'BMW蓝（默认）', color: '#1c69d4'
-  },
-  {
-    key: '拂晓蓝', color: '#1890ff'
+    key: '拂晓蓝（默认）', color: '#1890ff'
   },
   {
     key: '薄暮', color: '#F5222D'

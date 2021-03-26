@@ -1,6 +1,6 @@
 <template>
   <div class="account-settings-info-view">
-    <a-row :gutter="gutterGutter">
+    <a-row :gutter="16">
       <a-col :md="24" :lg="16">
 
         <a-form layout="vertical">

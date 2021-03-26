@@ -46,9 +46,9 @@
         class="stepFormText"
       >
         <a-input
-          v-decorator="['paymentPassword', { initialValue: '123456', rules: [{required: true, message: '请输入支付密码'}] }]"
           type="password"
-          style="width: 80%;" />
+          style="width: 80%;"
+          v-decorator="['paymentPassword', { initialValue: '123456', rules: [{required: true, message: '请输入支付密码'}] }]" />
       </a-form-item>
       <a-form-item :wrapperCol="{span: 19, offset: 5}">
         <a-button :loading="loading" type="primary" @click="nextStep">提交</a-button>
@@ -72,17 +72,18 @@ export default {
   },
   methods: {
     nextStep () {
+      const that = this
       const { form: { validateFields } } = this
-      this.loading = true
+      that.loading = true
       validateFields((err, values) => {
         if (!err) {
           console.log('表单 values', values)
-          this.timer = setTimeout(() => {
-            this.loading = false
-            this.$emit('nextStep')
+          that.timer = setTimeout(function () {
+            that.loading = false
+            that.$emit('nextStep')
           }, 1500)
         } else {
-          this.loading = false
+          that.loading = false
         }
       })
     },

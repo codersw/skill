@@ -7,8 +7,8 @@
     destroyOnClose="true"
     @ok="handleOk"
   >
-    <a-tabs v-if="codes" tabPosition="left" @change="callback">
-      <a-tab-pane v-for="(value, key) in codes" :key="key" :tab="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"><pre>{{ value }}</pre></a-tab-pane>
+    <a-tabs @change="callback" v-if="codes" tabPosition="left">
+      <a-tab-pane :tab="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))" v-for="(value, key) in codes" :key="key"><pre>{{ value }}</pre></a-tab-pane>
     </a-tabs>
   </a-modal>
 </template>

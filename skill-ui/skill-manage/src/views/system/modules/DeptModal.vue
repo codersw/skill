@@ -1,10 +1,9 @@
 <template>
   <a-modal
-    v-if="visible"
-    v-model="visible"
-    :title="this.$t('global.action')"
+    title="操作"
     style="top: 20px;"
     :width="800"
+    v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
@@ -17,13 +16,13 @@
         :labelCol="
           labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dept.parentId')"
+        label="上级部门"
       >
         <a-tree-select
-          v-decorator="['parentId', {initialValue:'0',rules: [{ required: true, message: this.$t('dept.parentId.msg') }]}]"
+          v-decorator="['parentId', {initialValue:'0',rules: [{ required: true, message: '请选择上级部门' }]}]"
           :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
           :treeData="depts"
-          :placeholder="this.$t('dept.parentId')"
+          placeholder="上级部门"
           treeDefaultExpandAll
         >
         </a-tree-select>
@@ -32,58 +31,56 @@
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dept.deptName')"
+        label="部门名称"
       >
         <a-input
-          v-decorator="['deptName',{rules: [{ required: true, message: this.$t('dept.deptName.msg') }]}]"
-          :placeholder="this.$t('dept.deptName')"/>
+          v-decorator="['deptName',{rules: [{ required: true, message: '请输入部门名称' }]}]"
+          placeholder="起一个名字"/>
       </a-form-item>
 
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dept.orderNum')"
+        label="显示顺序"
       >
         <a-input
-          v-decorator="['orderNum',{rules: [{ required: true, message: this.$t('dept.orderNum.msg')}]}]"
-          :placeholder="this.$t('dept.orderNum')"/>
+          v-decorator="['orderNum',{rules: [{ required: true, message: '请输入显示顺序' }]}]"
+          placeholder="显示顺序"/>
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dept.leader')"
+        label="负责人"
       >
         <a-input
-          v-decorator="['leader',{rules: [{ required: true, message: this.$t('dept.leader.msg') }]}]"
-          :placeholder="this.$t('dept.leader')"/>
+          v-decorator="['leader',{rules: [{ required: true, message: '请输入负责人' }]}]"
+          placeholder="负责人"/>
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dept.phone')"
+        label="电话"
       >
         <a-input
-          v-decorator="['phone',{rules: [{ required: true, message: this.$t('dept.phone.msg') }]}]"
-          :maxLength="11"
-          :placeholder="this.$t('dept.phone')"/>
+          v-decorator="['phone',{rules: [{ required: true, message: '请输入电话' }]}]"
+          placeholder="电话"/>
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dept.email')"
+        label="邮箱"
       >
         <a-input
-          v-decorator="['email',{rules: [{ required: true, message: this.$t('dept.email.msg') },{validator:isEmail}]}]"
-          :maxLength="50"
-          :placeholder="this.$t('dept.email')"/>
+          v-decorator="['email',{rules: [{ required: true, message: '请输入邮箱' }]}]"
+          placeholder="邮箱"/>
       </a-form-item>
 
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="this.$t('dept.status')"
+        label="状态"
       >
-        <a-select v-decorator="['status', {initialValue:'0',rules: [{ required: true, message: this.$t('dept.status') }]}]">
+        <a-select v-decorator="['status', {rules: [{ required: true, message: '请选择状态' }]}]">
           <a-select-option :value="'0'">正常</a-select-option>
           <a-select-option :value="'1'">停用</a-select-option>
         </a-select>
@@ -95,14 +92,12 @@
 <script>
 import { getDeptList, saveDept } from '@/api/system'
 import pick from 'lodash.pick'
-import {isEmail} from '@/utils/validator'// 验证规则工具类
 export default {
   name: 'DeptModal',
   components: {
   },
   data () {
     return {
-      isEmail,
       description: '列表使用场景：后台管理中的权限管理以及角色管理，可用于基于 RBAC 设计的角色权限控制，颗粒度细到每一个操作类型。',
       visible: false,
       labelCol: {
@@ -122,7 +117,9 @@ export default {
   beforeCreate () {
   },
   created () {
-
+    getDeptList().then(res => {
+      this.buildtree(res.rows, this.depts, 0)
+    })
   },
   methods: {
     add (parentId) {
@@ -137,16 +134,11 @@ export default {
         this.form.setFieldsValue(pick(this.mdl, 'deptId', 'parentId', 'leader', 'phone', 'status', 'email', 'orderNum', 'deptName'))
         // this.form.setFieldsValue({ ...record })
       })
-      // 获取部门树
-      getDeptList().then(res => {
-        this.depts = [{ key: '0', value: '0', title: '无' }]
-        this.buildtree(res.rows, this.depts, 0)
-      })
     },
     buildtree (list, arr, parentId) {
       list.forEach(item => {
         if (item.parentId === parentId) {
-          const child = {
+          var child = {
             key: item.deptId,
             value: item.deptId + '',
             title: item.deptName,
@@ -162,17 +154,19 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
+          this.$emit('ok')
+          this.visible = false
           this.confirmLoading = true
           saveDept(values).then(res => {
             if (res.code === 0) {
-              this.$message.success(this.$t('global.message.save.success'))
+              this.$message.success('保存成功')
               this.$emit('ok')
               this.visible = false
             } else {
               this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
             this.confirmLoading = false
           })

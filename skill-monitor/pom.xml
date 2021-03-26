@@ -40,13 +40,18 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
         </dependency>
-		
-        <!-- SpringBoot Web -->
+
+        <!--web 模块 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-		
+
+        <!--undertow容器 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-undertow</artifactId>
+        </dependency>
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

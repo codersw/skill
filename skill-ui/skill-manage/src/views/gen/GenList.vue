@@ -5,12 +5,12 @@
         <a-row :gutter="48">
           <a-col :md="5" :sm="15">
             <a-form-item label="表名称">
-              <a-input v-model="queryParam.tableName" placeholder="请输入"/>
+              <a-input placeholder="请输入" v-model="queryParam.tableName"/>
             </a-form-item>
           </a-col>
           <a-col :md="5" :sm="15">
             <a-form-item label="表描述">
-              <a-input v-model="queryParam.tableComment" placeholder="请输入"/>
+              <a-input placeholder="请输入" v-model="queryParam.tableComment"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="18">
@@ -20,15 +20,15 @@
           </a-col>
           <a-col :md="4" :sm="12">
             <span class="table-page-search-submitButtons">
-              <a-button type="primary" @click="$refs.table.refresh(true)">{{ 'global.button.search' | i18n }}</a-button>
-              <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ 'global.button.reset' | i18n }}</a-button>
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
             </span>
           </a-col>
         </a-row>
       </a-form>
     </div>
     <div class="table-operator">
-      <a-button icon="upload" type="primary" @click="lead()">{{ 'global.button.import' | i18n }}</a-button>
+      <a-button icon="upload" type="primary" @click="lead()">导入</a-button>
       <!-- <a-button type="primary" icon="download" @click="gen(selectedRowKeys)">生成</a-button> -->
       <!-- <a-dropdown v-if="selectedRowKeys.length > 0">
         <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
@@ -44,8 +44,8 @@
       </a-dropdown>
     </div>
     <s-table
-      ref="table"
       size="default"
+      ref="table"
       rowKey="tableId"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
@@ -57,13 +57,13 @@
         {{ index + 1 }}
       </span>
       <span slot="action" slot-scope="text, record">
-        <a v-if="editEnable" @click="handlePreview(record.tableId)">{{ 'global.button.preview' | i18n }}</a>
+        <a v-if="editEnable" @click="handlePreview(record.tableId)">预览</a>
         <a-divider type="vertical" />
-        <a v-if="editEnable" @click="handleEdit(record.tableId)">{{ 'global.button.edit' | i18n }}</a>
+        <a v-if="editEnable" @click="handleEdit(record.tableId)">编辑</a>
         <a-divider type="vertical" />
-        <a v-if="removeEnable" @click="delByIds([record.tableId])">{{ 'global.button.delete' | i18n }}</a>
+        <a v-if="removeEnable" @click="delByIds([record.tableId])">删除</a>
         <a-divider type="vertical" />
-        <a v-if="codeEnable" @click="handleGen([record.tableName])">{{ 'global.button.generatecode' | i18n }}</a>
+        <a v-if="codeEnable" @click="handleGen([record.tableName])">生成代码</a>
       </span>
     </s-table>
     <db-list-modal ref="dbmodal" @ok="handleOk" />
@@ -135,7 +135,7 @@ export default {
         },
         {
           title: '操作',
-          width: '300px',
+          width: '240px',
           dataIndex: 'action',
           scopedSlots: { customRender: 'action' }
         }

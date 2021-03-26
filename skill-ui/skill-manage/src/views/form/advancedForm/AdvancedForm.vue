@@ -17,8 +17,8 @@
       >
         <template v-for="(col, i) in ['name', 'workId', 'department']" :slot="col" slot-scope="text, record">
           <a-input
-            v-if="record.editable"
             :key="col"
+            v-if="record.editable"
             style="margin: -5px 0"
             :value="text"
             :placeholder="columns[i].title"
@@ -58,18 +58,18 @@
       <span class="popover-wrapper">
         <a-popover title="表单校验信息" overlayClassName="antd-pro-pages-forms-style-errorPopover" trigger="click" :getPopupContainer="trigger => trigger.parentNode">
           <template slot="content">
-            <li v-for="item in errors" :key="item.key" class="antd-pro-pages-forms-style-errorListItem" @click="scrollToField(item.key)">
+            <li v-for="item in errors" :key="item.key" @click="scrollToField(item.key)" class="antd-pro-pages-forms-style-errorListItem">
               <a-icon type="cross-circle-o" class="antd-pro-pages-forms-style-errorIcon" />
               <div class="">{{ item.message }}</div>
               <div class="antd-pro-pages-forms-style-errorField">{{ item.fieldLabel }}</div>
             </li>
           </template>
-          <span v-if="errors.length > 0" class="antd-pro-pages-forms-style-errorIcon">
+          <span class="antd-pro-pages-forms-style-errorIcon" v-if="errors.length > 0">
             <a-icon type="exclamation-circle" />{{ errors.length }}
           </span>
         </a-popover>
       </span>
-      <a-button type="primary" :loading="loading" @click="validate">提交</a-button>
+      <a-button type="primary" @click="validate" :loading="loading">提交</a-button>
     </footer-tool-bar>
   </page-header-wrapper>
 </template>

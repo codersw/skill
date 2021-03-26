@@ -1,159 +1,151 @@
 <template>
-  <a-modal
-    v-if="visible"
-    v-model="visible"
-    :title="'app.system.table.action' | i18n"
-    style="top: 20px;"
-    :width="800"
-    @ok="handleSubmit">
+  <a-modal title="操作" style="top: 20px;" :width="800" v-model="visible" @ok="handleSubmit">
     <a-form :form="form">
       <a-form-item style="display:none">
         <a-input v-decorator="['menuId']" />
       </a-form-item>
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.form.parentPermission' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="上级权限">
         <a-tree-select
-          v-decorator="['parentId', {rules: [{ required: true, message: $t('global.form.placeholder.select.parentPermission') }]}]"
+          v-decorator="['parentId', {rules: [{ required: true, message: '请选择上级权限' }]}]"
           :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
           :treeData="permissions"
-          :placeholder="'app.system.form.parentPermission' | i18n"
+          placeholder="上级权限"
           treeDefaultExpandAll
-        >
-          <template slot="title" slot-scope="{ name }">{{ name | i18n }}</template>
-        </a-tree-select>
+        ></a-tree-select>
       </a-form-item>
 
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.form.menuType' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="菜单类型">
         <a-select
-          v-decorator="['menuType', {initialValue:'M',rules: [{ required: true, message: $t('global.form.placeholder.select.type') }]}]"
+          v-decorator="['menuType', {initialValue:'M',rules: [{ required: true, message: '请选择类型' }]}]"
           @select="menuTypeChange"
         >
-          <a-select-option :value="'M'">{{ 'app.system.table.catalogue' | i18n }}</a-select-option>
-          <a-select-option :value="'C'">{{ 'app.system.table.menu' | i18n }}</a-select-option>
-          <a-select-option :value="'F'">{{ 'app.system.table.button' | i18n }}</a-select-option>
+          <a-select-option :value="'M'">目录</a-select-option>
+          <a-select-option :value="'C'">菜单</a-select-option>
+          <a-select-option :value="'F'">按钮</a-select-option>
         </a-select>
       </a-form-item>
 
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.table.permissionName' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="权限名称">
         <a-input
-          v-decorator="['menuName',{rules: [{ required: true, message: $t('global.form.placeholder.input.permissionName') }]}]"
-          :placeholder="'app.system.form.createName' | i18n"
+          v-decorator="['menuName',{rules: [{ required: true, message: '请输入权限名称' }]}]"
+          placeholder="起一个名字"
         />
       </a-form-item>
 
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.table.route' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="路由唯一键">
         <a-input
-          v-decorator="['menuKey',{initialValue:'',rules: [{ required: false, message: $t('global.form.placeholder.input.uniqueKey') }]}]"
-          :placeholder="'global.form.placeholder.input.uniqueKeyAs' | i18n"
+          v-decorator="['menuKey',{initialValue:'',rules: [{ required: true, message: '请输入动态菜单唯一键' }]}]"
+          placeholder="路由唯一键：如'user'"
         />
       </a-form-item>
 
-      <a-form-item v-show="menuType!='M'" :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.table.permissionIdentification' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="menuType!='M'" label="权限标识">
         <a-input
-          v-decorator="['perms',{rules: [{ required: false, message: $t('global.form.placeholder.input.permissionIdentification') }]}]"
-          :placeholder="'app.system.table.permissionIdentification' | i18n"
+          v-decorator="['perms',{rules: [{ required: false, message: '请输入权限标识' }]}]"
+          placeholder="权限标识"
         />
       </a-form-item>
 
-      <a-form-item v-show="menuType!=='F'" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="menuType!=='F'">
         <span slot="label">
-          {{ 'app.system.table.widget' | i18n }}
-          <a-tooltip :title="'app.system.form.tip.widget' | i18n">
+          组件
+          <a-tooltip title="routerUtil中定义的组件或views文件下的路径">
             <a-icon type="question-circle-o" />
           </a-tooltip>
         </span>
         <a-input
-          v-decorator="['component',{rules: [{ required: false, message: $t('global.form.placeholder.input.widget') }]}]"
-          :placeholder="'app.system.table.widget' | i18n"
+          v-decorator="['component',{rules: [{ required: false, message: '请输入组件' }]}]"
+          placeholder="组件"
         />
       </a-form-item>
 
-      <a-form-item v-show="menuType!=='F'" :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.form.icon' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="menuType!=='F'" label="图标">
         <a-input
+          v-decorator="['icon',{rules: [{ required: false, message: '请选择图标' }]}]"
           ref="iconInput"
-          v-decorator="['icon',{rules: [{ required: false, message: $t('global.form.placeholder.select.icon') }]}]"
-          :enterButton="'global.form.placeholder.select.icon' | i18n"
-          :placeholder="'global.form.placeholder.select.icon' | i18n"
           @click="iconselect()"
+          enterButton="选择图标"
+          placeholder="选择图标"
         >
           <a-icon slot="prefix" :type="icon" />
           <a-icon slot="suffix" type="close-circle" @click="emitEmpty" />
         </a-input>
       </a-form-item>
 
-      <a-form-item v-show="menuType==='C'" :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.form.openType' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="menuType==='C'" label="打开方式">
         <a-select
-          v-decorator="['target', {initialValue:'',rules: [{ required: false, message: $t('global.form.placeholder.select.openType') },{validator: validatePathTarget}]}]"
+          v-decorator="['target', {initialValue:'',rules: [{ required: false, message: '请选择打开方式' },{validator: validatePathTarget}]}]"
         >
-          <a-select-option :value="''">{{ 'app.system.form.cuurentWindow' | i18n }}</a-select-option>
-          <a-select-option :value="'_blank'">{{ 'app.system.form.newWindow' | i18n }}</a-select-option>
+          <a-select-option :value="''">当前窗口</a-select-option>
+          <a-select-option :value="'_blank'">新窗口</a-select-option>
         </a-select>
       </a-form-item>
 
-      <a-form-item v-show="menuType==='C'" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="menuType==='C'">
         <span slot="label">
-          {{ 'app.system.form.link' | i18n }}
-          <a-tooltip :title="'app.system.form.tip.link' | i18n">
+          链接地址
+          <a-tooltip title="链接地址为外链时，打开方式必须为新窗口（antd限制）">
             <a-icon type="question-circle-o" />
           </a-tooltip>
         </span>
         <a-input
           v-decorator="['path',{
             rules: [
-              { required: false,type:'string', message: $t('global.form.placeholder.input.path') }
+              { required: false,type:'string', message: '请输入正确的路径' }
             ]
           }]"
-          :placeholder="'global.form.placeholder.input.path' | i18n"
+          placeholder="路径"
         />
       </a-form-item>
 
       <a-form-item
-        v-show="menuType!=='F'"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="'app.system.form.redirect' | i18n"
+        v-show="menuType!=='F'"
+        label="重定向地址"
       >
         <a-input
-          v-decorator="['redirect',{rules: [{ required: false, message: $t('global.form.placeholder.input.redirect') }]}]"
-          :placeholder="'app.system.form.redirect' | i18n"
+          v-decorator="['redirect',{rules: [{ required: false, message: '请输入重定向地址' }]}]"
+          placeholder="重定向地址"
         />
       </a-form-item>
 
       <a-form-item
-        v-show="menuType!=='F'"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
-        :label="'app.system.form.hideSubmenu' | i18n"
+        v-show="menuType!=='F'"
+        label="隐藏子菜单"
       >
         <a-switch v-decorator="['hiddenChildren',{initialValue:false,valuePropName:'checked'}]" />
       </a-form-item>
 
-      <a-form-item v-show="menuType!=='F'" :labelCol="labelCol" :wrapperCol="wrapperCol">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" v-show="menuType!=='F'">
         <span slot="label">
-          {{ 'app.system.form.hideHeader' | i18n }}
-          <a-tooltip :title="'app.system.form.tip.hideHeader'| i18n">
+          隐藏头部信息
+          <a-tooltip title="隐藏 PageHeader 组件中的页面带的 面包屑和页面标题栏">
             <a-icon type="question-circle-o" />
           </a-tooltip>
         </span>
         <a-switch v-decorator="['hiddenHeader',{initialValue:false,valuePropName:'checked'}]" />
       </a-form-item>
 
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.form.sort' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="显示顺序">
         <a-input-number
-          v-decorator="['orderNum',{initialValue:'1',rules: [{ required: true, message: $t('global.form.placeholder.input.sortNumber') }]}]"
-          :placeholder="'app.system.form.sort' | i18n"
+          v-decorator="['orderNum',{initialValue:'1',rules: [{ required: true, message: '请输入顺序数字' }]}]"
+          placeholder="显示顺序"
         />
       </a-form-item>
 
-      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" :label="'app.system.table.status' | i18n">
+      <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="状态">
         <a-select
-          v-decorator="['visible', {initialValue:'0',rules: [{ required: true, message: $t('global.form.placeholder.status') }]}]"
+          v-decorator="['visible', {initialValue:'0',rules: [{ required: true, message: '请选择状态' }]}]"
         >
-          <a-select-option :value="'0'">{{ 'app.system.table.show' | i18n }}</a-select-option>
-          <a-select-option :value="'1'">{{ 'app.system.table.hide' | i18n }}</a-select-option>
+          <a-select-option :value="'0'">显示</a-select-option>
+          <a-select-option :value="'1'">隐藏</a-select-option>
         </a-select>
       </a-form-item>
     </a-form>
-    <iconSelector-modal ref="modal" :icon="icon" @ok="setIcon" />
+    <iconSelector-modal ref="modal" @ok="setIcon" :icon="icon" />
   </a-modal>
 </template>
 <script>
@@ -178,22 +170,16 @@ export default {
         xs: { span: 24 },
         sm: { span: 16 }
       },
-      permissions: [{ key: 0, value: '0', name: 'global.form.placeholder.select.none', scopedSlots: {title: 'title'} }],
+      permissions: [{ key: 0, value: '0', title: '无' }],
       mdl: {},
       icon: 'smile',
       menuType: '',
       form: this.$form.createForm(this)
     }
   },
-  // watch: {
-  //   '$store.getters.lang' () {
-  //     console.log('$store.getters.lang')
-  //     this.loadPermissions()
-  //   }
-  // },
   beforeCreate () {},
   created () {
-    // this.loadPermissions()
+    this.loadPermissions()
   },
   methods: {
     menuTypeChange (type) {
@@ -243,15 +229,6 @@ export default {
         )
         // this.form.setFieldsValue({ ...record })
       })
-      this.permissions =
-      [
-        { key: 0,
-          value: '0',
-          name: 'global.form.placeholder.select.none',
-          scopedSlots: {title: 'title'}
-         }
-      ]
-       this.loadPermissions()
     },
     validatePathTarget (rule, value, callback) {
       const path = this.form.getFieldValue('path')
@@ -269,15 +246,10 @@ export default {
     buildtree (list, arr, parentId) {
       list.forEach(item => {
         if (item.parentId === parentId) {
-          const child = {
+          var child = {
             key: item.menuId,
             value: item.menuId + '',
-            name: item.menuName,
-            // title: this.$t(item.menuName),
-            scopedSlots: {
-              // custom title
-              title: 'title'
-            },
+            title: item.menuName,
             children: []
           }
           this.buildtree(list, child.children, item.menuId)
@@ -294,7 +266,7 @@ export default {
           savePerm(values)
             .then(res => {
               if (res.code === 0) {
-                this.$message.success(this.$t('global.message.save.success'))
+                this.$message.success('保存成功')
                 this.$emit('ok')
                 this.visible = false
               } else {
@@ -302,7 +274,7 @@ export default {
               }
             })
             .catch(() => {
-              this.$message.success(this.$t('global.message.error'))
+              this.$message.error('系统错误，请稍后再试')
             })
             .finally(() => {
               this.confirmLoading = false
@@ -310,6 +282,20 @@ export default {
         }
       })
     }
+  },
+  watch: {
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

@@ -7,9 +7,6 @@ import user from './modules/user'
 // default router permission control
 import permission from './modules/permission'
 
-// modal control
-import modal from './modules/modal'
-
 // dynamic router permission control (Experimental)
 // import permission from './modules/async-router'
 import getters from './getters'
@@ -20,8 +17,7 @@ export default new Vuex.Store({
   modules: {
     app,
     user,
-    permission,
-    modal
+    permission
   },
   state: {
 

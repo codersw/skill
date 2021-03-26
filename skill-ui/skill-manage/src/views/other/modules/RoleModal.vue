@@ -80,25 +80,26 @@ export default {
       this.visible = false
     },
     handleOk () {
+      const _this = this
       // 触发表单验证
       this.form.validateFields((err, values) => {
         // 验证表单没错误
         if (!err) {
           console.log('form values', values)
 
-          this.confirmLoading = true
+          _this.confirmLoading = true
           // 模拟后端请求 2000 毫秒延迟
           new Promise((resolve) => {
             setTimeout(() => resolve(), 2000)
           }).then(() => {
             // Do something
-            this.$message.success(this.$t('global.message.save.success'))
-            this.$emit('ok')
+            _this.$message.success('保存成功')
+            _this.$emit('ok')
           }).catch(() => {
             // Do something
           }).finally(() => {
-            this.confirmLoading = false
-            this.close()
+            _this.confirmLoading = false
+            _this.close()
           })
         }
       })
@@ -118,9 +119,10 @@ export default {
       })
     },
     loadPermissions () {
+      const that = this
       getPermissions().then(res => {
         const result = res.result
-        this.permissions = result.map(permission => {
+        that.permissions = result.map(permission => {
           const options = actionToObject(permission.actionData)
           permission.checkedAll = false
           permission.selected = []

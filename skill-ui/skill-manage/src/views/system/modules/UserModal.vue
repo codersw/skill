@@ -1,10 +1,9 @@
 <template>
   <a-modal
-    v-if="visible"
-    v-model="visible"
-    :title="this.$t('global.action')"
+    title="操作"
     style="top: 20px;"
     :width="800"
+    v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
@@ -16,30 +15,32 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          :label="this.$t('user.loginName')"
+          label="用户名"
         >
-          <a-input v-decorator="['loginName', {rules: [{ required: true, message: this.$t('user.loginName.msg') }]}]" :placeholder="this.$t('user.loginName')" />
+          <a-input placeholder="用户名" v-decorator="['loginName', {rules: [{ required: true, message: '请输入用户名' }]}]" />
         </a-form-item>
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          :label="this.$t('user.userName')"
+          label="昵称"
         >
           <a-input
             v-decorator="[
               'userName',
               {
-                rules: [{ required: true, message: this.$t('user.userName').msg }]
+                rules: [{ required: true, message: '请输入昵称' }]
               }
             ]"
             placeholder="起一个名字"/>
         </a-form-item>
+
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          :label="this.$t('user.status')"
+          label="状态"
         >
-          <a-select v-decorator="['status', {initialValue:'0',rules: [{ required: true, message: this.$t('user.status.msg') }]}]">
+          <a-select v-decorator="['status', {initialValue:'0',rules: [{ required: true, message: '请选择状态' }]}]">
             <a-select-option :value="'0'">正常</a-select-option>
             <a-select-option :value="'1'">禁用</a-select-option>
           </a-select>
@@ -48,15 +49,15 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          :label="this.$t('user.deptId')"
+          label="部门"
         >
           <a-tree-select
-            v-decorator="['deptId', {rules: [{ required: true, message: this.$t('user.deptId.msg') }]}]"
+            v-decorator="['deptId', {rules: [{ required: true, message: '请选择部门' }]}]"
             :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
             :treeData="deptTree"
-            :placeholder="this.$t('user.deptId')"
-            treeDefaultExpandAll
             @change="onChange"
+            placeholder="部门"
+            treeDefaultExpandAll
           >
           </a-tree-select>
         </a-form-item>
@@ -64,20 +65,21 @@
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          :label="this.$t('user.remark')"
+          label="描述"
         >
-          <a-textarea v-decorator="['remark', {rules: [{ required: false, message: this.$t('user.remark.msg') }]}]" :rows="5" placeholder="..."/>
+          <a-textarea :rows="5" placeholder="..." v-decorator="['remark', {rules: [{ required: true, message: '请输入描述' }]}]"/>
         </a-form-item>
 
         <a-form-item
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
-          :label="this.$t('user.roleIds')"
+          label="拥有角色"
+          hasFeedback
         >
           <a-select
-            v-decorator="['roleIds', {rules: [{ required: false, message: this.$t('user.roleIds.msg') }]}]"
             style="width: 100%"
             mode="multiple"
+            v-decorator="['roleIds', {rules: [{ required: true, message: '请选择角色' }]}]"
             :allowClear="true"
           >
             <a-select-option v-for="(action) in roleAll" :key="action.roleId" >{{ action.roleName }}</a-select-option>
@@ -174,14 +176,14 @@ export default {
           this.confirmLoading = true
           saveUser(values).then(res => {
             if (res.code === 0) {
-              this.$message.success(this.$t('global.message.save.success'))
+              this.$message.success('保存成功')
               this.$emit('ok')
               this.visible = false
             } else {
               this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
             this.confirmLoading = false
           })

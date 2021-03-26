@@ -1,54 +1,64 @@
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
-      <PageWrapperSearch>
-        <a-form-item :label="this.$t('operLog.operName')">
-          <a-input v-model="queryParam.operName" :placeholder="this.$t('operLog.operName')"/>
-        </a-form-item>
-        <a-form-item :label="this.$t('operLog.businessType')">
-          <a-select v-model="queryParam.businessType" :placeholder="this.$t('operLog.businessType')" default-value="0">
-            <a-select-option :value="''">全部</a-select-option>
-            <a-select-option v-for="(b, index) in businessTypes" :key="index" :value="b.dictValue">{{ b.dictLabel }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="this.$t('operLog.status')">
-          <a-select v-model="queryParam.status" :placeholder="this.$t('operLog.status')" default-value="0">
-            <a-select-option :value="''">全部</a-select-option>
-            <a-select-option :value="0">成功</a-select-option>
-            <a-select-option :value="1">失败</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item :label="this.$t('operLog.operTime')">
-          <a-range-picker v-model="range"/>
-        </a-form-item>
-        <a-form-item slot="buttons">
-          <a-button type="primary" @click="$refs.table.refresh(true)">{{ 'global.button.search' | i18n }}</a-button>
-          <a-button style="margin-left: 8px" @click="reset">{{ 'global.button.reset' | i18n }}</a-button>
-        </a-form-item>
-      </PageWrapperSearch>
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="5" :sm="15">
+            <a-form-item label="操作人员">
+              <a-input placeholder="请输入" v-model="queryParam.operName"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="12">
+            <a-form-item label="操作类型">
+              <a-select placeholder="请选择" v-model="queryParam.businessType" default-value="0">
+                <a-select-option :value="''">全部</a-select-option>
+                <a-select-option v-for="(b, index) in businessTypes" :key="index" :value="b.dictValue">{{ b.dictLabel }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="12">
+            <a-form-item label="操作状态">
+              <a-select placeholder="请选择" v-model="queryParam.status" default-value="0">
+                <a-select-option :value="''">全部</a-select-option>
+                <a-select-option :value="0">成功</a-select-option>
+                <a-select-option :value="1">失败</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="18">
+            <a-form-item label="操作时间">
+              <a-range-picker v-model="range"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
     <div class="table-operator">
-      <!-- <a-popconfirm v-has="'monitor:operlog:remove'" title="确认清空吗？" @confirm="clean(selectedRowKeys)">
+      <a-popconfirm v-has="'monitor:operlog:remove'" title="确认清空吗？" @confirm="clean">
         <a-icon slot="icon" type="question-circle-o" style="color: red" />
-        <a-button type="danger" ghost icon="close">{{ 'global.button.clear' | i18n }}</a-button>
-      </a-popconfirm> -->
-      <a-button type="primary" icon="export" @click="exportExcel()">{{ 'global.button.export' | i18n }}</a-button>
-      <a-dropdown v-if="selectedRowKeys.length > 0" v-has="'monitor:operlog:remove'">
-        <a-popconfirm v-has="'monitor:operlog:remove'" :title="this.$t('global.message.delete.ask')" @confirm="delByIds(selectedRowKeys)">
-          <a-button type="danger" icon="delete">{{ 'global.button.delete' | i18n }}</a-button>
-        </a-popconfirm>
+        <a-button type="danger" ghost icon="close">清空</a-button>
+      </a-popconfirm>
+      <a-button type="primary" icon="export" @click="exportExcel()">导出</a-button>
+      <a-dropdown v-has="'monitor:operlog:remove'" v-if="selectedRowKeys.length > 0">
+        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
       </a-dropdown>
     </div>
     <s-table
-      v-if="operTypeMap"
-      ref="table"
       size="default"
+      ref="table"
       rowKey="operId"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
       :data="loadData"
       :rangPicker="range"
       defaultSort="operTime"
+      v-if="operTypeMap"
     >
       <span slot="businessType" slot-scope="text">
         {{ text | operTypeFilter }}
@@ -60,21 +70,20 @@
         {{ text | fromNow }}
       </span>
       <span slot="action" slot-scope="text, record">
-        <a @click="handleDetail(record)">{{ 'global.button.detail' | i18n }}</a>
+        <a @click="handleDetail(record)">详细</a>
       </span>
     </s-table>
-    <operLog-modal v-if="operTypeMap" ref="modal" :operTypeMap="operTypeMap"/>
+    <operLog-modal ref="modal" :operTypeMap="operTypeMap" v-if="operTypeMap"/>
   </a-card>
 </template>
 
 <script>
 import { STable } from '@/components'
 // import { getOperLogList, delOperLog, cleanOperLog, operLogExport } from '@/api/monitor'
-import { getOperLogList, delOperLog, operLogExport } from '@/api/monitor'
+import { getOperLogList, operLogExport } from '@/api/monitor'
 import OperLogModal from './modules/OperLogModal.vue'
 import { getDictArray } from '@/utils/dict'
 import { exportExcel } from '@/utils/download'
-import {delUmEquipmentSensor} from '@/api/manager/sensor/umEquipmentSensor'
 const operTypeMap = {}
 export default {
   name: 'TableList',
@@ -100,7 +109,50 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {},
-
+      // 表头
+      columns: [
+        {
+          title: '日志编号',
+          dataIndex: 'operId'
+        },
+        {
+          title: '系统模块',
+          dataIndex: 'title'
+        },
+        {
+          title: '操作类型',
+          dataIndex: 'businessType',
+          scopedSlots: { customRender: 'businessType' }
+        },
+        {
+          title: '操作人员',
+          dataIndex: 'operName'
+        },
+        {
+          title: '主机',
+          dataIndex: 'operIp'
+        },
+        {
+          title: '操作地点',
+          dataIndex: 'operLocation'
+        },
+        {
+          title: '状态',
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
+        },
+        {
+          title: '操作时间',
+          dataIndex: 'operTime',
+          sorter: true,
+          scopedSlots: { customRender: 'operTime' }
+        }, {
+          title: '操作',
+          width: '150px',
+          dataIndex: 'action',
+          scopedSlots: { customRender: 'action' }
+        }
+      ],
       range: null,
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
@@ -141,10 +193,6 @@ export default {
     })
   },
   methods: {
-    reset () {
-      this.queryParam = {}
-      this.range = null
-    },
     onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
@@ -159,79 +207,37 @@ export default {
       exportExcel(operLogExport, this.queryParam)
     },
     delByIds (ids) {
-      delOperLog({ ids: ids.join(',') }).then(res => {
-        if (res.code === 0) {
-          this.$message.success(this.$t('global.message.delete.success'))
-          this.handleOk()
-        } else {
-          this.$message.error(res.msg)
-        }
-        this.selectedRowKeys = []
-      })
+      this.$message.success(`你删除了` + ids)
+      // delOperLog({ ids: ids.join(',') }).then(res => {
+      //   if (res.code === 0) {
+      //     this.$message.success(`删除成功`)
+      //     this.handleOk()
+      //   } else {
+      //     this.$message.error(res.msg)
+      //   }
+      //   this.selectedRowKeys = []
+      // })
     },
-    clean (ids) {
-      delOperLog({ ids: ids.join(',') }).then(res => {
-        if (res.code === 0) {
-          this.$message.success(this.$t('global.message.delete.success'))
-          this.handleOk()
-        } else {
-          this.$message.error(res.msg)
-        }
-        this.selectedRowKeys = []
-      })
+    clean () {
+      this.$message.success(`你点击了清空`)
+      // cleanOperLog().then(res => {
+      //   this.handleOk()
+      // })
     }
   },
-  computed: {
-      // 表头
-      columns () {
-        return [
-          {
-            title: this.$t('operLog.operId'),
-            dataIndex: 'operId'
-          },
-          {
-            title: this.$t('operLog.title'),
-            dataIndex: 'title'
-          },
-          {
-            title: this.$t('operLog.businessType'),
-            dataIndex: 'businessType',
-            scopedSlots: { customRender: 'businessType' }
-          },
-          {
-            title: this.$t('operLog.operName'),
-            dataIndex: 'operName'
-          },
-          {
-            title: this.$t('operLog.operIp'),
-            dataIndex: 'operIp'
-          },
-          {
-            title: this.$t('operLog.operLocation'),
-            dataIndex: 'operLocation'
-          },
-          {
-            title: this.$t('operLog.status'),
-            dataIndex: 'status',
-            scopedSlots: { customRender: 'status' }
-          },
-          {
-            title: this.$t('operLog.operTime'),
-            dataIndex: 'operTime',
-            sorter: true,
-            scopedSlots: { customRender: 'operTime' }
-          },
-          {
-            title: this.$t('global.action'),
-            width: '75px',
-            dataIndex: 'action',
-            scopedSlots: { customRender: 'action' }
-          }
-        ]
-      }
-
-  },
   watch: {
+    /*
+      'selectedRows': function (selectedRows) {
+        this.needTotalList = this.needTotalList.map(item => {
+          return {
+            ...item,
+            total: selectedRows.reduce( (sum, val) => {
+              return sum + val[item.dataIndex]
+            }, 0)
+          }
+        })
+      }
+      */
   }
 }
 </script>

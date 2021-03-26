@@ -1,5 +1,3 @@
-/* eslint-disable no-invalid-this */
-/* eslint-disable consistent-this */
 import Modal from 'ant-design-vue/es/modal'
 export default (Vue) => {
   function dialog (component, componentProps, modalProps) {

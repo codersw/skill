@@ -1,34 +1,44 @@
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
-      <PageWrapperSearch>
-        <a-form-item label="层级">
-          <a-select v-model="queryParam.deep" placeholder="请选择">
-            <a-select-option :value="''">所有</a-select-option>
-            <a-select-option v-for="(d, index) in deeps" :key="index" :value="d.value">{{ d.label }}</a-select-option>
-          </a-select>
-        </a-form-item>
-        <a-form-item label="名称">
-          <a-input v-model="queryParam.name" placeholder="请输入"/>
-        </a-form-item>
-        <a-form-item label="上级编号">
-          <a-input v-model="queryParam.pid" placeholder="请输入"/>
-        </a-form-item>
-        <a-form-item slot="buttons">
-          <a-button type="primary" @click="$refs.table.refresh(true)">{{ 'global.button.search' | i18n }}</a-button>
-          <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ 'global.button.reset' | i18n }}</a-button>
-        </a-form-item>
-      </PageWrapperSearch>
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="5" :sm="15">
+            <a-form-item label="层级">
+              <a-select placeholder="请选择" v-model="queryParam.deep">
+                <a-select-option :value="''">所有</a-select-option>
+                <a-select-option v-for="(d, index) in deeps" :key="index" :value="d.value">{{ d.label }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="名称">
+              <a-input placeholder="请输入" v-model="queryParam.name"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <a-form-item label="上级编号">
+              <a-input placeholder="请输入" v-model="queryParam.pid"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
     <div class="table-operator">
-      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">{{ 'global.button.new' | i18n }}</a-button>
+      <a-button v-if="addEnable" type="primary" icon="plus" @click="$refs.modal.add()">新建</a-button>
       <a-dropdown v-if="removeEnable&&selectedRowKeys.length > 0">
-        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">{{ 'global.button.delete' | i18n }}</a-button>
+        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
       </a-dropdown>
     </div>
     <s-table
-      ref="table"
       size="default"
+      ref="table"
       rowKey="id"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
@@ -39,12 +49,12 @@
         {{ text | deepFilter }}
       </span>
       <span slot="action" slot-scope="text, record">
-        <a v-if="editEnabel" @click="handleEdit(record)">{{ 'global.button.edit' | i18n }}</a>
+        <a v-if="editEnabel" @click="handleEdit(record)">编辑</a>
         <a-divider type="vertical" />
-        <a v-if="removeEnable" @click="delByIds([record.dictId])">{{ 'global.button.delete' | i18n }}</a>
+        <a v-if="removeEnable" @click="delByIds([record.dictId])">删除</a>
       </span>
     </s-table>
-    <dist-modal ref="modal" :deeps="deeps" @ok="handleOk"/>
+    <dist-modal ref="modal" @ok="handleOk" :deeps="deeps"/>
   </a-card>
 </template>
 

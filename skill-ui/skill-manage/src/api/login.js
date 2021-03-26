@@ -86,10 +86,3 @@ export function captchaCheck (data) {
     data
   })
 }
-
-export function ssoLogin (code, state) {
-  return axios({
-    url: '/auth/sso/login?code=' + code + '&state=' + state,
-    method: 'get'
-  })
-}

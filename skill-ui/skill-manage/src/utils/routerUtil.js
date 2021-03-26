@@ -10,35 +10,38 @@ const constantRouterComponents = {
   BlankLayout: BlankLayout, // 空白的布局
   RouteView: RouteView, // 空布局，专门为了二级菜单内容区自定义
   PageView: PageView, // 基础布局，包含了面包屑，和中间内容区 (slot)
-  UserLayout: UserLayout // 登陆注册页面的通用布局
+  UserLayout: UserLayout, // 登陆注册页面的通用布局
 
   // 你需要动态引入的页面组件
-  // weclome: () => import('@/views/dashboard/Welcome'),
-  // baseForm: () => import('@/views/form/basicForm/index'),
-  // stepForm: () => import('@/views/form/stepForm/StepForm'),
-  // advancedForm: () => import('@/views/form/advancedForm/AdvancedForm.vue'),
-  // editorForm: () => import('@/views/form/EditorForm'),
-  // tableList: () => import('@/views/list/TableList'),
-  // standardList: () => import('@/views/list/BasicList'),
-  // cardList: () => import('@/views/list/CardList'),
-  // search: () => import('@/views/list/search/SearchLayout'),
-  // article: () => import('@/views/list/search/Article'),
-  // project: () => import('@/views/list/search/Projects'),
-  // application: () => import('@/views/list/search/Applications'),
-  // profileBasic: () => import('@/views/profile/basic'),
-  // profileAdvanced: () => import('@/views/profile/advanced/Advanced'),
-  // resultSucc: () => import('@/views/result/Success'),
-  // resultErr: () => import('@/views/result/Error'),
-  // error403: () => import('@/views/exception/403'),
-  // error404: () => import('@/views/exception/404'),
-  // error500: () => import('@/views/exception/500'),
-  // center: () => import('@/views/account/center/Index'),
-  // settings: () => import('@/views/account/settings/Index'),
-  // base: () => import('@/views/account/settings/BaseSetting'),
-  // security: () => import('@/views/account/settings/Security'),
-  // custom: () => import('@/views/account/settings/Custom'),
-  // binding: () => import('@/views/account/settings/Binding'),
-  // notification: () => import('@/views/account/settings/Notification')
+  analysis: () => import('@/views/dashboard/Analysis'),
+  workplace: () => import('@/views/dashboard/Workplace'),
+  weclome: () => import('@/views/dashboard/Welcome'),
+  monitor: () => import('@/views/dashboard/Monitor'),
+  baseForm: () => import('@/views/form/basicForm/index'),
+  stepForm: () => import('@/views/form/stepForm/StepForm'),
+  advancedForm: () => import('@/views/form/advancedForm/AdvancedForm.vue'),
+  editorForm: () => import('@/views/form/EditorForm'),
+  tableList: () => import('@/views/list/TableList'),
+  standardList: () => import('@/views/list/BasicList'),
+  cardList: () => import('@/views/list/CardList'),
+  search: () => import('@/views/list/search/SearchLayout'),
+  article: () => import('@/views/list/search/Article'),
+  project: () => import('@/views/list/search/Projects'),
+  application: () => import('@/views/list/search/Applications'),
+  profileBasic: () => import('@/views/profile/basic'),
+  profileAdvanced: () => import('@/views/profile/advanced/Advanced'),
+  resultSucc: () => import('@/views/result/Success'),
+  resultErr: () => import('@/views/result/Error'),
+  error403: () => import('@/views/exception/403'),
+  error404: () => import('@/views/exception/404'),
+  error500: () => import('@/views/exception/500'),
+  center: () => import('@/views/account/center/Index'),
+  settings: () => import('@/views/account/settings/Index'),
+  base: () => import('@/views/account/settings/BaseSetting'),
+  security: () => import('@/views/account/settings/Security'),
+  custom: () => import('@/views/account/settings/Custom'),
+  binding: () => import('@/views/account/settings/Binding'),
+  notification: () => import('@/views/account/settings/Notification')
 
   // system
   // userList: () => import('@/views/system/UserList'),
@@ -69,7 +72,7 @@ const rootRouter = {
   'key': '',
   'name': 'index',
   'component': 'BasicLayout',
-  'redirect': '/home',
+  'redirect': '/dashboard/weclome',
   'children': []
 }
 
@@ -93,6 +96,7 @@ export const getRouterByUser = () => {
  * 获取路由菜单信息
  *
  * 1. 调用 getRouterByUser() 访问后端接口获得路由结构数组
+ *    @see https://github.com/sendya/ant-design-pro-vue/blob/feature/dynamic-menu/public/dynamic-menu.json
  * 2. 调用
  * @returns {Promise<any>}
  */
@@ -174,7 +178,7 @@ export function getRootMenu (rows) {
 export function buildtree (list, arr, parentId) {
   list.forEach(item => {
     if (item.parentId === parentId) {
-      const child = {
+      var child = {
         title: item.menuName,
         key: item.menuKey,
         icon: item.icon,

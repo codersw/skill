@@ -1,27 +1,37 @@
 <template>
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
-      <PageWrapperSearch>
-        <a-form-item label="文件名：">
-          <a-input v-model="queryParam.fileName" placeholder="请输入"/>
-        </a-form-item>
-        <a-form-item label="文件后缀：">
-          <a-input v-model="queryParam.fileSuffix" placeholder="请输入"/>
-        </a-form-item>
-        <a-form-item label="上传人：">
-          <a-input v-model="queryParam.createBy" placeholder="请输入"/>
-        </a-form-item>
-        <a-form-item slot="buttons">
-          <a-button type="primary" @click="$refs.table.refresh(true)">{{ 'global.button.search' | i18n }}</a-button>
-          <a-button style="margin-left: 8px" @click="() => queryParam = {}">{{ 'global.button.reset' | i18n }}</a-button>
-        </a-form-item>
-      </PageWrapperSearch>
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="4" :sm="12">
+            <a-form-item label="文件名：">
+              <a-input placeholder="请输入" v-model="queryParam.fileName"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="12">
+            <a-form-item label="文件后缀：">
+              <a-input placeholder="请输入" v-model="queryParam.fileSuffix"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="12">
+            <a-form-item label="上传人：">
+              <a-input placeholder="请输入" v-model="queryParam.createBy"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="15">
+            <span class="table-page-search-submitButtons">
+              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+            </span>
+          </a-col>
+        </a-row>
+      </a-form>
     </div>
     <div class="table-operator">
 
-      <a-button v-if="configEnabel" type="primary" icon="setting" @click="$refs.modal.config()">{{ 'global.button.ossconfig' | i18n }}</a-button>
+      <a-button v-if="configEnabel" type="primary" icon="setting" @click="$refs.modal.config()">云存储配置</a-button>
       <a-dropdown v-if="removeEnable && selectedRowKeys.length > 0">
-        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">{{ 'global.button.delete' | i18n }}</a-button>
+        <a-button type="danger" icon="delete" @click="delByIds(selectedRowKeys)">删除</a-button>
       </a-dropdown>
       <a-upload
         v-if="addEnable"
@@ -31,12 +41,12 @@
         :showUploadList="false"
         @change="uploadChange"
       >
-        <a-button icon="upload"> {{ 'global.button.uploadfile' | i18n }}</a-button>
+        <a-button icon="upload"> 文件上传</a-button>
       </a-upload>
     </div>
     <s-table
-      ref="table"
       size="default"
+      ref="table"
       rowKey="id"
       :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
       :columns="columns"
@@ -58,20 +68,20 @@
       <span slot="service" slot-scope="text">
         {{ text | serviceFilter }}
       </span>
-      <img slot="url" slot-scope="text" style="width:30px;heigth:30px;cursor:pointer;" :src="text" @click="handlePreview(text)"/>
+      <img style="width:30px;heigth:30px;cursor:pointer;" slot="url" slot-scope="text" :src="text" @click="handlePreview(text)"/>
       <template slot="action" slot-scope="text, record">
         <div class="editable-row-operations">
           <span v-if="record.editable">
-            <a @click="() => save(record)">{{ 'global.button.save' | i18n }}</a>
+            <a @click="() => save(record)">保存</a>
             <a-divider type="vertical" />
             <a-popconfirm title="真的放弃编辑吗?" @confirm="() => cancel(record)">
-              <a>{{ 'global.button.cancel' | i18n }}</a>
+              <a>取消</a>
             </a-popconfirm>
           </span>
           <span v-else>
-            <a @click="() => edit(record)">{{ 'global.button.edit' | i18n }}</a>
+            <a @click="() => edit(record)">编辑</a>
             <a-divider type="vertical" />
-            <a v-if="removeEnable" @click="delByIds([record.id])">{{ 'global.button.delete' | i18n }}</a>
+            <a v-if="removeEnable" @click="delByIds([record.id])">删除</a>
           </span>
         </div>
       </template>
@@ -232,13 +242,13 @@ export default {
     save (record) {
       saveOss(record).then(res => {
         if (res.code === 0) {
-          this.$message.success(this.$t('global.message.save.success'))
+          this.$message.success('保存成功')
           record.editable = false
         } else {
           this.$message.success(res.msg)
         }
       }).catch(() => {
-        this.$message.success(this.$t('global.message.error'))
+        this.$message.error('系统错误，请稍后再试')
       })
     },
     delByIds (ids) {

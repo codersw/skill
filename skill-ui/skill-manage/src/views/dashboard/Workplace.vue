@@ -28,18 +28,18 @@
     </template>
 
     <div>
-      <a-row :gutter="gutterMargin">
+      <a-row :gutter="24">
         <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
           <a-card
             class="project-list"
             :loading="loading"
-            :style="{marginBottom: gutterMargin}"
+            style="margin-bottom: 24px;"
             :bordered="false"
             title="进行中的项目"
             :body-style="{ padding: 0 }">
             <a slot="extra">全部项目</a>
             <div>
-              <a-card-grid v-for="(item, i) in projects" :key="i" class="project-card-grid">
+              <a-card-grid class="project-card-grid" :key="i" v-for="(item, i) in projects">
                 <a-card :bordered="false" :body-style="{ padding: 0 }">
                   <a-card-meta>
                     <div slot="title" class="card-title">
@@ -61,7 +61,7 @@
 
           <a-card :loading="loading" title="动态" :bordered="false">
             <a-list>
-              <a-list-item v-for="(item, index) in activities" :key="index">
+              <a-list-item :key="index" v-for="(item, index) in activities">
                 <a-list-item-meta>
                   <a-avatar slot="avatar" :src="item.user.avatar"/>
                   <div slot="title">
@@ -77,13 +77,13 @@
           </a-card>
         </a-col>
         <a-col
-          :style="{padding: `0 0 0 ${gutterMargin}`}"
+          style="padding: 0 12px"
           :xl="8"
           :lg="24"
           :md="24"
           :sm="24"
           :xs="24">
-          <a-card title="快速开始 / 便捷导航" :style="{marginBottom: gutterMargin}" :bordered="false" :body-style="{padding: 0}">
+          <a-card title="快速开始 / 便捷导航" style="margin-bottom: 24px" :bordered="false" :body-style="{padding: 0}">
             <div class="item-group">
               <a>操作一</a>
               <a>操作二</a>
@@ -96,7 +96,7 @@
           </a-card>
           <a-card
             title="XX 指数"
-            :style="{marginBottom: gutterMargin}"
+            style="margin-bottom: 24px"
             :loading="radarLoading"
             :bordered="false"
             :body-style="{ padding: 0 }">
@@ -108,7 +108,7 @@
           <a-card :loading="loading" title="团队" :bordered="false">
             <div class="members">
               <a-row>
-                <a-col v-for="(item, index) in teams" :key="index" :span="12">
+                <a-col :span="12" v-for="(item, index) in teams" :key="index">
                   <a>
                     <a-avatar size="small" :src="item.avatar"/>
                     <span class="member">{{ item.name }}</span>
@@ -265,7 +265,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
- // @import "./Workplace.less";
+  @import "./Workplace.less";
 
   .project-list {
 
@@ -282,7 +282,7 @@ export default {
         font-size: 14px;
 
         &:hover {
-          color: #1c69d4;
+          color: #1890ff;
         }
       }
     }
@@ -308,7 +308,7 @@ export default {
         flex: 1 1 0;
 
         &:hover {
-          color: #1c69d4;
+          color: #1890ff;
         }
       }
 
@@ -360,7 +360,7 @@ export default {
 
       &:hover {
         span {
-          color: #1c69d4;
+          color: #1890ff;
         }
       }
     }

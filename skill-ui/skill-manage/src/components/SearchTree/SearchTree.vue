@@ -1,29 +1,31 @@
 <template>
   <div>
-    <a-input ref="searchInput" v-model="searchValue" style="margin-bottom: 8px" :placeholder="holderText" @change="handleChange" >
+    <a-input style="margin-bottom: 8px" :placeholder="holderText" v-model="searchValue" @change="handleChange" ref="searchInput" >
       <a-icon slot="prefix" type="search" />
       <a-icon v-if="searchValue" slot="suffix" type="close-circle" @click="emitEmpty" />
     </a-input>
     <a-tree
       v-if="treeData.length>0"
       :treeData="treeData"
-      :expandedKeys="expandedKeysTree"
-      :autoExpandParent="autoExpandParent"
       @expand="onExpand"
+      :expandedKeys="expandedKeys"
+      :autoExpandParent="autoExpandParent"
       @select="handleSelect">
-      <template slot="title" slot-scope="{title,value}" >
-        <span v-if="title.indexOf(searchValue) > -1" @contextmenu.prevent="pop($event,value)">
+      <template slot="title" slot-scope="{title}">
+        <span v-if="title.indexOf(searchValue) > -1">
           {{ title.substr(0, title.indexOf(searchValue)) }}
           <span style="color: red">{{ searchValue }}</span>
           {{ title.substr(title.indexOf(searchValue) + searchValue.length) }}
         </span>
-        <span v-else @contextmenu.prevent="pop($event,value)">{{ title }}</span>
+        <span v-else>{{ title }}</span>
       </template>
     </a-tree>
   </div>
 </template>
+
 <script>
 import { Tree } from 'ant-design-vue'
+
 export default {
   name: 'SearchTree',
   components: {
@@ -60,24 +62,15 @@ export default {
   data () {
     return {
       searchValue: '',
-      autoExpandParent: true,
-      expandedKeysTree: []
+      autoExpandParent: true
     }
   },
   created () {
   },
-  watch: {
-    expandedKeys: {
-      immediate: true,
-      handler: function (val) {
-        this.expandedKeysTree = val
-      }
-    }
-  },
   methods: {
     // 下面是树相关方法
     onExpand  (expandedKeys) {
-      this.expandedKeysTree = expandedKeys
+      this.expandedKeys = expandedKeys
       this.autoExpandParent = false
     },
     emitEmpty () {
@@ -104,7 +97,7 @@ export default {
     },
     searchDept () {
       const value = this.searchValue
-      const expandedKeysTree = this.dataList.map((item) => {
+      const expandedKeys = this.dataList.map((item) => {
         if (item.title.indexOf(value) > -1) {
           const parentKey = this.getParentKey(item.key, this.treeData)
           return parentKey
@@ -112,17 +105,12 @@ export default {
         return null
       }).filter((item, i, self) => item && self.indexOf(item) === i)
       Object.assign(this, {
-        expandedKeysTree,
+        expandedKeys,
         autoExpandParent: true
       })
     },
     handleSelect (selectedKeys, info) {
       this.$emit('select', selectedKeys, info)
-    },
-    // 鼠标右键事件
-    pop (e, value) {
-      // console.log(e, '============' + value)
-      this.$emit('pop', e, value)
     }
   }
 }

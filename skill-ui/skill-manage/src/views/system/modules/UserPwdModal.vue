@@ -1,10 +1,10 @@
 <template>
   <a-modal
-    v-model="visible"
     title="重置密码"
     style="top: 20px;"
     :width="400"
     centered
+    v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
@@ -17,14 +17,14 @@
         :wrapperCol="wrapperCol"
         label="用户名"
       >
-        <a-input v-decorator="['loginName', {rules: [{ required: true, message: '请输入用户名' }]}]" placeholder="用户名" disabled />
+        <a-input placeholder="用户名" disabled v-decorator="['loginName', {rules: [{ required: true, message: '请输入用户名' }]}]" />
       </a-form-item>
       <a-form-item
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="新密码"
       >
-        <a-input v-decorator="['password', {rules: [{ required: true,min:6,max:16, message: '请输入6到16位密码' }]}]" type="password" placeholder="新密码" />
+        <a-input type="password" placeholder="新密码" v-decorator="['password', {rules: [{ required: true,min:6,max:16, message: '请输入6到16位密码' }]}]" />
       </a-form-item>
 
     </a-form>
@@ -83,7 +83,7 @@ export default {
               this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
             this.confirmLoading = false
           })

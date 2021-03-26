@@ -26,10 +26,10 @@
           <a-card :hoverable="true">
             <a-card-meta>
               <a slot="title">{{ item.title }}</a>
-              <a-avatar slot="avatar" class="card-avatar" :src="item.avatar" size="large"/>
-              <div slot="description" class="meta-content">{{ item.content }}</div>
+              <a-avatar class="card-avatar" slot="avatar" :src="item.avatar" size="large"/>
+              <div class="meta-content" slot="description">{{ item.content }}</div>
             </a-card-meta>
-            <template slot="actions" class="ant-card-actions">
+            <template class="ant-card-actions" slot="actions">
               <a>操作一</a>
               <a>操作二</a>
             </template>

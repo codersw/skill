@@ -53,17 +53,17 @@
         </a-select>
       </a-form-item>
       <a-form-item
-        v-show="dataScope"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="拥有权限"
+        v-show="dataScope"
       >
 
         <a-tree
-          v-if="deptTree.length>0"
-          v-model="checkedKeys"
           checkable
           :autoExpandParent="autoExpandParent"
+          v-if="deptTree.length>0"
+          v-model="checkedKeys"
           :treeData="deptTree"
           @check="onCheck"
         >
@@ -141,7 +141,7 @@ export default {
     buildtree (list, arr, parentId) {
       list.forEach(item => {
         if (item.parentId === parentId) {
-          const child = {
+          var child = {
             key: item.deptId + '',
             value: item.deptId + '',
             title: item.deptName,
@@ -163,27 +163,28 @@ export default {
       this.halfCheckedKeys = info.halfCheckedKeys
     },
     handleOk (e) {
+      const _this = this
       // 如果没有check过，半选节点是拿不到的，只能通过预先设置的pidSet获取
-      const checkedAll = this.treeCheck ? this.checkedKeys.concat(this.halfCheckedKeys) : this.checkedKeys.concat(Array.from(this.pidSet))
+      const checkedAll = this.treeCheck ? _this.checkedKeys.concat(_this.halfCheckedKeys) : _this.checkedKeys.concat(Array.from(_this.pidSet))
       // 触发表单验证
       this.form.validateFields((err, values) => {
         // 验证表单没错误
         if (!err) {
           values.deptIds = this.dataScope ? checkedAll : []
-          this.confirmLoading = true
+          _this.confirmLoading = true
           authDataScope(Object.assign(values)).then(res => {
             console.log(res)
             if (res.code === 0) {
-              this.$message.success(this.$t('global.message.save.success'))
-              this.$emit('ok')
-              this.visible = false
+              _this.$message.success('保存成功')
+              _this.$emit('ok')
+              _this.visible = false
             } else {
-              this.$message.success(res.msg)
+              _this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            _this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
-            this.confirmLoading = false
+            _this.confirmLoading = false
           })
         }
       })

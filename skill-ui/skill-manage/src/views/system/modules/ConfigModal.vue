@@ -1,9 +1,9 @@
 <template>
   <a-modal
-    v-model="visible"
     title="操作"
     style="top: 20px;"
     :width="800"
+    v-model="visible"
     :confirmLoading="confirmLoading"
     @ok="handleSubmit"
   >
@@ -16,7 +16,7 @@
         :wrapperCol="wrapperCol"
         label="参数名称"
       >
-        <a-input v-decorator="['configName', {rules: [{ required: true, message: '请输入参数名称' }]}]" placeholder="参数名称" />
+        <a-input placeholder="参数名称" v-decorator="['configName', {rules: [{ required: true, message: '请输入参数名称' }]}]" />
       </a-form-item>
 
       <a-form-item
@@ -24,7 +24,7 @@
         :wrapperCol="wrapperCol"
         label="参数键名"
       >
-        <a-input v-decorator="['configKey', {rules: [{ required: true, message: '请输入参数键名' }]}]" placeholder="参数键名" />
+        <a-input placeholder="参数键名" v-decorator="['configKey', {rules: [{ required: true, message: '请输入参数键名' }]}]" />
       </a-form-item>
 
       <a-form-item
@@ -49,22 +49,22 @@
         :wrapperCol="wrapperCol"
         label="备注"
       >
-        <a-textarea v-decorator="['remark', {rules: [{ required: true, message: '请输入备注' }]}]" :rows="5" placeholder="备注"/>
+        <a-textarea :rows="5" placeholder="备注" v-decorator="['remark', {rules: [{ required: true, message: '请输入备注' }]}]"/>
       </a-form-item>
 
       <a-form-item
-        v-if="mdl.createTime"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="创建时间"
+        v-if="mdl.createTime"
       >
         <span>{{ mdl.createTime }}</span>
       </a-form-item>
       <a-form-item
-        v-if="mdl.updateTime"
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         label="更新时间"
+        v-if="mdl.updateTime"
       >
         <span>{{ mdl.updateTime }}</span>
       </a-form-item>
@@ -126,14 +126,14 @@ export default {
           this.confirmLoading = true
           saveConfig(values).then(res => {
             if (res.code === 0) {
-              this.$message.success(this.$t('global.message.save.success'))
+              this.$message.success('保存成功')
               this.$emit('ok')
               this.visible = false
             } else {
               this.$message.success(res.msg)
             }
           }).catch(() => {
-            this.$message.success(this.$t('global.message.error'))
+            this.$message.error('系统错误，请稍后再试')
           }).finally(() => {
             this.confirmLoading = false
           })

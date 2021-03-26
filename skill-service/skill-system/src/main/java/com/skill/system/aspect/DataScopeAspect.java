@@ -1,18 +1,5 @@
 package com.skill.system.aspect;
 
-import java.lang.reflect.Method;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.skill.common.annotation.DataScope;
 import com.skill.common.constant.Constants;
 import com.skill.common.core.domain.BaseEntity;
@@ -21,8 +8,18 @@ import com.skill.common.utils.ServletUtils;
 import com.skill.common.utils.StringUtils;
 import com.skill.system.domain.SysRole;
 import com.skill.system.domain.SysUser;
-
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 /**
  * 数据过滤处理
@@ -33,23 +30,24 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class DataScopeAspect {
-    @Autowired
-    private RedisUtils         redis;
+
+    @Resource
+    private RedisUtils redis;
 
     /**
      * 全部数据权限
      */
-    public static final String DATA_SCOPE_ALL            = "1";
+    public static final String DATA_SCOPE_ALL = "1";
 
     /**
      * 自定数据权限
      */
-    public static final String DATA_SCOPE_CUSTOM         = "2";
+    public static final String DATA_SCOPE_CUSTOM = "2";
 
     /**
      * 部门数据权限
      */
-    public static final String DATA_SCOPE_DEPT           = "3";
+    public static final String DATA_SCOPE_DEPT = "3";
 
     /**
      * 部门及以下数据权限
@@ -59,12 +57,12 @@ public class DataScopeAspect {
     /**
      * 仅本人数据权限
      */
-    public static final String DATA_SCOPE_SELF           = "5";
+    public static final String DATA_SCOPE_SELF = "5";
 
     /**
      * 数据权限过滤关键字
      */
-    public static final String DATA_SCOPE                = "dataScope";
+    public static final String DATA_SCOPE = "dataScope";
 
     // 配置织入点
     @Pointcut("@annotation(com.skill.common.annotation.DataScope)")
@@ -103,7 +101,7 @@ public class DataScopeAspect {
      * 
      * @param joinPoint 切点
      * @param user 用户
-     * @param alias 别名
+     * @param userAlias 别名
      */
     public static void dataScopeFilter(JoinPoint joinPoint, SysUser user, String deptAlias, String userAlias) {
         StringBuilder sqlString = new StringBuilder();

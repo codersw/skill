@@ -98,7 +98,7 @@ export default {
     },
     updateMenu () {
       const routes = this.$route.matched.concat()
-      this.selectedKeys = [routes.pop().path]
+      this.selectedKeys = [ routes.pop().path ]
       // console.log('selectedKeys', this.selectedKeys)
     },
     i18nRender (key) {

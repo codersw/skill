@@ -1,5 +1,5 @@
 <template>
-  <a-form :form="form" @submit="handleSubmit">
+  <a-form @submit="handleSubmit" :form="form">
     <a-form-item
       label="任务名称"
       :labelCol="labelCol"
@@ -13,9 +13,9 @@
       :wrapperCol="wrapperCol"
     >
       <a-date-picker
-        v-decorator="['startAt', {rules:[{required: true, message: '请选择开始时间'}]}]"
         style="width: 100%"
         valueFormat="YYYY-MM-DD HH:mm"
+        v-decorator="['startAt', {rules:[{required: true, message: '请选择开始时间'}]}]"
       />
     </a-form-item>
     <a-form-item

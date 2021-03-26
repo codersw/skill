@@ -10,10 +10,10 @@
         :style="{width: setSize.imgWidth,
                  height: setSize.imgHeight,}">
         <img :src="'data:image/png;base64,'+backImgBase" alt="" style="width:100%;height:100%;display:block">
-        <div v-show="showRefresh" class="verify-refresh" @click="refresh"><i class="iconfont icon-refresh"></i>
+        <div class="verify-refresh" @click="refresh" v-show="showRefresh"><i class="iconfont icon-refresh"></i>
         </div>
         <transition name="tips">
-          <span v-if="tipWords" class="verify-tips" :class="passFlag ?'suc-bg':'err-bg'">{{ tipWords }}</span>
+          <span class="verify-tips" v-if="tipWords" :class="passFlag ?'suc-bg':'err-bg'">{{ tipWords }}</span>
         </transition>
       </div>
     </div>
@@ -30,9 +30,9 @@
         <span class="verify-msg" v-text="finishText"></span>
         <div
           class="verify-move-block"
-          :style="{width: barSize.height, height: barSize.height, 'background-color': moveBlockBackgroundColor, left: moveBlockLeft, transition: transitionLeft}"
           @touchstart="start"
-          @mousedown="start">
+          @mousedown="start"
+          :style="{width: barSize.height, height: barSize.height, 'background-color': moveBlockBackgroundColor, left: moveBlockLeft, transition: transitionLeft}">
           <i
             :class="['verify-icon iconfont', iconClass]"
             :style="{color: iconColor}"></i>
@@ -164,39 +164,41 @@ export default {
         this.$parent.$emit('ready', this)
       })
 
-      window.removeEventListener('touchmove', (e) => {
-        this.move(e)
+      var _this = this
+
+      window.removeEventListener('touchmove', function (e) {
+        _this.move(e)
       })
-      window.removeEventListener('mousemove', (e) => {
-        this.move(e)
+      window.removeEventListener('mousemove', function (e) {
+        _this.move(e)
       })
 
       // 鼠标松开
-      window.removeEventListener('touchend', () => {
-        this.end()
+      window.removeEventListener('touchend', function () {
+        _this.end()
       })
-      window.removeEventListener('mouseup', () => {
-        this.end()
+      window.removeEventListener('mouseup', function () {
+        _this.end()
       })
 
-      window.addEventListener('touchmove', (e) => {
-        this.move(e)
+      window.addEventListener('touchmove', function (e) {
+        _this.move(e)
       })
-      window.addEventListener('mousemove', (e) => {
-        this.move(e)
+      window.addEventListener('mousemove', function (e) {
+        _this.move(e)
       })
 
       // 鼠标松开
-      window.addEventListener('touchend', () => {
-        this.end()
+      window.addEventListener('touchend', function () {
+        _this.end()
       })
-      window.addEventListener('mouseup', () => {
-        this.end()
+      window.addEventListener('mouseup', function () {
+        _this.end()
       })
     },
 
     // 鼠标按下
-    start (e) {
+    start: function (e) {
       e = e || window.event
       let x
       if (!e.touches) { // 兼容PC端
@@ -216,7 +218,7 @@ export default {
       }
     },
     // 鼠标移动
-    move (e) {
+    move: function (e) {
       e = e || window.event
       if (this.status && this.isEnd === false) {
         let x
@@ -240,11 +242,12 @@ export default {
     },
 
     // 鼠标松开
-    end () {
+    end: function () {
       this.endMovetime = +new Date()
+      var _this = this
       // 判断是否重合
       if (this.status && this.isEnd === false) {
-        let moveLeftDistance = parseInt((this.moveBlockLeft || '').replace('px', ''))
+        var moveLeftDistance = parseInt((this.moveBlockLeft || '').replace('px', ''))
         moveLeftDistance = moveLeftDistance * 310 / parseInt(this.setSize.imgWidth)
         const data = {
           captchaType: this.captchaType,
@@ -267,7 +270,7 @@ export default {
             // }
             this.passFlag = true
             this.tipWords = `${((this.endMovetime - this.startMoveTime) / 1000).toFixed(2)}s验证成功`
-            const captchaVerification = this.secretKey ? aesEncrypt(this.backToken + '---' + JSON.stringify({ x: moveLeftDistance, y: 5.0 }), this.secretKey) : this.backToken + '---' + JSON.stringify({ x: moveLeftDistance, y: 5.0 })
+            var captchaVerification = this.secretKey ? aesEncrypt(this.backToken + '---' + JSON.stringify({ x: moveLeftDistance, y: 5.0 }), this.secretKey) : this.backToken + '---' + JSON.stringify({ x: moveLeftDistance, y: 5.0 })
             setTimeout(() => {
               this.tipWords = ''
               this.$parent.closeBox()
@@ -279,8 +282,8 @@ export default {
             this.iconColor = '#fff'
             this.iconClass = 'icon-close'
             this.passFlag = false
-            setTimeout(() => {
-              this.refresh()
+            setTimeout(function () {
+              _this.refresh()
             }, 1000)
             this.$parent.$emit('error', this)
             this.tipWords = '验证失败'
@@ -293,7 +296,7 @@ export default {
       }
     },
 
-    refresh () {
+    refresh: function () {
       this.showRefresh = true
       this.finishText = ''
 
@@ -345,7 +348,7 @@ export default {
   },
   mounted () {
     // 禁止拖拽
-    this.$el.onselectstart = () => {
+    this.$el.onselectstart = function () {
       return false
     }
   }

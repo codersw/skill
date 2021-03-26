@@ -5,17 +5,12 @@ import moment from 'moment'
 
 // default lang
 import enUS from './lang/en-US'
-import zhCN from './lang/zh-CN'
 
 Vue.use(VueI18n)
 
-// export const defaultLang = 'en-US'
-export const defaultLang = 'zh-CN'
+export const defaultLang = 'en-US'
 
 const messages = {
-  'zh-CN': {
-    ...zhCN
-  },
   'en-US': {
     ...enUS
   }
@@ -48,8 +43,8 @@ export function loadLanguageAsync (lang = defaultLang) {
           i18n.setLocaleMessage(lang, locale)
           loadedLanguages.push(lang)
           // 这里用的是cdn的方法，下面为非cdn方式
-          // moment.locale(locale.momentName)
-          moment.updateLocale(locale.momentName, locale.momentLocale)
+          moment.locale(locale.momentName)
+          // moment.updateLocale(locale.momentName, locale.momentLocale)
           return setI18nLanguage(lang)
         })
       }

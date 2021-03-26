@@ -44,11 +44,11 @@ export default {
         this.currentLimit = len
         this.$emit('change', value)
         return
-      }
+      } else {
         const str = cutStrByFullLength(value, this.limit)
         this.currentLimit = getStrFullLength(str)
         this.$emit('change', str)
-
+      }
       console.error('limit out! currentLimit:', this.currentLimit)
     },
     calcLimitNum (val) {

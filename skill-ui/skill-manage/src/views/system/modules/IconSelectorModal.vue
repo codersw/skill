@@ -1,10 +1,10 @@
 <template>
   <a-modal
-    v-model="visible"
     title="操作"
     style="top: 20px;"
     :width="800"
     :footer="null"
+    v-model="visible"
   >
     <icon-selector @change="handleIconChange"/>
   </a-modal>
