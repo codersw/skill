@@ -29,48 +29,6 @@ public class SysLoginService {
     /**
      * 登录
      */
-//    public SysUser login(String username) {
-//        // 查询用户信息
-//        SysUser user = userService.selectSysUserByUsername(username);
-//        if (user == null) {
-//            PublishFactory.recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.not.exists"));
-//            throw new UserNotExistsException();
-//        }
-//        if (UserStatus.DELETED.getCode().equals(user.getDelFlag())) {
-//            PublishFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-//                    MessageUtils.message("user.password.delete"));
-//            throw new UserDeleteException();
-//        }
-//        if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-//            PublishFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-//                    MessageUtils.message("user.blocked", user.getRemark()));
-//            throw new UserBlockedException();
-//        }
-//        PublishFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));
-//        recordLoginInfo(user);
-//        return user;
-//    }
-    public SysUser login(SysUser user) {
-        String username = user.getLoginName();
-//        if (UserStatus.DELETED.getCode().equals(user.getDelFlag())) {
-//            PublishFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-//                    MessageUtils.message("user.password.delete"));
-//            throw new UserDeleteException();
-//        }
-//        if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-//            PublishFactory.recordLogininfor(username, Constants.LOGIN_FAIL,
-//                    MessageUtils.message("user.blocked", user.getRemark()));
-//            throw new UserBlockedException();
-//        }
-        PublishFactory.recordLogininfor(username, Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));
-        recordLoginInfo(user);
-        return user;
-    }
-
-
-    /**
-     * 登录
-     */
     public SysUser login(String username, String password) {
         // 验证码校验
         // if

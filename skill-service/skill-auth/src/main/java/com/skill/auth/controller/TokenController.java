@@ -15,8 +15,7 @@ import com.skill.common.core.domain.R;
 import com.skill.system.domain.SysUser;
 
 @RestController
-public class TokenController
-{
+public class TokenController {
     @Autowired
     private AccessTokenService tokenService;
 
@@ -27,8 +26,7 @@ public class TokenController
     private CaptchaService     captchaService;
 
     @PostMapping("login")
-    public R login(@RequestBody LoginForm form)
-    {
+    public R login(@RequestBody LoginForm form) {
         // 用户登录
         SysUser user = sysLoginService.login(form.getUsername(), form.getPassword());
         // 获取登录token
@@ -36,13 +34,11 @@ public class TokenController
     }
 
     @PostMapping("login/slide")
-    public R loginSilde(@RequestBody LoginForm form)
-    {
+    public R loginSilde(@RequestBody LoginForm form) {
         //ResponseModel response = captchaService.verification(form.getCaptchaVO());
         // 用户登录
         SysUser user = sysLoginService.login(form.getUsername(), form.getPassword());
-        if (user!=null)
-        {
+        if (user!=null) {
             return R.ok(tokenService.createToken(user));
         }else{
             return R.error();
@@ -50,12 +46,10 @@ public class TokenController
     }
 
     @PostMapping("logout")
-    public R logout(HttpServletRequest request)
-    {
+    public R logout(HttpServletRequest request) {
         String token = request.getHeader("token");
         SysUser user = tokenService.queryByToken(token);
-        if (null != user)
-        {
+        if (null != user) {
             sysLoginService.logout(user.getLoginName());
             tokenService.expireToken(user.getUserId());
         }

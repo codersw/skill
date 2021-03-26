@@ -6,17 +6,18 @@ import com.skill.common.redis.annotation.RedisEvict;
 import com.skill.common.redis.util.RedisUtils;
 import com.skill.system.domain.SysUser;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service("accessTokenService")
 public class AccessTokenService {
 
-    @Autowired
+    @Resource
     private RedisUtils redis;
+
     /**
      * 12小时后过期
      */
@@ -26,8 +27,7 @@ public class AccessTokenService {
 
     private final static String ACCESS_USERID = Constants.ACCESS_USERID;
 
-    public SysUser queryByToken(String token)
-    {
+    public SysUser queryByToken(String token) {
         return redis.get(ACCESS_TOKEN + token, SysUser.class);
     }
 
