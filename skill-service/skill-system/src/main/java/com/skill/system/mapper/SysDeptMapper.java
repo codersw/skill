@@ -9,10 +9,9 @@ import com.skill.system.domain.SysDept;
 /**
  * 部门管理 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysDeptMapper
-{
+public interface SysDeptMapper {
     /**
      * 查询部门人数
      * 
@@ -112,7 +111,7 @@ public interface SysDeptMapper
      * 根据角色编号查询所有部门ID
      * @param roleId
      * @return
-     * @author zy
+     * @author swen
      */
     public Set<String> selectRoleDeptIds(Long roleId);
 }

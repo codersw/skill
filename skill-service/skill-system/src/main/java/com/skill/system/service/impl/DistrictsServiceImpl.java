@@ -12,12 +12,11 @@ import java.util.List;
 /**
  * 地区 服务层实现
  * 
- * @author zy
+ * @author swen
  * @date 2018-12-19
  */
 @Service
-public class DistrictsServiceImpl implements IDistrictsService 
-{
+public class DistrictsServiceImpl implements IDistrictsService  {
 	@Autowired
 	private DistrictsMapper districtsMapper;
 
@@ -28,8 +27,7 @@ public class DistrictsServiceImpl implements IDistrictsService
      * @return 地区信息
      */
     @Override
-	public Districts selectDistrictsById(Integer id)
-	{
+	public Districts selectDistrictsById(Integer id) {
 	    return districtsMapper.selectDistrictsById(id);
 	}
 	
@@ -40,8 +38,7 @@ public class DistrictsServiceImpl implements IDistrictsService
      * @return 地区集合
      */
 	@Override
-	public List<Districts> selectDistrictsList(Districts districts)
-	{
+	public List<Districts> selectDistrictsList(Districts districts) {
 	    return districtsMapper.selectDistrictsList(districts);
 	}
 	
@@ -52,8 +49,7 @@ public class DistrictsServiceImpl implements IDistrictsService
      * @return 结果
      */
 	@Override
-	public int insertDistricts(Districts districts)
-	{
+	public int insertDistricts(Districts districts) {
 	    return districtsMapper.insertDistricts(districts);
 	}
 	
@@ -64,8 +60,7 @@ public class DistrictsServiceImpl implements IDistrictsService
      * @return 结果
      */
 	@Override
-	public int updateDistricts(Districts districts)
-	{
+	public int updateDistricts(Districts districts) {
 	    return districtsMapper.updateDistricts(districts);
 	}
 
@@ -76,8 +71,7 @@ public class DistrictsServiceImpl implements IDistrictsService
      * @return 结果
      */
 	@Override
-	public int deleteDistrictsByIds(String ids)
-	{
+	public int deleteDistrictsByIds(String ids) {
 		return districtsMapper.deleteDistrictsByIds(Convert.toStrArray(ids));
 	}
 	

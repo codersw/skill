@@ -6,10 +6,9 @@ import com.skill.system.domain.SysConfig;
 /**
  * 参数配置 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysConfigMapper
-{
+public interface SysConfigMapper {
     /**
      * 查询参数配置信息
      * 

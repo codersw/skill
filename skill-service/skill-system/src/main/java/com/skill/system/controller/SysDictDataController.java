@@ -21,14 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * 字典数据 提供者
  * 
- * @author zy
+ * @author swen
  * @date 2019-05-20
  */
 @Slf4j
 @RestController
 @RequestMapping("dict/data")
-public class SysDictDataController extends BaseController
-{
+public class SysDictDataController extends BaseController {
 	
 	@Autowired
 	private ISysDictDataService sysDictDataService;
@@ -37,8 +36,7 @@ public class SysDictDataController extends BaseController
 	 * 查询字典数据
 	 */
 	@GetMapping("get/{dictCode}")
-	public SysDictData get(@PathVariable("dictCode") Long dictCode)
-	{
+	public SysDictData get(@PathVariable("dictCode") Long dictCode) {
 		return sysDictDataService.selectDictDataById(dictCode);
 		
 	}
@@ -48,8 +46,7 @@ public class SysDictDataController extends BaseController
 	 */
 	@GetMapping("list")
 	@HasPermissions("system:dict:list")
-	public R list(SysDictData sysDictData)
-	{
+	public R list(SysDictData sysDictData) {
 		startPage();
         return result(sysDictDataService.selectDictDataList(sysDictData));
 	}
@@ -61,8 +58,7 @@ public class SysDictDataController extends BaseController
      * @return 参数键值
      */
 	@GetMapping("type")
-    public List<SysDictData> getType(String dictType)
-    {
+    public List<SysDictData> getType(String dictType) {
         return sysDictDataService.selectDictDataByType(dictType);
     }
 
@@ -74,8 +70,7 @@ public class SysDictDataController extends BaseController
      * @return 字典标签
      */
 	@GetMapping("label")
-    public String getLabel(String dictType, String dictValue)
-    {
+    public String getLabel(String dictType, String dictValue) {
         return sysDictDataService.selectDictLabel(dictType, dictValue);
     }
 	
@@ -86,8 +81,7 @@ public class SysDictDataController extends BaseController
 	@OperLog(title = "字典数据", businessType = BusinessType.INSERT)
     @HasPermissions("system:dict:add")
 	@PostMapping("save")
-	public R addSave(@RequestBody SysDictData sysDictData)
-	{		
+	public R addSave(@RequestBody SysDictData sysDictData) {
 		return toAjax(sysDictDataService.insertDictData(sysDictData));
 	}
 
@@ -97,8 +91,7 @@ public class SysDictDataController extends BaseController
 	@OperLog(title = "字典数据", businessType = BusinessType.UPDATE)
     @HasPermissions("system:dict:edit")
 	@PostMapping("update")
-	public R editSave(@RequestBody SysDictData sysDictData)
-	{		
+	public R editSave(@RequestBody SysDictData sysDictData) {
 		return toAjax(sysDictDataService.updateDictData(sysDictData));
 	}
 	
@@ -108,8 +101,7 @@ public class SysDictDataController extends BaseController
 	@OperLog(title = "字典数据", businessType = BusinessType.DELETE)
     @HasPermissions("system:dict:remove")
 	@PostMapping("remove")
-	public R remove(String ids)
-	{		
+	public R remove(String ids) {
 		return toAjax(sysDictDataService.deleteDictDataByIds(ids));
 	}
 

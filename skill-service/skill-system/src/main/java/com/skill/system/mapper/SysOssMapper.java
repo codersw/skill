@@ -6,6 +6,5 @@ import com.skill.system.domain.SysOss;
 /**
  * 文件上传
  */
-public interface SysOssMapper extends BaseMapper<SysOss>
-{
+public interface SysOssMapper extends BaseMapper<SysOss> {
 }

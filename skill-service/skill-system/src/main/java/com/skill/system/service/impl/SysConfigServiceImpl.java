@@ -15,11 +15,10 @@ import com.skill.system.service.ISysConfigService;
 /**
  * 参数配置 服务层实现
  * 
- * @author zy
+ * @author swen
  */
 @Service
-public class SysConfigServiceImpl implements ISysConfigService
-{
+public class SysConfigServiceImpl implements ISysConfigService {
     @Autowired
     private SysConfigMapper configMapper;
 
@@ -30,8 +29,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 参数配置信息
      */
     @Override
-    public SysConfig selectConfigById(Long configId)
-    {
+    public SysConfig selectConfigById(Long configId) {
         SysConfig config = new SysConfig();
         config.setConfigId(configId);
         return configMapper.selectConfig(config);
@@ -44,8 +42,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 参数键值
      */
     @Override
-    public String selectConfigByKey(String configKey)
-    {
+    public String selectConfigByKey(String configKey) {
         SysConfig config = new SysConfig();
         config.setConfigKey(configKey);
         SysConfig retConfig = configMapper.selectConfig(config);
@@ -59,8 +56,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 参数配置集合
      */
     @Override
-    public List<SysConfig> selectConfigList(SysConfig config)
-    {
+    public List<SysConfig> selectConfigList(SysConfig config) {
         return configMapper.selectConfigList(config);
     }
 
@@ -71,8 +67,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 结果
      */
     @Override
-    public int insertConfig(SysConfig config)
-    {
+    public int insertConfig(SysConfig config) {
         return configMapper.insertConfig(config);
     }
 
@@ -83,8 +78,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 结果
      */
     @Override
-    public int updateConfig(SysConfig config)
-    {
+    public int updateConfig(SysConfig config) {
         return configMapper.updateConfig(config);
     }
 
@@ -95,8 +89,7 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 结果
      */
     @Override
-    public int deleteConfigByIds(String ids)
-    {
+    public int deleteConfigByIds(String ids) {
         return configMapper.deleteConfigByIds(Convert.toStrArray(ids));
     }
 
@@ -107,12 +100,10 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @return 结果
      */
     @Override
-    public String checkConfigKeyUnique(SysConfig config)
-    {
+    public String checkConfigKeyUnique(SysConfig config) {
         Long configId = StringUtils.isNull(config.getConfigId()) ? -1L : config.getConfigId();
         SysConfig info = configMapper.checkConfigKeyUnique(config.getConfigKey());
-        if (StringUtils.isNotNull(info) && info.getConfigId().longValue() != configId.longValue())
-        {
+        if (StringUtils.isNotNull(info) && info.getConfigId().longValue() != configId.longValue()) {
             return UserConstants.CONFIG_KEY_NOT_UNIQUE;
         }
         return UserConstants.CONFIG_KEY_UNIQUE;
@@ -122,11 +113,9 @@ public class SysConfigServiceImpl implements ISysConfigService
      * @see com.skill.system.service.ISysConfigService#updateValueByKey(java.lang.String, java.lang.String)
      */
     @Override
-    public int updateValueByKey(String key, String configValue)
-    {
+    public int updateValueByKey(String key, String configValue) {
         SysConfig info = configMapper.checkConfigKeyUnique(key);
-        if (StringUtils.isNotNull(info))
-        {
+        if (StringUtils.isNotNull(info)) {
             info.setConfigValue(configValue);
             return updateConfig(info);
         }

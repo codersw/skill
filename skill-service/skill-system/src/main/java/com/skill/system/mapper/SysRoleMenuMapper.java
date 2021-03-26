@@ -6,10 +6,9 @@ import com.skill.system.domain.SysRoleMenu;
 /**
  * 角色与菜单关联表 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysRoleMenuMapper
-{
+public interface SysRoleMenuMapper {
     /**
      * 通过角色ID删除角色和菜单关联
      * 

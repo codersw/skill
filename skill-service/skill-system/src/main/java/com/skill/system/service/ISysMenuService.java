@@ -11,10 +11,9 @@ import com.skill.system.domain.SysUser;
 /**
  * 菜单 业务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysMenuService
-{
+public interface ISysMenuService {
     /**
      * 根据用户ID查询菜单
      * 

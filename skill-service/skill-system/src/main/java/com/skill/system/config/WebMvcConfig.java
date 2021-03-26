@@ -13,14 +13,12 @@ import com.skill.system.resolver.LoginUserHandlerResolver;
  * MVC配置
  */
 @Configuration
-public class WebMvcConfig implements WebMvcConfigurer
-{
+public class WebMvcConfig implements WebMvcConfigurer {
     @Autowired
     private LoginUserHandlerResolver loginUserHandlerResolver;
 
     @Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers)
-    {
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(loginUserHandlerResolver);
     }
 }

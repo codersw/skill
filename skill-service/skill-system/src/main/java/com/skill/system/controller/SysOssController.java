@@ -34,12 +34,11 @@ import com.skill.system.service.ISysOssService;
 
 /**
  * 文件上传 提供者
- * @author zy
+ * @author swen
  */
 @RestController
 @RequestMapping("oss")
-public class SysOssController extends BaseController
-{
+public class SysOssController extends BaseController {
     private final static String KEY = CloudConstant.CLOUD_STORAGE_CONFIG_KEY;
 
     @Autowired
@@ -53,8 +52,7 @@ public class SysOssController extends BaseController
      */
     @RequestMapping("config")
     @HasPermissions("sys:oss:config")
-    public CloudStorageConfig config()
-    {
+    public CloudStorageConfig config() {
         String jsonconfig = sysConfigService.selectConfigByKey(CloudConstant.CLOUD_STORAGE_CONFIG_KEY);
         // 获取云存储配置信息
         CloudStorageConfig config = JSON.parseObject(jsonconfig, CloudStorageConfig.class);
@@ -66,22 +64,18 @@ public class SysOssController extends BaseController
      */
     @RequestMapping("saveConfig")
     @HasPermissions("sys:oss:config")
-    public R saveConfig(CloudStorageConfig config)
-    {
+    public R saveConfig(CloudStorageConfig config) {
         // 校验类型
         ValidatorUtils.validateEntity(config);
-        if (config.getType() == CloudService.QINIU.getValue())
-        {
+        if (config.getType() == CloudService.QINIU.getValue()) {
             // 校验七牛数据
             ValidatorUtils.validateEntity(config, QiniuGroup.class);
         }
-        else if (config.getType() == CloudService.ALIYUN.getValue())
-        {
+        else if (config.getType() == CloudService.ALIYUN.getValue()) {
             // 校验阿里云数据
             ValidatorUtils.validateEntity(config, AliyunGroup.class);
         }
-        else if (config.getType() == CloudService.QCLOUD.getValue())
-        {
+        else if (config.getType() == CloudService.QCLOUD.getValue()) {
             // 校验腾讯云数据
             ValidatorUtils.validateEntity(config, QcloudGroup.class);
         }
@@ -92,8 +86,7 @@ public class SysOssController extends BaseController
      * 查询文件上传
      */
     @GetMapping("get/{id}")
-    public SysOss get(@PathVariable("id") Long id)
-    {
+    public SysOss get(@PathVariable("id") Long id) {
         return sysOssService.selectSysOssById(id);
     }
 
@@ -101,8 +94,7 @@ public class SysOssController extends BaseController
      * 查询文件上传列表
      */
     @GetMapping("list")
-    public R list(SysOss sysOss)
-    {
+    public R list(SysOss sysOss) {
         startPage();
         return result(sysOssService.selectSysOssList(sysOss));
     }
@@ -112,8 +104,7 @@ public class SysOssController extends BaseController
      */
     @PostMapping("update")
     @HasPermissions("sys:oss:edit")
-    public R editSave(@RequestBody SysOss sysOss)
-    {
+    public R editSave(@RequestBody SysOss sysOss) {
         return toAjax(sysOssService.updateSysOss(sysOss));
     }
 
@@ -123,10 +114,8 @@ public class SysOssController extends BaseController
      */
     @PostMapping("upload")
     @HasPermissions("sys:oss:add")
-    public R editSave(@RequestParam("file") MultipartFile file) throws IOException
-    {
-        if (file.isEmpty())
-        {
+    public R editSave(@RequestParam("file") MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
             throw new OssException("上传文件不能为空");
         }
         // 上传文件
@@ -150,8 +139,7 @@ public class SysOssController extends BaseController
      */
     @PostMapping("remove")
     @HasPermissions("sys:oss:remove")
-    public R remove(String ids)
-    {
+    public R remove(String ids) {
         return toAjax(sysOssService.deleteSysOssByIds(ids));
     }
 }

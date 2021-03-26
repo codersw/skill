@@ -6,10 +6,9 @@ import com.skill.system.domain.SysDictType;
 /**
  * 字典 业务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysDictTypeService
-{
+public interface ISysDictTypeService {
     /**
      * 根据条件分页查询字典类型
      * 

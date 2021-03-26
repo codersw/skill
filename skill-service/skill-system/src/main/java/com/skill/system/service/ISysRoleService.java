@@ -8,10 +8,9 @@ import com.skill.system.domain.SysUserRole;
 /**
  * 角色业务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysRoleService
-{
+public interface ISysRoleService {
     /**
      * 根据条件分页查询角色数据
      * 

@@ -6,10 +6,9 @@ import com.skill.system.domain.SysUserOnline;
 /**
  * 在线用户 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysUserOnlineMapper
-{
+public interface SysUserOnlineMapper {
     /**
      * 通过会话序号查询信息
      * 

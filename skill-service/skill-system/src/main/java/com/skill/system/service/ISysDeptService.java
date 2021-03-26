@@ -10,10 +10,9 @@ import com.skill.system.domain.SysRole;
 /**
  * 部门管理 服务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysDeptService
-{
+public interface ISysDeptService {
     /**
      * 查询部门管理数据
      * 

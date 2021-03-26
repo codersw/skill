@@ -9,10 +9,9 @@ import com.skill.system.domain.SysDictData;
 /**
  * 字典表 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysDictDataMapper
-{
+public interface SysDictDataMapper {
     /**
      * 根据条件分页查询字典数据
      * 

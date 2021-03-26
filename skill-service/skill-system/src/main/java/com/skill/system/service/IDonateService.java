@@ -8,8 +8,7 @@ import java.util.List;
  * 捐赠 服务层
  * 
  */
-public interface IDonateService
-{
+public interface IDonateService {
     /**
      * 查询捐赠列表
      * 

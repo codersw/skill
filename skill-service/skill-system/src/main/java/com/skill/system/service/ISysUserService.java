@@ -8,10 +8,9 @@ import com.skill.system.domain.SysUser;
 /**
  * 用户 业务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysUserService
-{
+public interface ISysUserService {
     /**
      * 根据条件分页查询用户列表
      * 
@@ -182,7 +181,7 @@ public interface ISysUserService
      * 查询拥有当前角色的所有用户
      * @param roleId
      * @return
-     * @author zy
+     * @author swen
      */
     public Set<Long> selectUserIdsHasRoles(Long[] roleIds);
 
@@ -190,7 +189,7 @@ public interface ISysUserService
      * 查询所有当前部门中的用户
      * @param deptId
      * @return
-     * @author zy
+     * @author swen
      */
     public Set<Long> selectUserIdsInDepts(Long[] deptIds);
 }

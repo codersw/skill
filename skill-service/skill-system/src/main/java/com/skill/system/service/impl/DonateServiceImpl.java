@@ -24,34 +24,28 @@ import tk.mybatis.mapper.entity.Example.Criteria;
  * <p>Description:</p>
  * <p>Copyright: Copyright (c) 2019 2019年12月20日 下午2:13:36</p>
  * <p>Company: zmrit.com </p>
- * @author zy
+ * @author swen
  * @version 1.0
  */
 @Service
-public class DonateServiceImpl implements IDonateService
-{
+public class DonateServiceImpl implements IDonateService {
     @Autowired
     private DonateMapper donateMapper;
 
     @Override
-    public List<Donate> selectDistrictsList(Donate donate)
-    {
+    public List<Donate> selectDistrictsList(Donate donate) {
         Example example = new Example(Donate.class);
         Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(donate.getNick()))
-        {
+        if (StringUtils.isNotBlank(donate.getNick())) {
             criteria.andLike("nick", "%" + donate.getNick() + "%");
         }
-        if (null != donate.getCanal())
-        {
+        if (null != donate.getCanal()) {
             criteria.andEqualTo("canal", donate.getCanal());
         }
-        if (StringUtils.isNotBlank(donate.getBeginTime()))
-        {
+        if (StringUtils.isNotBlank(donate.getBeginTime())) {
             criteria.andGreaterThanOrEqualTo("createTime", donate.getBeginTime());
         }
-        if (StringUtils.isNotBlank(donate.getEndTime()))
-        {
+        if (StringUtils.isNotBlank(donate.getEndTime())) {
             criteria.andLessThanOrEqualTo("createTime", donate.getEndTime());
         }
         return donateMapper.selectByExample(example);

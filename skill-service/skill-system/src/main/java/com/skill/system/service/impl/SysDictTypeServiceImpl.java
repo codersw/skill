@@ -16,11 +16,10 @@ import com.skill.system.service.ISysDictTypeService;
 /**
  * 字典 业务层处理
  * 
- * @author zy
+ * @author swen
  */
 @Service
-public class SysDictTypeServiceImpl implements ISysDictTypeService
-{
+public class SysDictTypeServiceImpl implements ISysDictTypeService {
     @Autowired
     private SysDictTypeMapper dictTypeMapper;
 
@@ -34,8 +33,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 字典类型集合信息
      */
     @Override
-    public List<SysDictType> selectDictTypeList(SysDictType dictType)
-    {
+    public List<SysDictType> selectDictTypeList(SysDictType dictType) {
         return dictTypeMapper.selectDictTypeList(dictType);
     }
 
@@ -45,8 +43,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 字典类型集合信息
      */
     @Override
-    public List<SysDictType> selectDictTypeAll()
-    {
+    public List<SysDictType> selectDictTypeAll() {
         return dictTypeMapper.selectDictTypeAll();
     }
 
@@ -57,8 +54,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 字典类型
      */
     @Override
-    public SysDictType selectDictTypeById(Long dictId)
-    {
+    public SysDictType selectDictTypeById(Long dictId) {
         return dictTypeMapper.selectDictTypeById(dictId);
     }
 
@@ -69,8 +65,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 结果
      */
     @Override
-    public int deleteDictTypeById(Long dictId)
-    {
+    public int deleteDictTypeById(Long dictId) {
         return dictTypeMapper.deleteDictTypeById(dictId);
     }
 
@@ -81,14 +76,11 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 结果
      */
     @Override
-    public int deleteDictTypeByIds(String ids) throws BusinessException
-    {
+    public int deleteDictTypeByIds(String ids) throws BusinessException {
         Long[] dictIds = Convert.toLongArray(ids);
-        for (Long dictId : dictIds)
-        {
+        for (Long dictId : dictIds) {
             SysDictType dictType = selectDictTypeById(dictId);
-            if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0)
-            {
+            if (dictDataMapper.countDictDataByType(dictType.getDictType()) > 0) {
                 throw new BusinessException(String.format("%1$s已分配,不能删除", dictType.getDictName()));
             }
         }
@@ -103,8 +95,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 结果
      */
     @Override
-    public int insertDictType(SysDictType dictType)
-    {
+    public int insertDictType(SysDictType dictType) {
         return dictTypeMapper.insertDictType(dictType);
     }
 
@@ -116,8 +107,7 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      */
     @Override
     @Transactional
-    public int updateDictType(SysDictType dictType)
-    {
+    public int updateDictType(SysDictType dictType) {
         SysDictType oldDict = dictTypeMapper.selectDictTypeById(dictType.getDictId());
         dictDataMapper.updateDictDataType(oldDict.getDictType(), dictType.getDictType());
         return dictTypeMapper.updateDictType(dictType);
@@ -130,12 +120,10 @@ public class SysDictTypeServiceImpl implements ISysDictTypeService
      * @return 结果
      */
     @Override
-    public String checkDictTypeUnique(SysDictType dict)
-    {
+    public String checkDictTypeUnique(SysDictType dict) {
         Long dictId = StringUtils.isNull(dict.getDictId()) ? -1L : dict.getDictId();
         SysDictType dictType = dictTypeMapper.checkDictTypeUnique(dict.getDictType());
-        if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue())
-        {
+        if (StringUtils.isNotNull(dictType) && dictType.getDictId().longValue() != dictId.longValue()) {
             return UserConstants.DICT_TYPE_NOT_UNIQUE;
         }
         return UserConstants.DICT_TYPE_UNIQUE;

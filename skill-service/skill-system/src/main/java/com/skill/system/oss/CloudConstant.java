@@ -1,7 +1,6 @@
 package com.skill.system.oss;
 
-public class CloudConstant
-{
+public class CloudConstant {
     /**
      * 云存储配置KEY
      */
@@ -10,8 +9,7 @@ public class CloudConstant
     /**
        * 云服务商
        */
-    public enum CloudService
-    {
+    public enum CloudService {
         /**
          * 七牛云
          */
@@ -26,13 +24,11 @@ public class CloudConstant
         QCLOUD(3);
         private int value;
 
-        CloudService(int value)
-        {
+        CloudService(int value) {
             this.value = value;
         }
 
-        public int getValue()
-        {
+        public int getValue() {
             return value;
         }
     }

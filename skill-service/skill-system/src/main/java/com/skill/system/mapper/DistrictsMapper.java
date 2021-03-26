@@ -6,11 +6,10 @@ import java.util.List;
 /**
  * 地区 数据层
  * 
- * @author zy
+ * @author swen
  * @date 2018-12-19
  */
-public interface DistrictsMapper 
-{
+public interface DistrictsMapper  {
 	/**
      * 查询地区信息
      * 

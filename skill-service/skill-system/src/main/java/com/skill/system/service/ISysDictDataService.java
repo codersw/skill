@@ -7,10 +7,9 @@ import com.skill.system.vo.DictModel;
 /**
  * 字典 业务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysDictDataService
-{
+public interface ISysDictDataService {
     /**
      * 根据条件分页查询字典数据
      * 

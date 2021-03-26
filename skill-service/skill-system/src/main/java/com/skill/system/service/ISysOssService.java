@@ -6,11 +6,10 @@ import java.util.List;
 /**
  * 文件上传 服务层
  * 
- * @author zy
+ * @author swen
  * @date 2019-05-16
  */
-public interface ISysOssService 
-{
+public interface ISysOssService  {
 	/**
      * 查询文件上传信息
      * 

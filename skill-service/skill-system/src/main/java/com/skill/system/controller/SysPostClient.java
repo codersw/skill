@@ -16,12 +16,11 @@ import com.skill.system.service.ISysPostService;
 /**
  * 岗位 提供者
  *
- * @author zy
+ * @author swen
  */
 @RestController
 @RequestMapping("/sys/sysPost")
-public class SysPostClient extends BaseController
-{
+public class SysPostClient extends BaseController {
 	
 	@Autowired
 	private ISysPostService sysPostService;
@@ -30,8 +29,7 @@ public class SysPostClient extends BaseController
 	 * 查询岗位
 	 */
 	@GetMapping("get/{postId}")
-	public SysPost get(@PathVariable("postId") Long postId)
-	{
+	public SysPost get(@PathVariable("postId") Long postId) {
 		return sysPostService.selectPostById(postId);
 		
 	}
@@ -40,8 +38,7 @@ public class SysPostClient extends BaseController
 	 * 查询岗位列表
 	 */
 	@PostMapping("list")
-	public List<SysPost> list(SysPost sysPost)
-	{
+	public List<SysPost> list(SysPost sysPost) {
 		startPage();
         return sysPostService.selectPostList(sysPost);
 	}
@@ -51,8 +48,7 @@ public class SysPostClient extends BaseController
 	 * 新增保存岗位
 	 */
 	@PostMapping("save")
-	public int addSave(SysPost sysPost)
-	{		
+	public int addSave(SysPost sysPost) {
 		return sysPostService.insertPost(sysPost);
 	}
 
@@ -60,8 +56,7 @@ public class SysPostClient extends BaseController
 	 * 修改保存岗位
 	 */
 	@PostMapping("update")
-	public int editSave(SysPost sysPost)
-	{		
+	public int editSave(SysPost sysPost) {
 		return sysPostService.updatePost(sysPost);
 	}
 	
@@ -70,8 +65,7 @@ public class SysPostClient extends BaseController
 	 * @throws Exception 
 	 */
 	@PostMapping("remove")
-	public int remove(String ids) throws Exception
-	{		
+	public int remove(String ids) throws Exception {
 		return sysPostService.deletePostByIds(ids);
 	}
 	

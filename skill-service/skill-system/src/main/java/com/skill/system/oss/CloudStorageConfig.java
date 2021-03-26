@@ -19,8 +19,7 @@ import org.hibernate.validator.constraints.URL;
  * 云存储配置信息
  */
 @Data
-public class CloudStorageConfig implements Serializable
-{
+public class CloudStorageConfig implements Serializable {
     //
     private static final long serialVersionUID = 9035033846176792944L;
 

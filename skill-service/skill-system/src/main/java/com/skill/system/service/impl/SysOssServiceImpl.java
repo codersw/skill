@@ -16,12 +16,11 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 /**
  * 文件上传 服务层实现
  * 
- * @author zy
+ * @author swen
  * @date 2019-05-16
  */
 @Service
-public class SysOssServiceImpl implements ISysOssService 
-{
+public class SysOssServiceImpl implements ISysOssService  {
 	@Autowired
 	private SysOssMapper sysOssMapper;
 
@@ -32,8 +31,7 @@ public class SysOssServiceImpl implements ISysOssService
      * @return 文件上传信息
      */
     @Override
-	public SysOss selectSysOssById(Long id)
-	{
+	public SysOss selectSysOssById(Long id) {
 	    return sysOssMapper.selectByPrimaryKey(id);
 	}
 	
@@ -44,20 +42,16 @@ public class SysOssServiceImpl implements ISysOssService
      * @return 文件上传集合
      */
 	@Override
-	public List<SysOss> selectSysOssList(SysOss sysOss)
-	{
+	public List<SysOss> selectSysOssList(SysOss sysOss) {
 	    Example example = new Example(SysOss.class);
         Criteria criteria = example.createCriteria();
-        if (StringUtils.isNotBlank(sysOss.getFileName()))
-        {
+        if (StringUtils.isNotBlank(sysOss.getFileName())) {
             criteria.andLike("fileName", "%" + sysOss.getFileName() + "%");
         }
-        if (StringUtils.isNotBlank(sysOss.getFileSuffix()))
-        {
+        if (StringUtils.isNotBlank(sysOss.getFileSuffix())) {
             criteria.andEqualTo("fileSuffix", sysOss.getFileSuffix());
         }
-        if (StringUtils.isNotBlank(sysOss.getCreateBy()))
-        {
+        if (StringUtils.isNotBlank(sysOss.getCreateBy())) {
             criteria.andLike("createBy", sysOss.getCreateBy());
         }
         return sysOssMapper.selectByExample(example);
@@ -70,8 +64,7 @@ public class SysOssServiceImpl implements ISysOssService
      * @return 结果
      */
 	@Override
-	public int insertSysOss(SysOss sysOss)
-	{
+	public int insertSysOss(SysOss sysOss) {
 	    return sysOssMapper.insertSelective(sysOss);
 	}
 	
@@ -82,8 +75,7 @@ public class SysOssServiceImpl implements ISysOssService
      * @return 结果
      */
 	@Override
-	public int updateSysOss(SysOss sysOss)
-	{
+	public int updateSysOss(SysOss sysOss) {
 	    return sysOssMapper.updateByPrimaryKeySelective(sysOss);
 	}
 
@@ -94,8 +86,7 @@ public class SysOssServiceImpl implements ISysOssService
      * @return 结果
      */
 	@Override
-	public int deleteSysOssByIds(String ids)
-	{
+	public int deleteSysOssByIds(String ids) {
 		return sysOssMapper.deleteByIds(ids);
 	}
 	

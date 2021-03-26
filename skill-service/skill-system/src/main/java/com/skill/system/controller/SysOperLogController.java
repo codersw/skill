@@ -22,13 +22,12 @@ import com.skill.system.service.ISysOperLogService;
 /**
  * 操作日志记录 提供者
  * 
- * @author zy
+ * @author swen
  * @date 2019-05-20
  */
 @RestController
 @RequestMapping("operLog")
-public class SysOperLogController extends BaseController
-{
+public class SysOperLogController extends BaseController {
     @Autowired
     private ISysOperLogService sysOperLogService;
 
@@ -36,8 +35,7 @@ public class SysOperLogController extends BaseController
      * 查询操作日志记录
      */
     @GetMapping("get/{operId}")
-    public SysOperLog get(@PathVariable("operId") Long operId)
-    {
+    public SysOperLog get(@PathVariable("operId") Long operId) {
         return sysOperLogService.selectOperLogById(operId);
     }
 
@@ -46,8 +44,7 @@ public class SysOperLogController extends BaseController
      */
     @HasPermissions("monitor:operlog:list")
     @RequestMapping("list")
-    public R list(SysOperLog sysOperLog)
-    {
+    public R list(SysOperLog sysOperLog) {
         startPage();
         return result(sysOperLogService.selectOperLogList(sysOperLog));
     }
@@ -55,8 +52,7 @@ public class SysOperLogController extends BaseController
     @OperLog(title = "操作日志", businessType = BusinessType.EXPORT)
     @HasPermissions("monitor:operlog:export")
     @PostMapping("/export")
-    public R export(SysOperLog operLog)
-    {
+    public R export(SysOperLog operLog) {
         List<SysOperLog> list = sysOperLogService.selectOperLogList(operLog);
         ExcelUtil<SysOperLog> util = new ExcelUtil<SysOperLog>(SysOperLog.class);
         return util.exportExcel(list, "操作日志");
@@ -66,8 +62,7 @@ public class SysOperLogController extends BaseController
      * 新增保存操作日志记录
      */
     @PostMapping("save")
-    public void addSave(@RequestBody SysOperLog sysOperLog)
-    {
+    public void addSave(@RequestBody SysOperLog sysOperLog) {
         sysOperLogService.insertOperlog(sysOperLog);
     }
 
@@ -76,16 +71,14 @@ public class SysOperLogController extends BaseController
      */
     @HasPermissions("monitor:operlog:remove")
     @PostMapping("remove")
-    public R remove(String ids)
-    {
+    public R remove(String ids) {
         return toAjax(sysOperLogService.deleteOperLogByIds(ids));
     }
 
     @OperLog(title = "操作日志", businessType = BusinessType.CLEAN)
     @HasPermissions("monitor:operlog:remove")
     @PostMapping("/clean")
-    public R clean()
-    {
+    public R clean() {
         sysOperLogService.cleanOperLog();
         return R.ok();
     }

@@ -6,10 +6,9 @@ import com.skill.system.domain.SysOperLog;
 /**
  * 操作日志 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysOperLogMapper
-{
+public interface SysOperLogMapper {
     /**
      * 新增操作日志
      * 

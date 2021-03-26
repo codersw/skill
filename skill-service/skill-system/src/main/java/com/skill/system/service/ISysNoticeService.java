@@ -6,10 +6,9 @@ import com.skill.system.domain.SysNotice;
 /**
  * 公告 服务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysNoticeService
-{
+public interface ISysNoticeService {
     /**
      * 查询公告信息
      * 

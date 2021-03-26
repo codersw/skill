@@ -14,18 +14,16 @@ import com.skill.system.service.IDonateService;
 
 /**
  *
- * @author zy
+ * @author swen
  */
 @RestController
 @RequestMapping("donate")
-public class DonateController extends BaseController
-{
+public class DonateController extends BaseController {
     @Autowired
     private IDonateService donateService;
 
     @GetMapping("list")
-    public R list(Donate donate)
-    {
+    public R list(Donate donate) {
         startPage();
         List<Donate> list = donateService.selectDistrictsList(donate);
         return result(list);

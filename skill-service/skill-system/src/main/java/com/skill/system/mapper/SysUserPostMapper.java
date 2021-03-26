@@ -6,10 +6,9 @@ import com.skill.system.domain.SysUserPost;
 /**
  * 用户与岗位 表 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysUserPostMapper
-{
+public interface SysUserPostMapper {
     /**
      * 通过用户ID删除用户和岗位关联
      * 

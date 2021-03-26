@@ -13,11 +13,10 @@ import com.skill.system.service.ISysDictDataService;
 /**
  * 字典 业务层处理
  * 
- * @author zy
+ * @author swen
  */
 @Service
-public class SysDictDataServiceImpl implements ISysDictDataService
-{
+public class SysDictDataServiceImpl implements ISysDictDataService {
     @Autowired
     private SysDictDataMapper dictDataMapper;
 
@@ -28,8 +27,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 字典数据集合信息
      */
     @Override
-    public List<SysDictData> selectDictDataList(SysDictData dictData)
-    {
+    public List<SysDictData> selectDictDataList(SysDictData dictData) {
         return dictDataMapper.selectDictDataList(dictData);
     }
 
@@ -40,8 +38,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 字典数据集合信息
      */
     @Override
-    public List<SysDictData> selectDictDataByType(String dictType)
-    {
+    public List<SysDictData> selectDictDataByType(String dictType) {
         return dictDataMapper.selectDictDataByType(dictType);
     }
 
@@ -53,8 +50,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 字典标签
      */
     @Override
-    public String selectDictLabel(String dictType, String dictValue)
-    {
+    public String selectDictLabel(String dictType, String dictValue) {
         return dictDataMapper.selectDictLabel(dictType, dictValue);
     }
 
@@ -65,8 +61,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 字典数据
      */
     @Override
-    public SysDictData selectDictDataById(Long dictCode)
-    {
+    public SysDictData selectDictDataById(Long dictCode) {
         return dictDataMapper.selectDictDataById(dictCode);
     }
 
@@ -77,8 +72,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 结果
      */
     @Override
-    public int deleteDictDataById(Long dictCode)
-    {
+    public int deleteDictDataById(Long dictCode) {
         return dictDataMapper.deleteDictDataById(dictCode);
     }
 
@@ -89,8 +83,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 结果
      */
     @Override
-    public int deleteDictDataByIds(String ids)
-    {
+    public int deleteDictDataByIds(String ids) {
         return dictDataMapper.deleteDictDataByIds(Convert.toStrArray(ids));
     }
 
@@ -101,8 +94,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 结果
      */
     @Override
-    public int insertDictData(SysDictData dictData)
-    {
+    public int insertDictData(SysDictData dictData) {
         return dictDataMapper.insertDictData(dictData);
     }
 
@@ -113,8 +105,7 @@ public class SysDictDataServiceImpl implements ISysDictDataService
      * @return 结果
      */
     @Override
-    public int updateDictData(SysDictData dictData)
-    {
+    public int updateDictData(SysDictData dictData) {
         return dictDataMapper.updateDictData(dictData);
     }
 

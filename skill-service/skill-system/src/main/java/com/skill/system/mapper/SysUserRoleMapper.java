@@ -7,10 +7,9 @@ import com.skill.system.domain.SysUserRole;
 /**
  * 用户表 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysUserRoleMapper
-{
+public interface SysUserRoleMapper {
     /**
      * 通过用户ID删除用户和角色关联
      * 

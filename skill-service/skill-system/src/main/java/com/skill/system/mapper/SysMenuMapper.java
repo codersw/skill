@@ -7,10 +7,9 @@ import com.skill.system.domain.SysMenu;
 /**
  * 菜单表 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysMenuMapper
-{
+public interface SysMenuMapper {
     /**
      * 查询系统所有菜单（含按钮）
      * 

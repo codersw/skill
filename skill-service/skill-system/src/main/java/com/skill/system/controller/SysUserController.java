@@ -27,12 +27,11 @@ import cn.hutool.core.convert.Convert;
 
 /**
  * 用户 提供者
- * @author zy
+ * @author swen
  */
 @RestController
 @RequestMapping("user")
-public class SysUserController extends BaseController
-{
+public class SysUserController extends BaseController {
     @Autowired
     private ISysUserService sysUserService;
 
@@ -43,14 +42,12 @@ public class SysUserController extends BaseController
      * 查询用户
      */
     @GetMapping("get/{userId}")
-    public SysUser get(@PathVariable("userId") Long userId)
-    {
+    public SysUser get(@PathVariable("userId") Long userId) {
         return sysUserService.selectUserById(userId);
     }
 
     @GetMapping("info")
-    public SysUser info(@LoginUser SysUser sysUser)
-    {
+    public SysUser info(@LoginUser SysUser sysUser) {
         sysUser.setButtons(sysMenuService.selectPermsByUserId(sysUser.getUserId()));
         return sysUser;
     }
@@ -59,8 +56,7 @@ public class SysUserController extends BaseController
      * 查询用户
      */
     @GetMapping("find/{username}")
-    public SysUser findByUsername(@PathVariable("username") String username)
-    {
+    public SysUser findByUsername(@PathVariable("username") String username) {
         return sysUserService.selectUserByLoginName(username);
     }
 
@@ -68,8 +64,7 @@ public class SysUserController extends BaseController
      * 查询拥有当前角色的所有用户
      */
     @GetMapping("hasRoles")
-    public Set<Long> hasRoles(String roleIds)
-    {
+    public Set<Long> hasRoles(String roleIds) {
         Long[] arr=Convert.toLongArray(roleIds);
         return sysUserService.selectUserIdsHasRoles(arr);
     }
@@ -78,8 +73,7 @@ public class SysUserController extends BaseController
      * 查询所有当前部门中的用户
      */
     @GetMapping("inDepts")
-    public Set<Long> inDept(String  deptIds)
-    {
+    public Set<Long> inDept(String  deptIds) {
         Long[] arr=Convert.toLongArray(deptIds);
         return sysUserService.selectUserIdsInDepts(arr);
     }
@@ -88,8 +82,7 @@ public class SysUserController extends BaseController
      * 查询用户列表
      */
     @GetMapping("list")
-    public R list(SysUser sysUser)
-    {
+    public R list(SysUser sysUser) {
         startPage();
         return result(sysUserService.selectUserList(sysUser));
     }
@@ -102,18 +95,14 @@ public class SysUserController extends BaseController
 //    @HasPermissions("system:user:add")
     @PostMapping("save")
     @OperLog(title = "用户管理", businessType = BusinessType.INSERT)
-    public R addSave(@RequestBody SysUser sysUser)
-    {
-        if (UserConstants.USER_NAME_NOT_UNIQUE.equals(sysUserService.checkLoginNameUnique(sysUser.getLoginName())))
-        {
+    public R addSave(@RequestBody SysUser sysUser) {
+        if (UserConstants.USER_NAME_NOT_UNIQUE.equals(sysUserService.checkLoginNameUnique(sysUser.getLoginName()))) {
             return R.error("新增用户'" + sysUser.getLoginName() + "'失败，登录账号已存在");
         }
-        else if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(sysUserService.checkPhoneUnique(sysUser)))
-        {
+        else if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(sysUserService.checkPhoneUnique(sysUser))) {
             return R.error("新增用户'" + sysUser.getLoginName() + "'失败，手机号码已存在");
         }
-        else if (UserConstants.USER_EMAIL_NOT_UNIQUE.equals(sysUserService.checkEmailUnique(sysUser)))
-        {
+        else if (UserConstants.USER_EMAIL_NOT_UNIQUE.equals(sysUserService.checkEmailUnique(sysUser))) {
             return R.error("新增用户'" + sysUser.getLoginName() + "'失败，邮箱账号已存在");
         }
         sysUser.setSalt(RandomUtil.randomStr(6));
@@ -129,21 +118,16 @@ public class SysUserController extends BaseController
     @HasPermissions("system:user:edit")
     @OperLog(title = "用户管理", businessType = BusinessType.UPDATE)
     @PostMapping("update")
-    public R editSave(@RequestBody SysUser sysUser)
-    {
-        if (null != sysUser.getUserId() && SysUser.isAdmin(sysUser.getUserId()))
-        {
+    public R editSave(@RequestBody SysUser sysUser) {
+        if (null != sysUser.getUserId() && SysUser.isAdmin(sysUser.getUserId())) {
             return R.error("不允许修改超级管理员用户");
-        }else if (UserConstants.USER_NAME_NOT_UNIQUE.equals(sysUserService.checkLoginNameUnique(sysUser)))
-        {
+        }else if (UserConstants.USER_NAME_NOT_UNIQUE.equals(sysUserService.checkLoginNameUnique(sysUser))) {
             return R.error("修改用户'" + sysUser.getLoginName() + "'失败，登录账号已存在");
         }
-        else if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(sysUserService.checkPhoneUnique(sysUser)))
-        {
+        else if (UserConstants.USER_PHONE_NOT_UNIQUE.equals(sysUserService.checkPhoneUnique(sysUser))) {
             return R.error("修改用户'" + sysUser.getLoginName() + "'失败，手机号码已存在");
         }
-        else if (UserConstants.USER_EMAIL_NOT_UNIQUE.equals(sysUserService.checkEmailUnique(sysUser)))
-        {
+        else if (UserConstants.USER_EMAIL_NOT_UNIQUE.equals(sysUserService.checkEmailUnique(sysUser))) {
             return R.error("修改用户'" + sysUser.getLoginName() + "'失败，邮箱账号已存在");
         }
         return toAjax(sysUserService.updateUser(sysUser));
@@ -153,13 +137,12 @@ public class SysUserController extends BaseController
      * 修改用户信息
      * @param sysUser
      * @return
-     * @author zy
+     * @author swen
      */
     @HasPermissions("system:user:edit")
     @PostMapping("update/info")
     @OperLog(title = "用户管理", businessType = BusinessType.UPDATE)
-    public R updateInfo(@RequestBody SysUser sysUser)
-    {
+    public R updateInfo(@RequestBody SysUser sysUser) {
         return toAjax(sysUserService.updateUserInfo(sysUser));
     }
 
@@ -167,21 +150,18 @@ public class SysUserController extends BaseController
      * 记录登陆信息
      * @param sysUser
      * @return
-     * @author zy
+     * @author swen
      */
     @PostMapping("update/login")
-    public R updateLoginRecord(@RequestBody SysUser sysUser)
-    {
+    public R updateLoginRecord(@RequestBody SysUser sysUser) {
         return toAjax(sysUserService.updateUser(sysUser));
     }
 
     @HasPermissions("system:user:resetPwd")
     @OperLog(title = "重置密码", businessType = BusinessType.UPDATE)
     @PostMapping("/resetPwd")
-    public R resetPwdSave(@RequestBody SysUser user)
-    {
-        if (null != user.getUserId() && SysUser.isAdmin(user.getUserId()))
-        {
+    public R resetPwdSave(@RequestBody SysUser user) {
+        if (null != user.getUserId() && SysUser.isAdmin(user.getUserId())) {
             return R.error("不允许修改超级管理员用户");
         }
         user.setSalt(RandomUtil.randomStr(6));
@@ -193,15 +173,13 @@ public class SysUserController extends BaseController
      * 修改状态
      * @param sysUser
      * @return
-     * @author zy
+     * @author swen
      */
     @HasPermissions("system:user:edit")
     @PostMapping("status")
     @OperLog(title = "用户管理", businessType = BusinessType.UPDATE)
-    public R status(@RequestBody SysUser user)
-    {
-        if (null != user.getUserId() && SysUser.isAdmin(user.getUserId()))
-        {
+    public R status(@RequestBody SysUser user) {
+        if (null != user.getUserId() && SysUser.isAdmin(user.getUserId())) {
             return R.error("不允许修改超级管理员用户");
         }
         return toAjax(sysUserService.changeStatus(user));
@@ -214,8 +192,7 @@ public class SysUserController extends BaseController
     @HasPermissions("system:user:remove")
     @OperLog(title = "用户管理", businessType = BusinessType.DELETE)
     @PostMapping("remove")
-    public R remove(String ids) throws Exception
-    {
+    public R remove(String ids) throws Exception {
         return toAjax(sysUserService.deleteUserByIds(ids));
     }
 }

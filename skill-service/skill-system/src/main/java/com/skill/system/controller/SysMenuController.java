@@ -24,13 +24,12 @@ import com.skill.system.service.ISysMenuService;
 /**
  * 菜单权限 
  * 
- * @author zy
+ * @author swen
  * @date 2019-05-20
  */
 @RestController
 @RequestMapping("menu")
-public class SysMenuController extends BaseController
-{
+public class SysMenuController extends BaseController {
     @Autowired
     private ISysMenuService sysMenuService;
 
@@ -38,14 +37,12 @@ public class SysMenuController extends BaseController
      * 查询菜单权限
      */
     @GetMapping("get/{menuId}")
-    public SysMenu get(@PathVariable("menuId") Long menuId)
-    {
+    public SysMenu get(@PathVariable("menuId") Long menuId) {
         return sysMenuService.selectMenuById(menuId);
     }
 
     @GetMapping("perms/{userId}")
-    public Set<String> perms(@PathVariable("userId") Long userId)
-    {
+    public Set<String> perms(@PathVariable("userId") Long userId) {
         return sysMenuService.selectPermsByUserId(userId);
     }
 
@@ -53,8 +50,7 @@ public class SysMenuController extends BaseController
      * 查询菜单权限
      */
     @GetMapping("user")
-    public List<SysMenu> user(@LoginUser SysUser sysUser)
-    {
+    public List<SysMenu> user(@LoginUser SysUser sysUser) {
         return sysMenuService.selectMenusByUser(sysUser);
     }
 
@@ -62,11 +58,10 @@ public class SysMenuController extends BaseController
      * 根据角色编号查询菜单编号（用于勾选）
      * @param roleId
      * @return
-     * @author zy
+     * @author swen
      */
     @GetMapping("role/{roleId}")
-    public List<SysMenu> role(@PathVariable("roleId") Long roleId)
-    {
+    public List<SysMenu> role(@PathVariable("roleId") Long roleId) {
         if (null == roleId || roleId <= 0) {return null;}
         return sysMenuService.selectMenuIdsByRoleId(roleId);
     }
@@ -76,8 +71,7 @@ public class SysMenuController extends BaseController
      */
     @HasPermissions("system:menu:view")
     @GetMapping("list")
-    public R list(SysMenu sysMenu)
-    {
+    public R list(SysMenu sysMenu) {
         return result(sysMenuService.selectMenuList(sysMenu));
     }
     /**
@@ -85,8 +79,7 @@ public class SysMenuController extends BaseController
      */
     @HasPermissions("system:menu:view")
     @GetMapping("all")
-    public R all(SysMenu sysMenu)
-    {
+    public R all(SysMenu sysMenu) {
         return result(sysMenuService.selectMenuList(sysMenu));
     }
 
@@ -95,8 +88,7 @@ public class SysMenuController extends BaseController
      */
     @PostMapping("save")
     @OperLog(title = "菜单管理", businessType = BusinessType.INSERT)
-    public R addSave(@RequestBody SysMenu sysMenu)
-    {
+    public R addSave(@RequestBody SysMenu sysMenu) {
         return toAjax(sysMenuService.insertMenu(sysMenu));
     }
 
@@ -105,8 +97,7 @@ public class SysMenuController extends BaseController
      */
     @OperLog(title = "菜单管理", businessType = BusinessType.UPDATE)
     @PostMapping("update")
-    public R editSave(@RequestBody SysMenu sysMenu)
-    {
+    public R editSave(@RequestBody SysMenu sysMenu) {
         return toAjax(sysMenuService.updateMenu(sysMenu));
     }
 
@@ -115,8 +106,7 @@ public class SysMenuController extends BaseController
      */
     @OperLog(title = "菜单管理", businessType = BusinessType.DELETE)
     @PostMapping("remove/{menuId}")
-    public R remove(@PathVariable("menuId") Long menuId)
-    {
+    public R remove(@PathVariable("menuId") Long menuId) {
         return toAjax(sysMenuService.deleteMenuById(menuId));
     }
 }

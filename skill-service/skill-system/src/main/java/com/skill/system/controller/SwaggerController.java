@@ -12,13 +12,11 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/test")
 @Api("测试")
-public class SwaggerController
-{
+public class SwaggerController {
     @ApiOperation(value = "hello ~", notes = "欢迎")
     @ApiImplicitParams({@ApiImplicitParam(name = "name", value = "名字", required = true)})
     @GetMapping("/hell")
-    public String get(String name)
-    {
+    public String get(String name) {
         return "hello " + name;
     }
 }

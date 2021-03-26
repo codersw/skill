@@ -16,11 +16,10 @@ import com.skill.common.utils.file.FileUtils;
 /**
  * 通用请求处理
  * 
- * @author zy
+ * @author swen
  */
 @Controller
-public class CommonController
-{
+public class CommonController {
     private static final Logger log = LoggerFactory.getLogger(CommonController.class);
 
     /**
@@ -30,12 +29,9 @@ public class CommonController
      * @param delete 是否删除
      */
     @GetMapping("common/download")
-    public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request)
-    {
-        try
-        {
-            if (!FileUtils.isValidFilename(fileName))
-            {
+    public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request) {
+        try {
+            if (!FileUtils.isValidFilename(fileName)) {
                 throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
             }
             String realFileName = DateUtils.dateTimeNow() + fileName.substring(fileName.indexOf("_") + 1);
@@ -46,13 +42,11 @@ public class CommonController
             response.setHeader("Content-Disposition",
                     "attachment;filename=" + FileUtils.setFileDownloadHeader(request, realFileName));
             FileUtils.writeBytes(filePath, response.getOutputStream());
-            if (delete)
-            {
+            if (delete) {
                 FileUtils.deleteFile(filePath);
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             log.error("下载文件失败", e);
         }
     }

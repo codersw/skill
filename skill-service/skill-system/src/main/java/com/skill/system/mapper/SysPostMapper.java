@@ -6,10 +6,9 @@ import com.skill.system.domain.SysPost;
 /**
  * 岗位信息 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface SysPostMapper
-{
+public interface SysPostMapper {
     /**
      * 查询岗位数据集合
      * 

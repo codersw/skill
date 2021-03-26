@@ -7,10 +7,9 @@ import com.skill.system.domain.SysUserOnline;
 /**
  * 在线用户 服务层
  * 
- * @author zy
+ * @author swen
  */
-public interface ISysUserOnlineService
-{
+public interface ISysUserOnlineService {
     /**
      * 通过会话序号查询信息
      * 
