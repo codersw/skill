@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtils {
 
     @Resource
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     @Resource(name = "stringRedisTemplate")
     private ValueOperations<String, String> valueOperations;
@@ -24,7 +24,7 @@ public class RedisUtils {
     public final static long DEFAULT_EXPIRE = 60 * 60 * 24;
 
     /**  不设置过期时长 */
-    public final static long NOT_EXPIRE     = -1;
+    public final static long NOT_EXPIRE = -1;
 
     /**
      * 插入缓存默认时间

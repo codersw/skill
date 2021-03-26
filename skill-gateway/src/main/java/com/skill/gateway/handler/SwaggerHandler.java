@@ -1,5 +1,6 @@
 package com.skill.gateway.handler;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,12 +20,15 @@ import java.util.Optional;
 @RequestMapping("/swagger-resources")
 public class SwaggerHandler {
 
+    @Lazy
     @Resource
     private SecurityConfiguration securityConfiguration;
 
+    @Lazy
     @Resource
     private UiConfiguration uiConfiguration;
 
+    @Lazy
     @Resource
     private SwaggerResourcesProvider swaggerResources;
 

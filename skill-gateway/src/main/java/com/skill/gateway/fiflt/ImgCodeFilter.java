@@ -1,11 +1,11 @@
 package com.skill.gateway.fiflt;
 
-import java.net.URI;
-import java.nio.CharBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.concurrent.atomic.AtomicReference;
-
-import com.skill.common.redis.util.RedisUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.skill.common.constant.Constants;
+import com.skill.common.core.domain.R;
+import com.skill.common.exception.ValidateCodeException;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -17,18 +17,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.skill.common.constant.Constants;
-import com.skill.common.core.domain.R;
-import com.skill.common.exception.ValidateCodeException;
-
-import lombok.SneakyThrows;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import java.net.URI;
+import java.nio.CharBuffer;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * 验证码处理
@@ -39,8 +35,8 @@ public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Co
 
     private final static String AUTH_URL = "/auth/login";
 
-    @Resource
-    private RedisUtils redisUtils;
+    @Resource(name = "stringRedisTemplate")
+    private StringRedisTemplate redisTemplate;
 
     public ImgCodeFilter() {
         super(Config.class);
@@ -98,8 +94,8 @@ public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Co
             throw new ValidateCodeException("验证码不合法");
         }
         String key = Constants.DEFAULT_CODE_KEY + randomStr;
-        String saveCode = redisUtils.get(key);
-        redisUtils.delete(key);
+        String saveCode = redisTemplate.opsForValue().get(key);
+        redisTemplate.delete(key);
         if (!code.equalsIgnoreCase(saveCode)) {
             throw new ValidateCodeException("验证码不合法");
         }
