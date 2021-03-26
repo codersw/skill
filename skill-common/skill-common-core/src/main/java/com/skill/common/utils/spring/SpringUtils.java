@@ -54,8 +54,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
      * @param name
      * @return boolean
      */
-    public static boolean containsBean(String name)
-    {
+    public static boolean containsBean(String name) {
         return beanFactory.containsBean(name);
     }
 
@@ -100,8 +99,7 @@ public final class SpringUtils implements BeanFactoryPostProcessor {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public static <T> T getAopProxy(T invoker)
-    {
+    public static <T> T getAopProxy(T invoker) {
         return (T) AopContext.currentProxy();
     }
 }

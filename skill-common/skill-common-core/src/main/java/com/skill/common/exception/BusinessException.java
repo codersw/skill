@@ -3,28 +3,24 @@ package com.skill.common.exception;
 /**
  * 业务异常
  * 
- * @author zy
+ * @author swen
  */
-public class BusinessException extends RuntimeException
-{
+public class BusinessException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     protected final String message;
 
-    public BusinessException(String message)
-    {
+    public BusinessException(String message) {
         this.message = message;
     }
 
-    public BusinessException(String message, Throwable e)
-    {
+    public BusinessException(String message, Throwable e) {
         super(message, e);
         this.message = message;
     }
 
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         return message;
     }
 }

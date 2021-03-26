@@ -3,10 +3,9 @@ package com.skill.common.constant;
 /**
  * 通用常量信息
  * 
- * @author zy
+ * @author swen
  */
-public class Constants
-{
+public class Constants {
     /**
      * UTF-8 字符集
      */

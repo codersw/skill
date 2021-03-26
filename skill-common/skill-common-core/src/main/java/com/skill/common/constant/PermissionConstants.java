@@ -3,10 +3,9 @@ package com.skill.common.constant;
 /**
  * 权限通用常量
  * 
- * @author zy
+ * @author swen
  */
-public class PermissionConstants
-{
+public class PermissionConstants {
     /** 新增权限 */
     public static final String ADD_PERMISSION = "add";
 

@@ -3,14 +3,12 @@ package com.skill.common.exception.file;
 /**
  * 文件名大小限制异常类
  * 
- * @author zy
+ * @author swen
  */
-public class FileSizeLimitExceededException extends FileException
-{
+public class FileSizeLimitExceededException extends FileException {
     private static final long serialVersionUID = 1L;
 
-    public FileSizeLimitExceededException(long defaultMaxSize)
-    {
+    public FileSizeLimitExceededException(long defaultMaxSize) {
         super("upload.exceed.maxSize", new Object[] { defaultMaxSize });
     }
 }

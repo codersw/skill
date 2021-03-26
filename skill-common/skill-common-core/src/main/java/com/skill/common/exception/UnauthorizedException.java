@@ -5,8 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  *  授权异常
- * @author zy
- * @author lucas
+ * @author swen
  */
 @ResponseStatus(code = HttpStatus.UNAUTHORIZED, reason = "unauthorized")
 public class UnauthorizedException extends RuntimeException {
@@ -14,13 +13,11 @@ public class UnauthorizedException extends RuntimeException {
 
     private static final long   serialVersionUID = 3885400551304383736L;
 
-    public UnauthorizedException(String msg)
-    {
+    public UnauthorizedException(String msg) {
         super(msg);
     }
 
-    public UnauthorizedException()
-    {
+    public UnauthorizedException() {
         super(DEFAULT_MSG);
     }
 }

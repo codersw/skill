@@ -1,6 +1,7 @@
 package com.skill.common.exception;
 
 import com.skill.common.core.domain.R;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
@@ -13,22 +14,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
  * 异常处理器
- * @author zy
- * @author lucas
+ * @author swen
  */
 @RestControllerAdvice
-public class GlobalExceptionHandler
-{
-    private Logger logger = LoggerFactory.getLogger(getClass());
+@Slf4j
+public class GlobalExceptionHandler {
+
 
     /**
      * 请求方式不支持
      */
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     @ResponseStatus(code = HttpStatus.METHOD_NOT_ALLOWED)
-    public R handleException(HttpRequestMethodNotSupportedException e)
-    {
-        logger.error(e.getMessage(), e);
+    public R handleException(HttpRequestMethodNotSupportedException e) {
+        log.error(e.getMessage(), e);
         return R.error("不支持' " + e.getMethod() + "'请求");
     }
 
@@ -36,13 +35,11 @@ public class GlobalExceptionHandler
      * 拦截未知的运行时异常
      */
     @ExceptionHandler(RuntimeException.class)
-    public R notFount(RuntimeException e)
-    {
-        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
-        {
+    public R notFount(RuntimeException e) {
+        if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null) {
             throw e;
         }
-        logger.error("运行时异常:", e);
+        log.error("运行时异常:", e);
         return R.error("运行时异常:" + e.getMessage());
     }
 
@@ -50,22 +47,19 @@ public class GlobalExceptionHandler
      * 处理自定义异常
      */
     @ExceptionHandler(SkillException.class)
-    public R handleWindException(SkillException e)
-    {
+    public R handleWindException(SkillException e) {
         return R.error(e.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(DuplicateKeyException.class)
-    public R handleDuplicateKeyException(DuplicateKeyException e)
-    {
-        logger.error(e.getMessage(), e);
+    public R handleDuplicateKeyException(DuplicateKeyException e) {
+        log.error(e.getMessage(), e);
         return R.error("数据库中已存在该记录");
     }
 
     @ExceptionHandler(Exception.class)
-    public R handleException(Exception e) throws Exception
-    {
-        logger.error(e.getMessage(), e);
+    public R handleException(Exception e) throws Exception {
+        log.error(e.getMessage(), e);
         return R.error("服务器错误，请联系管理员");
     }
 
@@ -76,15 +70,13 @@ public class GlobalExceptionHandler
      * @return 统一封装的结果类, 含有代码code和提示信息msg
      */
     @ExceptionHandler(UnauthorizedException.class)
-    public R handle401(UnauthorizedException e)
-    {
+    public R handle401(UnauthorizedException e) {
         return R.error(401, e.getMessage());
     }
 
     // 验证码错误
     @ExceptionHandler(ValidateCodeException.class)
-    public R handleCaptcha(ValidateCodeException e)
-    {
+    public R handleCaptcha(ValidateCodeException e) {
         return R.error(e.getMessage());
     }
 }

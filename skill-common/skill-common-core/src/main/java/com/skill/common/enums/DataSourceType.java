@@ -3,7 +3,7 @@ package com.skill.common.enums;
 /**
  * 数据源
  * 
- * @author zy
+ * @author swen
  */
 public enum DataSourceType {
     /**
