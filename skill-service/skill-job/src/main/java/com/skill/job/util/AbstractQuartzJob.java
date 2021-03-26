@@ -49,8 +49,7 @@ public abstract class AbstractQuartzJob implements Job {
      * @param context 工作执行上下文对象
      * @param sysJob 系统计划任务
      */
-    private void before(JobExecutionContext context, SysJob sysJob)
-    {
+    private void before(JobExecutionContext context, SysJob sysJob) {
         threadLocal.set(new Date());
     }
 

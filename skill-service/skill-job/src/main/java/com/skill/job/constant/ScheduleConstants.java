@@ -35,13 +35,11 @@ public class ScheduleConstants {
 
         private String value;
 
-        private Status(String value)
-        {
+        private Status(String value) {
             this.value = value;
         }
 
-        public String getValue()
-        {
+        public String getValue() {
             return value;
         }
     }

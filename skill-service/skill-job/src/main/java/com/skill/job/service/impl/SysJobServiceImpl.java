@@ -61,8 +61,7 @@ public class SysJobServiceImpl implements ISysJobService {
      * @return 调度任务对象信息
      */
     @Override
-    public SysJob selectJobById(Long jobId)
-    {
+    public SysJob selectJobById(Long jobId) {
         return jobMapper.selectJobById(jobId);
     }
 
@@ -225,8 +224,7 @@ public class SysJobServiceImpl implements ISysJobService {
      * @return 结果
      */
     @Override
-    public boolean checkCronExpressionIsValid(String cronExpression)
-    {
+    public boolean checkCronExpressionIsValid(String cronExpression) {
         return CronUtils.isValid(cronExpression);
     }
 }
