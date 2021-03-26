@@ -27,46 +27,41 @@ import lombok.SneakyThrows;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
+
 /**
  * 验证码处理
- * @author zy
+ * @author swen
  */
 @Component
-public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Config>
-{
+public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Config> {
+
     private final static String AUTH_URL = "/auth/login";
 
-    @Autowired
+    @Resource
     private StringRedisTemplate redisTemplate;
 
-    public ImgCodeFilter()
-    {
+    public ImgCodeFilter() {
         super(Config.class);
     }
 
     @Override
-    public GatewayFilter apply(Config config)
-    {
+    public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             URI uri = request.getURI();
             // 不是登录请求，直接向下执行
-            //if (!StringUtils.containsIgnoreCase(uri.getPath(), AUTH_URL))
-            if (!AUTH_URL.equalsIgnoreCase(uri.getPath()))
-            {
+            if (!AUTH_URL.equalsIgnoreCase(uri.getPath())) {
                 return chain.filter(exchange);
             }
-            try
-            {
+            try {
                 String bodyStr = resolveBodyFromRequest(request);
                 JSONObject bodyJson=JSONObject.parseObject(bodyStr);
                 String code = (String) bodyJson.get("captcha");
                 String randomStr = (String) bodyJson.get("randomStr");
                 // 校验验证码
                 checkCode(code, randomStr);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 ServerHttpResponse response = exchange.getResponse();
                 response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR);
                 response.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
@@ -78,8 +73,7 @@ public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Co
         };
     }
 
-    private String resolveBodyFromRequest(ServerHttpRequest serverHttpRequest)
-    {
+    private String resolveBodyFromRequest(ServerHttpRequest serverHttpRequest) {
         // 获取请求体
         Flux<DataBuffer> body = serverHttpRequest.getBody();
         AtomicReference<String> bodyRef = new AtomicReference<>();
@@ -95,26 +89,21 @@ public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Co
      * 检查code
      */
     @SneakyThrows
-    private void checkCode(String code, String randomStr)
-    {
-        if (StringUtils.isBlank(code))
-        {
+    private void checkCode(String code, String randomStr) {
+        if (StringUtils.isBlank(code)) {
             throw new ValidateCodeException("验证码不能为空");
         }
-        if (StringUtils.isBlank(randomStr))
-        {
+        if (StringUtils.isBlank(randomStr)) {
             throw new ValidateCodeException("验证码不合法");
         }
         String key = Constants.DEFAULT_CODE_KEY + randomStr;
         String saveCode = redisTemplate.opsForValue().get(key);
         redisTemplate.delete(key);
-        if (!code.equalsIgnoreCase(saveCode))
-        {
+        if (!code.equalsIgnoreCase(saveCode)) {
             throw new ValidateCodeException("验证码不合法");
         }
     }
 
-    public static class Config
-    {
+    public static class Config {
     }
 }

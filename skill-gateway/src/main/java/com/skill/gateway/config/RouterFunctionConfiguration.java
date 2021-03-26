@@ -14,8 +14,7 @@ import lombok.AllArgsConstructor;
 
 /**
  * 路由配置信息
- * @author zy
- *
+ * @author swen
  */
 @Configuration
 @AllArgsConstructor

@@ -1,6 +1,5 @@
 package com.skill.gateway.handler;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,53 +8,41 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 import springfox.documentation.swagger.web.*;
 
+import javax.annotation.Resource;
 import java.util.Optional;
 
 /**
- * @ClassName SwaggerHandler
- * @PackageName com.skill.gateway.handler
- * @Description 
- * @Author daiz
- * @Date 2019/8/16 10:07
- * @Version 1.0
+ * Swagger文档
+ * @author swen
  */
 @RestController
 @RequestMapping("/swagger-resources")
-public class SwaggerHandler
-{
-    @Autowired(required = false)
-    private SecurityConfiguration          securityConfiguration;
+public class SwaggerHandler {
 
-    @Autowired(required = false)
-    private UiConfiguration                uiConfiguration;
+    @Resource
+    private SecurityConfiguration securityConfiguration;
 
-    private final SwaggerResourcesProvider swaggerResources;
+    @Resource
+    private UiConfiguration uiConfiguration;
 
-    @Autowired
-    public SwaggerHandler(SwaggerResourcesProvider swaggerResources)
-    {
-        this.swaggerResources = swaggerResources;
-    }
+    @Resource
+    private SwaggerResourcesProvider swaggerResources;
 
     @GetMapping("/configuration/security")
-    public Mono<ResponseEntity<SecurityConfiguration>> securityConfiguration()
-    {
+    public Mono<ResponseEntity<SecurityConfiguration>> securityConfiguration() {
         return Mono.just(new ResponseEntity<>(
                 Optional.ofNullable(securityConfiguration).orElse(SecurityConfigurationBuilder.builder().build()),
                 HttpStatus.OK));
     }
 
     @GetMapping("/configuration/ui")
-    public Mono<ResponseEntity<UiConfiguration>> uiConfiguration()
-    {
+    public Mono<ResponseEntity<UiConfiguration>> uiConfiguration() {
         return Mono.just(new ResponseEntity<>(
                 Optional.ofNullable(uiConfiguration).orElse(UiConfigurationBuilder.builder().build()), HttpStatus.OK));
     }
 
-    @SuppressWarnings("rawtypes")
-    @GetMapping("")
-    public Mono<ResponseEntity> swaggerResources()
-    {
+    @GetMapping
+    public Mono<ResponseEntity> swaggerResources() {
         return Mono.just((new ResponseEntity<>(swaggerResources.get(), HttpStatus.OK)));
     }
 }

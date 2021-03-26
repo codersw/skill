@@ -22,7 +22,7 @@ import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.G
 
 /**
  * 打印请求参数及统计执行时长过滤器
- * @author shaowen
+ * @author swen
  */
 @Slf4j
 @Component

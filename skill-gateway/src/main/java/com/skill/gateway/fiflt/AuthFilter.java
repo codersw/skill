@@ -1,10 +1,10 @@
 package com.skill.gateway.fiflt;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-
-import javax.annotation.Resource;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.skill.common.constant.Constants;
+import com.skill.common.core.domain.R;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -16,19 +16,16 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.skill.common.constant.Constants;
-import com.skill.common.core.domain.R;
-
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 /**
  * 网关鉴权
- * @author zy
+ * @author swen
  */
 @Slf4j
 @Component
@@ -37,8 +34,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
     // 排除过滤的 uri 地址
     // swagger排除自行添加
     private static final String[] whiteList = {"/auth/login", "/user/register", "/system/v2/api-docs",
-            "/auth/captcha/check", "/auth/captcha/get","/auth/login/slide", "/auth/sso/config",
-            "/auth/sso/token", "/auth/sso/user", "/auth/sso/login"};
+            "/auth/captcha/check", "/auth/captcha/get","/auth/login/slide"};
 
     @Resource(name = "stringRedisTemplate")
     private ValueOperations<String, String> ops;
@@ -81,18 +77,13 @@ public class AuthFilter implements GlobalFilter, Ordered {
         originalResponse.setStatusCode(HttpStatus.UNAUTHORIZED);
         originalResponse.getHeaders().add("Content-Type", "application/json;charset=UTF-8");
         byte[] response = null;
-        try {
-            response = JSON.toJSONString(R.error(401, msg)).getBytes(Constants.UTF8);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        response = JSON.toJSONString(R.error(401, msg)).getBytes(StandardCharsets.UTF_8);
         DataBuffer buffer = originalResponse.bufferFactory().wrap(response);
         return originalResponse.writeWith(Flux.just(buffer));
     }
 
     @Override
-    public int getOrder()
-    {
+    public int getOrder() {
         return -200;
     }
 }

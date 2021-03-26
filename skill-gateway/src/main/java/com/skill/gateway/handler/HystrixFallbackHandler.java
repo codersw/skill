@@ -18,13 +18,16 @@ import com.skill.common.core.domain.R;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
+/**
+ * 服务熔断异常
+ * @author swen
+ */
 @Slf4j
 @Component
-public class HystrixFallbackHandler implements HandlerFunction<ServerResponse>
-{
+public class HystrixFallbackHandler implements HandlerFunction<ServerResponse> {
+
     @Override
-    public Mono<ServerResponse> handle(ServerRequest serverRequest)
-    {
+    public Mono<ServerResponse> handle(ServerRequest serverRequest) {
         Optional<Object> originalUris = serverRequest.attribute(GATEWAY_ORIGINAL_REQUEST_URL_ATTR);
         originalUris.ifPresent(originalUri -> log.error("网关执行请求:{}失败,hystrix服务降级处理", originalUri));
         return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR.value()).contentType(MediaType.APPLICATION_JSON)

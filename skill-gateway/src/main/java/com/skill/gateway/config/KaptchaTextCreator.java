@@ -6,7 +6,7 @@ import com.google.code.kaptcha.text.impl.DefaultTextCreator;
 
 /**
  * 验证码构造
- * @author zy
+ * @author swen
  */
 public class KaptchaTextCreator extends DefaultTextCreator {
 
@@ -14,7 +14,7 @@ public class KaptchaTextCreator extends DefaultTextCreator {
 
     @Override
     public String getText() {
-        Integer result = 0;
+        int result = 0;
         Random random = new Random();
         int x = random.nextInt(10);
         int y = random.nextInt(10);
