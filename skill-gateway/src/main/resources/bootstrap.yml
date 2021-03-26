@@ -12,6 +12,7 @@ spring:
         file-extension: yml
         shared-configs:
           - @artifactId@-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
+          - application-${spring.profiles.active}.${spring.cloud.nacos.config.file-extension}
       discovery:
         server-addr: @config.uri@
     gateway:

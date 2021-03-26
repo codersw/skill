@@ -1,26 +1,22 @@
 package com.skill.common.redis.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.fastjson.parser.ParserConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.alibaba.fastjson.parser.ParserConfig;
+import javax.annotation.Resource;
 
 @Configuration
 public class RedisConfig {
+
     /**
      * 注入 RedisConnectionFactory
      */
-    @Autowired
-    RedisConnectionFactory factory;
+    @Resource
+    private RedisConnectionFactory factory;
 
     /**
      * 实例化 RedisTemplate 对象
@@ -36,8 +32,7 @@ public class RedisConfig {
         redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
         redisTemplate.setValueSerializer(fastJsonRedisSerializer);
         redisTemplate.setConnectionFactory(factory);
-        // 设置白名单---非常重要********
-        ParserConfig.getGlobalInstance().addAccept("com.skill");
+
         return redisTemplate;
     }
 

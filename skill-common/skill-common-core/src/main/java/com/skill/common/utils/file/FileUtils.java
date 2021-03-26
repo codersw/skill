@@ -17,7 +17,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author swen
  */
 public class FileUtils {
-    public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-\\|\\.\\u4e00-\\u9fa5]+";
+
+    public static String FILENAME_PATTERN = "[a-zA-Z0-9_\\-|.\\u4e00-\\u9fa5]+";
 
     /**
      * 输出指定文件的byte数组
@@ -39,24 +40,21 @@ public class FileUtils {
             while ((length = fis.read(b)) > 0) {
                 os.write(b, 0, length);
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw e;
         }
         finally {
             if (os != null) {
                 try {
                     os.close();
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
             if (fis != null) {
                 try {
                     fis.close();
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
@@ -105,16 +103,13 @@ public class FileUtils {
             // IE浏览器
             filename = URLEncoder.encode(filename, "utf-8");
             filename = filename.replace("+", " ");
-        }
-        else if (agent.contains("Firefox")) {
+        } else if (agent.contains("Firefox")) {
             // 火狐浏览器
             filename = new String(fileName.getBytes(), "ISO8859-1");
-        }
-        else if (agent.contains("Chrome")) {
+        } else if (agent.contains("Chrome")) {
             // google浏览器
             filename = URLEncoder.encode(filename, "utf-8");
-        }
-        else {
+        } else {
             // 其它浏览器
             filename = URLEncoder.encode(filename, "utf-8");
         }

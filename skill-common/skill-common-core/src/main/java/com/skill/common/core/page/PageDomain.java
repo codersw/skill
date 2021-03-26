@@ -1,12 +1,20 @@
 package com.skill.common.core.page;
 
 import com.skill.common.utils.StringUtils;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 分页数据
  * 
  * @author swen
  */
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class PageDomain {
     /** 当前记录起始索引 */
     private Integer pageNum;
@@ -22,37 +30,5 @@ public class PageDomain {
             return "";
         }
         return StringUtils.toUnderScoreCase(orderByColumn) + " " + isAsc;
-    }
-
-    public Integer getPageNum() {
-        return pageNum;
-    }
-
-    public void setPageNum(Integer pageNum) {
-        this.pageNum = pageNum;
-    }
-
-    public Integer getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public String getOrderByColumn() {
-        return orderByColumn;
-    }
-
-    public void setOrderByColumn(String orderByColumn) {
-        this.orderByColumn = orderByColumn;
-    }
-
-    public String getIsAsc() {
-        return isAsc;
-    }
-
-    public void setIsAsc(String isAsc) {
-        this.isAsc = isAsc;
     }
 }

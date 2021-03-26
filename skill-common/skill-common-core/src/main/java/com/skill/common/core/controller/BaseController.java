@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,8 @@ import com.skill.common.utils.sql.SqlUtil;
  * 
  * @author swen
  */
+@Slf4j
 public class BaseController {
-    protected final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
     /**
      * 将前台传递过来的日期格式的字符串，自动转化为Date类型

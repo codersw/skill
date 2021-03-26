@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
@@ -56,48 +57,47 @@ import com.skill.common.utils.reflect.ReflectUtils;
  *
  * @author swen
  */
+@Slf4j
 public class ExcelUtil<T> {
-    private static final Logger log       = LoggerFactory.getLogger(ExcelUtil.class);
-
     /**
      * Excel sheet最大行数，默认65536
      */
-    public static final int     sheetSize = 65536;
+    public static final int sheetSize = 65536;
 
     /**
      * 工作表名称
      */
-    private String              sheetName;
+    private String sheetName;
 
     /**
      * 导出类型（EXPORT:导出数据；IMPORT：导入模板）
      */
-    private Type                type;
+    private Type type;
 
     /**
      * 工作薄对象
      */
-    private Workbook            wb;
+    private Workbook wb;
 
     /**
      * 工作表对象
      */
-    private Sheet               sheet;
+    private Sheet sheet;
 
     /**
      * 导入导出数据列表
      */
-    private List<T>             list;
+    private List<T> list;
 
     /**
      * 注解列表
      */
-    private List<Field>         fields;
+    private List<Field> fields;
 
     /**
      * 实体对象
      */
-    public Class<T>             clazz;
+    public Class<T> clazz;
 
     public ExcelUtil(Class<T> clazz) {
         this.clazz = clazz;
@@ -139,8 +139,7 @@ public class ExcelUtil<T> {
         if (StringUtils.isNotEmpty(sheetName)) {
             // 如果指定sheet名,则取指定sheet中的内容.
             sheet = wb.getSheet(sheetName);
-        }
-        else {
+        } else {
             // 如果传入的sheet名不存在则默认指向第1个sheet.
             sheet = wb.getSheetAt(0);
         }
@@ -155,8 +154,7 @@ public class ExcelUtil<T> {
             Field[] allFields = clazz.getDeclaredFields();
             // 定义一个map用于存放列的序号和field.
             Map<Integer, Field> fieldsMap = new HashMap<Integer, Field>();
-            for (int col = 0; col < allFields.length; col++) {
-                Field field = allFields[col];
+            for (Field field : allFields) {
                 Excel attr = field.getAnnotation(Excel.class);
                 if (attr != null && (attr.type() == Type.ALL || attr.type() == type)) {
                     // 设置类的私有字段属性可访问.
@@ -167,9 +165,8 @@ public class ExcelUtil<T> {
             for (int i = 1; i < rows; i++) {
                 // 从第2行开始取数据,默认第一行是表头.
                 Row row = sheet.getRow(i);
-                int cellNum = serialNum;
                 T entity = null;
-                for (int column = 0; column < cellNum; column++) {
+                for (int column = 0; column < serialNum; column++) {
                     Object val = this.getCellValue(row, column);
                     // 如果不存在实例则新建.
                     entity = (entity == null ? clazz.newInstance() : entity);
@@ -181,31 +178,23 @@ public class ExcelUtil<T> {
                         String s = Convert.toStr(val);
                         if (StringUtils.endsWith(s, ".0")) {
                             val = StringUtils.substringBefore(s, ".0");
-                        }
-                        else {
+                        } else {
                             val = Convert.toStr(val);
                         }
-                    }
-                    else if ((Integer.TYPE == fieldType) || (Integer.class == fieldType)) {
+                    } else if ((Integer.TYPE == fieldType) || (Integer.class == fieldType)) {
                         val = Convert.toInt(val);
-                    }
-                    else if ((Long.TYPE == fieldType) || (Long.class == fieldType)) {
+                    } else if ((Long.TYPE == fieldType) || (Long.class == fieldType)) {
                         val = Convert.toLong(val);
-                    }
-                    else if ((Double.TYPE == fieldType) || (Double.class == fieldType)) {
+                    } else if ((Double.TYPE == fieldType) || (Double.class == fieldType)) {
                         val = Convert.toDouble(val);
-                    }
-                    else if ((Float.TYPE == fieldType) || (Float.class == fieldType)) {
+                    } else if ((Float.TYPE == fieldType) || (Float.class == fieldType)) {
                         val = Convert.toFloat(val);
-                    }
-                    else if (BigDecimal.class == fieldType) {
+                    } else if (BigDecimal.class == fieldType) {
                         val = Convert.toBigDecimal(val);
-                    }
-                    else if (Date.class == fieldType) {
+                    } else if (Date.class == fieldType) {
                         if (val instanceof String) {
                             val = DateUtils.parseDate(val);
-                        }
-                        else if (val instanceof Double) {
+                        } else if (val instanceof Double) {
                             val = DateUtil.getJavaDate((Double) val);
                         }
                     }
@@ -214,8 +203,7 @@ public class ExcelUtil<T> {
                         String propertyName = field.getName();
                         if (StringUtils.isNotEmpty(attr.targetAttr())) {
                             propertyName = field.getName() + "." + attr.targetAttr();
-                        }
-                        else if (StringUtils.isNotEmpty(attr.readConverterExp())) {
+                        } else if (StringUtils.isNotEmpty(attr.readConverterExp())) {
                             val = reverseByExp(String.valueOf(val), attr.readConverterExp());
                         }
                         ReflectUtils.invokeSetter(entity, propertyName, val);
@@ -276,14 +264,13 @@ public class ExcelUtil<T> {
                     CellStyle cellStyle = wb.createCellStyle();
                     cellStyle.setAlignment(HorizontalAlignment.CENTER);
                     cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
-                    if (attr.name().indexOf("注：") >= 0) {
+                    if (attr.name().contains("注：")) {
                         Font font = wb.createFont();
                         font.setColor(HSSFFont.COLOR_RED);
                         cellStyle.setFont(font);
                         cellStyle.setFillForegroundColor(HSSFColorPredefined.YELLOW.getIndex());
                         sheet.setColumnWidth(i, 6000);
-                    }
-                    else {
+                    } else {
                         Font font = wb.createFont();
                         // 粗体显示
                         font.setBold(true);
@@ -318,25 +305,21 @@ public class ExcelUtil<T> {
             out = new FileOutputStream(getAbsoluteFile(filename));
             wb.write(out);
             return R.ok(filename);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("导出Excel异常{}", e.getMessage());
             throw new BusinessException("导出Excel失败，请联系网站管理员！");
-        }
-        finally {
+        } finally {
             if (wb != null) {
                 try {
                     wb.close();
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
             if (out != null) {
                 try {
                     out.close();
-                }
-                catch (IOException e1) {
+                } catch (IOException e1) {
                     e1.printStackTrace();
                 }
             }
@@ -386,19 +369,17 @@ public class ExcelUtil<T> {
                         String readConverterExp = attr.readConverterExp();
                         if (StringUtils.isNotEmpty(dateFormat) && StringUtils.isNotNull(value)) {
                             cell.setCellValue(DateUtils.parseDateToStr(dateFormat, (Date) value));
-                        }
-                        else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value)) {
+                        } else if (StringUtils.isNotEmpty(readConverterExp) && StringUtils.isNotNull(value)) {
                             cell.setCellValue(convertByExp(String.valueOf(value), readConverterExp));
-                        }
-                        else {
+                        } else {
                             cell.setCellType(CellType.STRING);
                             // 如果数据存在就填入,不存在填入空格.
                             cell.setCellValue(StringUtils.isNull(value) ? attr.defaultValue() : value + attr.suffix());
                         }
                     }
-                }
-                catch (Exception e) {
-                    log.error("导出Excel失败{}", e);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.error("导出Excel失败{}", e.getMessage());
                 }
             }
         }
@@ -449,8 +430,7 @@ public class ExcelUtil<T> {
         if (dataValidation instanceof XSSFDataValidation) {
             dataValidation.setSuppressDropDownArrow(true);
             dataValidation.setShowErrorBox(true);
-        }
-        else {
+        } else {
             dataValidation.setSuppressDropDownArrow(false);
         }
         sheet.addValidationData(dataValidation);

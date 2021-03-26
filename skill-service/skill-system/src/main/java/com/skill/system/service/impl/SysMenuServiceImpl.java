@@ -178,7 +178,7 @@ public class SysMenuServiceImpl implements ISysMenuService {
         for (SysMenu menu : menuList) {
             Ztree ztree = new Ztree();
             ztree.setId(menu.getMenuId());
-            ztree.setpId(menu.getParentId());
+            ztree.setPId(menu.getParentId());
             ztree.setName(transMenuName(menu, roleMenuList, permsFlag));
             ztree.setTitle(menu.getMenuName());
             if (isCheck) {

@@ -10,6 +10,7 @@ import com.skill.common.utils.StringUtils;
  * @author swen
  */
 public class CharsetKit {
+
     /** ISO-8859-1 */
     public static final String ISO_8859_1 = "ISO-8859-1";
     /** UTF-8 */

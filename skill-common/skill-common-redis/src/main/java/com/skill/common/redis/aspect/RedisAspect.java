@@ -1,7 +1,9 @@
 package com.skill.common.redis.aspect;
 
-import java.lang.reflect.Method;
-
+import com.skill.common.redis.annotation.RedisCache;
+import com.skill.common.redis.annotation.RedisEvict;
+import com.skill.common.redis.util.RedisUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
@@ -9,26 +11,22 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
-import com.skill.common.redis.annotation.RedisCache;
-import com.skill.common.redis.annotation.RedisEvict;
-import com.skill.common.redis.util.RedisUtils;
+import javax.annotation.Resource;
+import java.lang.reflect.Method;
 
 @Component
+@Slf4j
 @Aspect
 public class RedisAspect {
-    private final static Logger logger = LoggerFactory.getLogger(RedisAspect.class);
 
-    @Autowired
-    private RedisUtils          redis;
+    @Resource
+    private RedisUtils redis;
 
     /**
      * 定义切入点，使用了 @RedisCache 的方法
@@ -48,7 +46,7 @@ public class RedisAspect {
         // 获取RedisCache注解
         String fieldKey = parseKey(redisEvict.fieldKey(), method, point.getArgs());
         String rk = redisEvict.key() + ":" + fieldKey;
-        logger.debug("<======切面清除rediskey:{} ======>" + rk);
+        log.debug("<======切面清除rediskey:{}======>", rk);
         redis.delete(rk);
     }
 
@@ -64,13 +62,13 @@ public class RedisAspect {
             Class<?> returnType = ((MethodSignature) point.getSignature()).getReturnType();
             if (redisCache != null && redisCache.read()) {
                 // 查询操作
-                logger.debug("<======method:{} 进入 redisCache 切面 ======>", method.getName());
+                log.debug("<======method:{} 进入 redisCache 切面 ======>", method.getName());
                 String fieldKey = parseKey(redisCache.fieldKey(), method, point.getArgs());
                 String rk = redisCache.key() + ":" + fieldKey;
                 Object obj = redis.get(rk, returnType);
                 if (obj == null) {
                     // Redis 中不存在，则从数据库中查找，并保存到 Redis
-                    logger.debug("<====== Redis 中不存在该记录，从数据库查找 ======>");
+                    log.debug("<====== Redis 中不存在该记录，从数据库查找 ======>");
                     obj = point.proceed();
                     if (obj != null) {
                         if (redisCache.expired() > 0) {
@@ -83,17 +81,17 @@ public class RedisAspect {
                 }
                 return obj;
             }
-        }
-        catch (Throwable ex) {
-            logger.error("<====== RedisCache 执行异常: {} ======>", ex);
+        } catch (Throwable ex) {
+            log.error("<======RedisCache 执行异常: {}======>", ex.getMessage());
         }
         return null;
     }
 
     /**
-     * 获取缓存的key 
      * key 定义在注解上，支持SPEL表达式
-     * @param pjp
+     * @param key
+     * @param method
+     * @param args
      * @return
      */
     private String parseKey(String key, Method method, Object[] args) {
@@ -105,6 +103,7 @@ public class RedisAspect {
         // SPEL上下文
         StandardEvaluationContext context = new StandardEvaluationContext();
         // 把方法参数放入SPEL上下文中
+        assert paraNameArr != null;
         for (int i = 0; i < paraNameArr.length; i++) {
             context.setVariable(paraNameArr[i], args[i]);
         }

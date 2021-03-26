@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.skill.common.auth.aspect.PreAuthorizeAspect

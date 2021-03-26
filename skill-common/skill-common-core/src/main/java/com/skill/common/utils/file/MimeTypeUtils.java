@@ -6,6 +6,7 @@ package com.skill.common.utils.file;
  * @author swen
  */
 public class MimeTypeUtils {
+
     public static final String IMAGE_PNG = "image/png";
 
     public static final String IMAGE_JPG = "image/jpg";

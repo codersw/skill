@@ -2,15 +2,13 @@ package com.skill.system.domain;
 
 import com.skill.common.annotation.Excel;
 import com.skill.common.core.domain.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 岗位表 sys_post
  * @author swen
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
 @AllArgsConstructor

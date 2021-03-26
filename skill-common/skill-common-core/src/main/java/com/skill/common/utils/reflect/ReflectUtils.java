@@ -22,6 +22,7 @@ import com.skill.common.utils.DateUtils;
  */
 @SuppressWarnings("rawtypes")
 public class ReflectUtils {
+
     private static final String SETTER_PREFIX = "set";
 
     private static final String GETTER_PREFIX = "get";

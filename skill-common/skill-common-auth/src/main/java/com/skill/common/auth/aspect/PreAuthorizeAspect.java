@@ -3,6 +3,7 @@ package com.skill.common.auth.aspect;
 import java.lang.reflect.Method;
 import java.util.Optional;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -26,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PreAuthorizeAspect {
 
-    @Autowired
+    @Resource
     private RemoteMenuService sysMenuClient;
 
     @Around("@annotation(com.skill.common.auth.annotation.HasPermissions)")
@@ -38,7 +39,7 @@ public class PreAuthorizeAspect {
         if (annotation == null) {
             return point.proceed();
         }
-        String authority = new StringBuilder(annotation.value()).toString();
+        String authority = annotation.value();
         if (has(authority)) {
             return point.proceed();
         }

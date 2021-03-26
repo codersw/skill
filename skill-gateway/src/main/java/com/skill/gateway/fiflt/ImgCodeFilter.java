@@ -5,6 +5,7 @@ import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicReference;
 
+import com.skill.common.redis.util.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -39,7 +40,7 @@ public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Co
     private final static String AUTH_URL = "/auth/login";
 
     @Resource
-    private StringRedisTemplate redisTemplate;
+    private RedisUtils redisUtils;
 
     public ImgCodeFilter() {
         super(Config.class);
@@ -97,8 +98,8 @@ public class ImgCodeFilter extends AbstractGatewayFilterFactory<ImgCodeFilter.Co
             throw new ValidateCodeException("验证码不合法");
         }
         String key = Constants.DEFAULT_CODE_KEY + randomStr;
-        String saveCode = redisTemplate.opsForValue().get(key);
-        redisTemplate.delete(key);
+        String saveCode = redisUtils.get(key);
+        redisUtils.delete(key);
         if (!code.equalsIgnoreCase(saveCode)) {
             throw new ValidateCodeException("验证码不合法");
         }

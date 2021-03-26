@@ -1,15 +1,12 @@
 package com.skill.common.redis.util;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.alibaba.fastjson.JSON;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
+import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Redis工具类

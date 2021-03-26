@@ -1,0 +1,7 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.skill.system.feign.factory.RemoteMenuFallbackFactory,\
+  com.skill.system.feign.factory.RemoteLogFallbackFactory, \
+  com.skill.system.feign.factory.RemoteMenuFallbackFactory,\
+  com.skill.system.feign.factory.RemoteReciverFallbackFactory,\
+  com.skill.system.feign.factory.RemoteRoleFallbackFactory,\
+  com.skill.system.feign.factory.RemoteUserFallbackFactory
