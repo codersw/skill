@@ -8,10 +8,9 @@ import com.skill.common.core.domain.BaseEntity;
 /**
  * 字典数据表 sys_dict_data
  * 
- * @author zy
+ * @author swen
  */
-public class SysDictData extends BaseEntity
-{
+public class SysDictData extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 字典编码 */
@@ -61,93 +60,75 @@ public class SysDictData extends BaseEntity
         this.remark = remark;
     }
 
-    public Long getDictCode()
-    {
+    public Long getDictCode() {
         return dictCode;
     }
 
-    public void setDictCode(Long dictCode)
-    {
+    public void setDictCode(Long dictCode) {
         this.dictCode = dictCode;
     }
 
-    public Long getDictSort()
-    {
+    public Long getDictSort() {
         return dictSort;
     }
 
-    public void setDictSort(Long dictSort)
-    {
+    public void setDictSort(Long dictSort) {
         this.dictSort = dictSort;
     }
 
-    public String getDictLabel()
-    {
+    public String getDictLabel() {
         return dictLabel;
     }
 
-    public void setDictLabel(String dictLabel)
-    {
+    public void setDictLabel(String dictLabel) {
         this.dictLabel = dictLabel;
     }
 
-    public String getDictValue()
-    {
+    public String getDictValue() {
         return dictValue;
     }
 
-    public void setDictValue(String dictValue)
-    {
+    public void setDictValue(String dictValue) {
         this.dictValue = dictValue;
     }
 
-    public String getDictType()
-    {
+    public String getDictType() {
         return dictType;
     }
 
-    public void setDictType(String dictType)
-    {
+    public void setDictType(String dictType) {
         this.dictType = dictType;
     }
 
-    public String getCssClass()
-    {
+    public String getCssClass() {
         return cssClass;
     }
 
-    public void setCssClass(String cssClass)
-    {
+    public void setCssClass(String cssClass) {
         this.cssClass = cssClass;
     }
 
-    public String getListClass()
-    {
+    public String getListClass() {
         return listClass;
     }
 
-    public void setListClass(String listClass)
-    {
+    public void setListClass(String listClass) {
         this.listClass = listClass;
     }
 
-    public String getIsDefault()
-    {
+    public String getIsDefault() {
         return isDefault;
     }
 
-    public void setIsDefault(String isDefault)
-    {
+    public void setIsDefault(String isDefault) {
         this.isDefault = isDefault;
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
     

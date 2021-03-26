@@ -6,11 +6,11 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * sql注入处理工具类
- * 
- * @author zhoujf
+ * @author swen
  */
 @Slf4j
 public class SqlInjectionUtil {
+
 	/**
 	 * sign 用于表字典加签的盐值【SQL漏洞】
 	 * （上线修改值 20200501，同步修改前端的盐值）
@@ -39,7 +39,6 @@ public class SqlInjectionUtil {
 
 	/**
 	 * sql注入过滤处理，遇到注入关键字抛异常
-	 * 
 	 * @param value
 	 * @return
 	 */
@@ -75,7 +74,7 @@ public class SqlInjectionUtil {
 			// 统一转为小写
 			value = value.toLowerCase();
 			for (int i = 0; i < xssArr.length; i++) {
-				if (value.indexOf(xssArr[i]) > -1) {
+				if (value.contains(xssArr[i])) {
 					log.error("请注意，存在SQL注入关键词---> {}", xssArr[i]);
 					log.error("请注意，值可能存在SQL注入风险!---> {}", value);
 					throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
@@ -99,14 +98,13 @@ public class SqlInjectionUtil {
 		}
 		// 统一转为小写
 		value = value.toLowerCase();
-		for (int i = 0; i < xssArr.length; i++) {
-			if (value.indexOf(xssArr[i]) > -1 || value.startsWith(xssArr[i].trim())) {
-				log.error("请注意，存在SQL注入关键词---> {}", xssArr[i]);
+		for (String s : xssArr) {
+			if (value.contains(s) || value.startsWith(s.trim())) {
+				log.error("请注意，存在SQL注入关键词---> {}", s);
 				log.error("请注意，值可能存在SQL注入风险!---> {}", value);
 				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
 			}
 		}
-		return;
 	}
 
 
@@ -124,14 +122,13 @@ public class SqlInjectionUtil {
 		}
 		// 统一转为小写
 		value = value.toLowerCase();
-		for (int i = 0; i < xssArr.length; i++) {
-			if (value.indexOf(xssArr[i]) > -1 || value.startsWith(xssArr[i].trim())) {
-				log.error("请注意，存在SQL注入关键词---> {}", xssArr[i]);
+		for (String s : xssArr) {
+			if (value.contains(s) || value.startsWith(s.trim())) {
+				log.error("请注意，存在SQL注入关键词---> {}", s);
 				log.error("请注意，值可能存在SQL注入风险!---> {}", value);
 				throw new RuntimeException("请注意，值可能存在SQL注入风险!--->" + value);
 			}
 		}
-		return;
 	}
 
 }

@@ -20,14 +20,12 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
         log.error(throwable.getMessage());
         return new RemoteUserService() {
             @Override
-            public SysUser selectSysUserByUsername(String username)
-            {
+            public SysUser selectSysUserByUsername(String username) {
                 return null;
             }
 
             @Override
-            public R updateUserLoginRecord(SysUser user)
-            {
+            public R updateUserLoginRecord(SysUser user) {
                 return R.error();
             }
 
@@ -40,14 +38,12 @@ public class RemoteUserFallbackFactory implements FallbackFactory<RemoteUserServ
             }
 
             @Override
-            public Set<Long> selectUserIdsHasRoles(String roleId)
-            {
+            public Set<Long> selectUserIdsHasRoles(String roleId) {
                 return null;
             }
 
             @Override
-            public Set<Long> selectUserIdsInDepts(String deptIds)
-            {
+            public Set<Long> selectUserIdsInDepts(String deptIds) {
                 return null;
             }
 

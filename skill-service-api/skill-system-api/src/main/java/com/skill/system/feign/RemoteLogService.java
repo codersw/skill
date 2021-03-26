@@ -11,9 +11,7 @@ import com.skill.common.constant.ServiceNameConstants;
 
 /**
  * 日志Feign服务层
- * 
- * @author zy
- * @date 2019-05-20
+ * @author swen
  */
 @FeignClient(value = ServiceNameConstants.SYSTEM_SERVICE, contextId = "remoteLogService", fallbackFactory = RemoteLogFallbackFactory.class)
 public interface RemoteLogService {

@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 public class RemoteLogFallbackFactory implements FallbackFactory<RemoteLogService> {
+
     @Override
     public RemoteLogService create(Throwable throwable) {
         log.error(throwable.getMessage());

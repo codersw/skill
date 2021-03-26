@@ -1,46 +1,24 @@
 package com.skill.system.domain;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 用户和角色关联 sys_user_role
- * 
- * @author zy
+ * @author swen
  */
-public class SysUserRole
-{
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class SysUserRole {
+
     /** 用户ID */
     private Long userId;
     
     /** 角色ID */
     private Long roleId;
 
-    public Long getUserId()
-    {
-        return userId;
-    }
-
-    public void setUserId(Long userId)
-    {
-        this.userId = userId;
-    }
-
-    public Long getRoleId()
-    {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId)
-    {
-        this.roleId = roleId;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("userId", getUserId())
-            .append("roleId", getRoleId())
-            .toString();
-    }
 }

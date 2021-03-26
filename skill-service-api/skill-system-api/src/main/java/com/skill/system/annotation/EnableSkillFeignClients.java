@@ -8,6 +8,10 @@ import java.lang.annotation.Target;
 
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
+/**
+ * feign客户端通用扫描
+ * @author swen
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented

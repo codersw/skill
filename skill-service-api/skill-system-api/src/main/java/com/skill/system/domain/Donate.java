@@ -1,8 +1,3 @@
-/*
- * @(#)Donate.java 2019年12月20日 下午2:04:15
- * Copyright 2019 zmr, Inc. All rights reserved. 
- * PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
- */
 package com.skill.system.domain;
 
 import java.util.Date;
@@ -12,23 +7,24 @@ import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import tk.mybatis.mapper.annotation.KeySql;
 
 /**
- * <p>File：Donate.java</p>
- * <p>Title: 捐赠</p>
- * <p>Description:</p>
- * <p>Copyright: Copyright (c) 2019 2019年12月20日 下午2:04:15</p>
- * <p>Company: zmrit.com </p>
- * @author zy
- * @version 1.0
+ *
+ * @author 捐赠
  */
 @Data
 @Accessors(chain = true)
-public class Donate
-{
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class Donate {
+
     @Id
     @KeySql(useGeneratedKeys = true)
     private Integer id;
@@ -43,11 +39,11 @@ public class Donate
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
-    private Date    createTime;
+    private Date createTime;
 
     @Transient
-    private String  beginTime;
+    private String beginTime;
 
     @Transient
-    private String  endTime;
+    private String endTime;
 }

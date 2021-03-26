@@ -7,10 +7,9 @@ import com.skill.common.core.domain.BaseEntity;
 /**
  * 部门表 sys_dept
  * 
- * @author zy
+ * @author swen
  */
-public class SysDept extends BaseEntity
-{
+public class SysDept extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /** 部门ID */
@@ -49,129 +48,104 @@ public class SysDept extends BaseEntity
     /** 父部门名称 */
     private String            parentName;
 
-    public Long getDeptId()
-    {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(Long deptId)
-    {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 
-    public Long getParentId()
-    {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(Long parentId)
-    {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
-    public String getAncestors()
-    {
+    public String getAncestors() {
         return ancestors;
     }
 
-    public void setAncestors(String ancestors)
-    {
+    public void setAncestors(String ancestors) {
         this.ancestors = ancestors;
     }
 
-    public String getDeptName()
-    {
+    public String getDeptName() {
         return deptName;
     }
 
-    public void setDeptName(String deptName)
-    {
+    public void setDeptName(String deptName) {
         this.deptName = deptName;
     }
 
-    public String getOrderNum()
-    {
+    public String getOrderNum() {
         return orderNum;
     }
 
-    public void setOrderNum(String orderNum)
-    {
+    public void setOrderNum(String orderNum) {
         this.orderNum = orderNum;
     }
 
-    public String getLeader()
-    {
+    public String getLeader() {
         return leader;
     }
 
-    public void setLeader(String leader)
-    {
+    public void setLeader(String leader) {
         this.leader = leader;
     }
 
-    public Long getLeaderId()
-    {
+    public Long getLeaderId() {
         return leaderId;
     }
 
-    public void setLeaderId(Long leaderId)
-    {
+    public void setLeaderId(Long leaderId) {
         this.leaderId = leaderId;
     }
 
-    public String getPhone()
-    {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone)
-    {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getStatus()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getDelFlag()
-    {
+    public String getDelFlag() {
         return delFlag;
     }
 
-    public void setDelFlag(String delFlag)
-    {
+    public void setDelFlag(String delFlag) {
         this.delFlag = delFlag;
     }
 
-    public String getParentName()
-    {
+    public String getParentName() {
         return parentName;
     }
 
-    public void setParentName(String parentName)
-    {
+    public void setParentName(String parentName) {
         this.parentName = parentName;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).append("deptId", getDeptId())
                 .append("parentId", getParentId()).append("ancestors", getAncestors()).append("deptName", getDeptName())
                 .append("orderNum", getOrderNum()).append("leader", getLeader()).append("leaderId", getLeaderId()).append("phone", getPhone())

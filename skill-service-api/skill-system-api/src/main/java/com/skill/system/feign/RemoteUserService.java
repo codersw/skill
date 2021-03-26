@@ -16,9 +16,7 @@ import com.skill.system.domain.SysUser;
 
 /**
  * 用户 Feign服务层
- * 
- * @author zy
- * @date 2019-05-20
+ * @author swen
  */
 @FeignClient(value = ServiceNameConstants.SYSTEM_SERVICE, contextId = "remoteUserService", fallbackFactory = RemoteUserFallbackFactory.class)
 public interface RemoteUserService {
@@ -32,22 +30,10 @@ public interface RemoteUserService {
     @PostMapping("user/update/login")
     R updateUserLoginRecord(@RequestBody SysUser user);
 
-    /**
-     * 查询拥有当前角色的所有用户
-     * @param roleIds
-     * @return
-     * @author zy
-     */
+
     @GetMapping("user/hasRoles")
     Set<Long> selectUserIdsHasRoles(@RequestParam("roleIds") String roleIds);
 
-    /**
-     * 查询所有当前部门中的用户
-     * 
-     * @param deptIds
-     * @return
-     * @author zy
-     */
     @GetMapping("user/inDepts")
     Set<Long> selectUserIdsInDepts(@RequestParam("deptIds") String deptIds);
 

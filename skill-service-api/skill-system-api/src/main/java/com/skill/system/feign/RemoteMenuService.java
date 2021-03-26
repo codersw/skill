@@ -11,9 +11,7 @@ import com.skill.common.constant.ServiceNameConstants;
 
 /**
  * 菜单 Feign服务层
- * 
- * @author zy
- * @date 2019-05-20
+ * @author swen
  */
 @FeignClient(value = ServiceNameConstants.SYSTEM_SERVICE, contextId = "remoteMenuService", fallbackFactory = RemoteMenuFallbackFactory.class)
 public interface RemoteMenuService {

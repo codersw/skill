@@ -10,9 +10,7 @@ import com.skill.system.domain.SysRole;
 
 /**
  * 角色 Feign服务层
- * 
- * @author zy
- * @date 2019-05-20
+ * @author swen
  */
 @FeignClient(value = ServiceNameConstants.SYSTEM_SERVICE, contextId = "remoteRoleService", fallbackFactory = RemoteRoleFallbackFactory.class)
 public interface RemoteRoleService {

@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DictModel implements Serializable{
+
 	private static final long serialVersionUID = 1L;
 
 	public DictModel() {
