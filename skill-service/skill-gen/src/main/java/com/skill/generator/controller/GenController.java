@@ -30,11 +30,10 @@ import com.skill.generator.service.IGenTableService;
 /**
  * 代码生成 操作处理
  * 
- * @author zy
+ * @author swen
  */
 @RestController
-public class GenController extends BaseController
-{
+public class GenController extends BaseController {
     @Autowired
     private IGenTableService       genTableService;
 
@@ -46,8 +45,7 @@ public class GenController extends BaseController
      */
     @HasPermissions("tool:gen:list")
     @GetMapping("/list")
-    public TableDataInfo genList(GenTable genTable)
-    {
+    public TableDataInfo genList(GenTable genTable) {
         startPage();
         List<GenTable> list = genTableService.selectGenTableList(genTable);
         return getDataTable(list);
@@ -57,8 +55,7 @@ public class GenController extends BaseController
      * 修改代码生成业务
      */
     @GetMapping("/get/{tableId}")
-    public R get(@PathVariable("tableId") Long tableId)
-    {
+    public R get(@PathVariable("tableId") Long tableId) {
         GenTable table = genTableService.selectGenTableById(tableId);
         return R.data(table);
     }
@@ -68,8 +65,7 @@ public class GenController extends BaseController
      */
     @HasPermissions("tool:gen:list")
     @GetMapping("/db/list")
-    public R dataList(GenTable genTable)
-    {
+    public R dataList(GenTable genTable) {
         startPage();
         List<GenTable> list = genTableService.selectDbTableList(genTable);
         return result(list);
@@ -80,8 +76,7 @@ public class GenController extends BaseController
      */
     @HasPermissions("tool:gen:edit")
     @GetMapping("edit")
-    public R edit(GenTableColumn genTableColumn)
-    {
+    public R edit(GenTableColumn genTableColumn) {
         List<GenTableColumn> list = genTableColumnService.selectGenTableColumnListByTableId(genTableColumn);
         GenTable table = genTableService.selectGenTableById(genTableColumn.getTableId());
         return R.data(table).put("rows",list).put("total", list.size());
@@ -93,8 +88,7 @@ public class GenController extends BaseController
     @HasPermissions("tool:gen:list")
     @OperLog(title = "代码生成", businessType = BusinessType.IMPORT)
     @PostMapping("/importTable")
-    public R importTableSave(String tables)
-    {
+    public R importTableSave(String tables) {
         String[] tableNames = Convert.toStrArray(tables);
         // 查询表信息
         List<GenTable> tableList = genTableService.selectDbTableListByNames(tableNames);
@@ -109,8 +103,7 @@ public class GenController extends BaseController
     @HasPermissions("tool:gen:edit")
     @OperLog(title = "代码生成", businessType = BusinessType.UPDATE)
     @PostMapping("/edit")
-    public R editSave(@RequestBody @Validated GenTable genTable)
-    {
+    public R editSave(@RequestBody @Validated GenTable genTable) {
         genTableService.validateEdit(genTable);
         genTableService.updateGenTable(genTable);
         return R.ok();
@@ -119,8 +112,7 @@ public class GenController extends BaseController
     @HasPermissions("tool:gen:remove")
     @OperLog(title = "代码生成", businessType = BusinessType.DELETE)
     @PostMapping("/remove")
-    public R remove(String ids)
-    {
+    public R remove(String ids) {
         genTableService.deleteGenTableByIds(ids);
         return R.ok();
     }
@@ -130,8 +122,7 @@ public class GenController extends BaseController
      */
     @HasPermissions("tool:gen:preview")
     @GetMapping("/preview/{tableId}")
-    public R preview(@PathVariable("tableId") Long tableId) throws IOException
-    {
+    public R preview(@PathVariable("tableId") Long tableId) throws IOException {
         Map<String, String> dataMap = genTableService.previewCode(tableId);
         return R.data(dataMap);
     }
@@ -142,8 +133,7 @@ public class GenController extends BaseController
     @HasPermissions("tool:gen:code")
     @OperLog(title = "代码生成", businessType = BusinessType.GENCODE)
     @GetMapping("/genCode/{tableName}")
-    public void genCode(HttpServletResponse response, @PathVariable("tableName") String tableName) throws IOException
-    {
+    public void genCode(HttpServletResponse response, @PathVariable("tableName") String tableName) throws IOException {
         byte[] data = genTableService.generatorCode(tableName);
         genCode(response, data);
     }
@@ -154,8 +144,7 @@ public class GenController extends BaseController
     @HasPermissions("tool:gen:code")
     @OperLog(title = "代码生成", businessType = BusinessType.GENCODE)
     @GetMapping("/batchGenCode")
-    public void batchGenCode(HttpServletResponse response, String tables) throws IOException
-    {
+    public void batchGenCode(HttpServletResponse response, String tables) throws IOException {
         String[] tableNames = Convert.toStrArray(tables);
         byte[] data = genTableService.generatorCode(tableNames);
         genCode(response, data);
@@ -164,8 +153,7 @@ public class GenController extends BaseController
     /**
      * 生成zip文件
      */
-    private void genCode(HttpServletResponse response, byte[] data) throws IOException
-    {
+    private void genCode(HttpServletResponse response, byte[] data) throws IOException {
         response.reset();
         response.setHeader("Content-Disposition", "attachment; filename=skill.zip");
         response.addHeader("Content-Length", "" + data.length);

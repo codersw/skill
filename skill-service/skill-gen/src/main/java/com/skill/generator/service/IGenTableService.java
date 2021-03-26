@@ -7,10 +7,9 @@ import com.skill.generator.domain.GenTable;
 /**
  * 业务 服务层
  * 
- * @author zy
+ * @author swen
  */
-public interface IGenTableService
-{
+public interface IGenTableService {
     /**
      * 查询业务列表
      * 

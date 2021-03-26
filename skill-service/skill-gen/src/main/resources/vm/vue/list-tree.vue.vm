@@ -100,21 +100,18 @@ export default {
 #set($comment=$column.columnComment)
 #end
 #if($column.list)
-#if($column.htmlType == "datetime")
-        {
+#if($column.htmlType == "datetime") {
           title: '${comment}',
           dataIndex: '${javaField}',
           sorter: true
         },
-#else
-        {
+#else {
           title: '${comment}',
           dataIndex: '${javaField}'
         },
 #end
 #end
-#end
-        {
+#end {
           title: '操作',
           width: '200px',
           dataIndex: 'action',

@@ -6,10 +6,9 @@ import com.skill.generator.domain.GenTable;
 /**
  * 业务 数据层
  * 
- * @author zy
+ * @author swen
  */
-public interface GenTableMapper
-{
+public interface GenTableMapper {
     /**
      * 查询业务列表
      * 

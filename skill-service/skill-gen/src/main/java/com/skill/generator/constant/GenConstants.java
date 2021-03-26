@@ -3,7 +3,7 @@ package com.skill.generator.constant;
 /**
  * 代码生成通用常量
  * 
- * @author zy
+ * @author swen
  */
 public class GenConstants {
 	/** 单表（增删改查） */

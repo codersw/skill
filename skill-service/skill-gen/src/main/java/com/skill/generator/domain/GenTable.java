@@ -12,10 +12,9 @@ import com.skill.generator.constant.GenConstants;
 /**
  * 业务表 gen_table
  * 
- * @author zy
+ * @author swen
  */
-public class GenTable extends BaseEntity
-{
+public class GenTable extends BaseEntity {
     private static final long    serialVersionUID = 1L;
 
     /** 编号 */
@@ -75,183 +74,147 @@ public class GenTable extends BaseEntity
     /** 树名称字段 */
     private String               treeName;
 
-    public Long getTableId()
-    {
+    public Long getTableId() {
         return tableId;
     }
 
-    public void setTableId(Long tableId)
-    {
+    public void setTableId(Long tableId) {
         this.tableId = tableId;
     }
 
-    public String getTableName()
-    {
+    public String getTableName() {
         return tableName;
     }
 
-    public void setTableName(String tableName)
-    {
+    public void setTableName(String tableName) {
         this.tableName = tableName;
     }
 
-    public String getTableComment()
-    {
+    public String getTableComment() {
         return tableComment;
     }
 
-    public void setTableComment(String tableComment)
-    {
+    public void setTableComment(String tableComment) {
         this.tableComment = tableComment;
     }
 
-    public String getClassName()
-    {
+    public String getClassName() {
         return className;
     }
 
-    public void setClassName(String className)
-    {
+    public void setClassName(String className) {
         this.className = className;
     }
 
-    public String getTplCategory()
-    {
+    public String getTplCategory() {
         return tplCategory;
     }
 
-    public void setTplCategory(String tplCategory)
-    {
+    public void setTplCategory(String tplCategory) {
         this.tplCategory = tplCategory;
     }
 
-    public String getPackageName()
-    {
+    public String getPackageName() {
         return packageName;
     }
 
-    public void setPackageName(String packageName)
-    {
+    public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
-    public String getModuleName()
-    {
+    public String getModuleName() {
         return moduleName;
     }
 
-    public void setModuleName(String moduleName)
-    {
+    public void setModuleName(String moduleName) {
         this.moduleName = moduleName;
     }
 
-    public String getBusinessName()
-    {
+    public String getBusinessName() {
         return businessName;
     }
 
-    public void setBusinessName(String businessName)
-    {
+    public void setBusinessName(String businessName) {
         this.businessName = businessName;
     }
 
-    public String getFunctionName()
-    {
+    public String getFunctionName() {
         return functionName;
     }
 
-    public void setFunctionName(String functionName)
-    {
+    public void setFunctionName(String functionName) {
         this.functionName = functionName;
     }
 
-    public String getFunctionAuthor()
-    {
+    public String getFunctionAuthor() {
         return functionAuthor;
     }
 
-    public void setFunctionAuthor(String functionAuthor)
-    {
+    public void setFunctionAuthor(String functionAuthor) {
         this.functionAuthor = functionAuthor;
     }
 
-    public GenTableColumn getPkColumn()
-    {
+    public GenTableColumn getPkColumn() {
         return pkColumn;
     }
 
-    public void setPkColumn(GenTableColumn pkColumn)
-    {
+    public void setPkColumn(GenTableColumn pkColumn) {
         this.pkColumn = pkColumn;
     }
 
-    public List<GenTableColumn> getColumns()
-    {
+    public List<GenTableColumn> getColumns() {
         return columns;
     }
 
-    public void setColumns(List<GenTableColumn> columns)
-    {
+    public void setColumns(List<GenTableColumn> columns) {
         this.columns = columns;
     }
 
-    public String getOptions()
-    {
+    public String getOptions() {
         return options;
     }
 
-    public void setOptions(String options)
-    {
+    public void setOptions(String options) {
         this.options = options;
     }
 
-    public String getTreeCode()
-    {
+    public String getTreeCode() {
         return treeCode;
     }
 
-    public void setTreeCode(String treeCode)
-    {
+    public void setTreeCode(String treeCode) {
         this.treeCode = treeCode;
     }
 
-    public String getTreeParentCode()
-    {
+    public String getTreeParentCode() {
         return treeParentCode;
     }
 
-    public void setTreeParentCode(String treeParentCode)
-    {
+    public void setTreeParentCode(String treeParentCode) {
         this.treeParentCode = treeParentCode;
     }
 
-    public String getTreeName()
-    {
+    public String getTreeName() {
         return treeName;
     }
 
-    public void setTreeName(String treeName)
-    {
+    public void setTreeName(String treeName) {
         this.treeName = treeName;
     }
 
-    public boolean isTree()
-    {
+    public boolean isTree() {
         return isTree(this.tplCategory);
     }
 
-    public static boolean isTree(String tplCategory)
-    {
+    public static boolean isTree(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_TREE, tplCategory);
     }
 
-    public boolean isCrud()
-    {
+    public boolean isCrud() {
         return isCrud(this.tplCategory);
     }
 
-    public static boolean isCrud(String tplCategory)
-    {
+    public static boolean isCrud(String tplCategory) {
         return tplCategory != null && StringUtils.equals(GenConstants.TPL_CRUD, tplCategory);
     }
 }

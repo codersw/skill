@@ -6,10 +6,9 @@ import com.skill.generator.domain.GenTableColumn;
 /**
  * 业务字段 服务层
  * 
- * @author zy
+ * @author swen
  */
-public interface IGenTableColumnService
-{
+public interface IGenTableColumnService {
     /**
      * 查询业务字段列表
      * 
