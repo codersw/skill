@@ -3,10 +3,9 @@ package com.skill.common.log.enums;
 /**
  * 业务操作类型
  * 
- * @author zy
+ * @author swen
  */
-public enum BusinessType
-{
+public enum BusinessType {
     /**
      * 其它
      */

@@ -9,8 +9,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RedisCache
-{
+public @interface RedisCache {
     /**
      * 键名
      * @return
@@ -20,7 +19,7 @@ public @interface RedisCache
     /**
      * 主键
      * @return
-     * @author zy
+     * @author swen
      */
     String fieldKey();
 

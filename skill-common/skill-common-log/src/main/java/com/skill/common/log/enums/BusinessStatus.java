@@ -3,10 +3,9 @@ package com.skill.common.log.enums;
 /**
  * 操作状态
  * 
- * @author zy
+ * @author swen
  */
-public enum BusinessStatus
-{
+public enum BusinessStatus {
     /**
      * 成功
      */

@@ -12,8 +12,7 @@ import com.skill.system.domain.SysLogininfor;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
-public class PublishFactory
-{
+public class PublishFactory {
     /**
      * 记录登陆信息
      * 
@@ -23,8 +22,7 @@ public class PublishFactory
      * @param args 列表
      */
     public static void recordLogininfor(final String username, final String status, final String message,
-            final Object ... args)
-    {
+            final Object ... args) {
         HttpServletRequest request = ServletUtils.getRequest();
         final UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
         final String ip = IpUtils.getIpAddr(request);
@@ -41,12 +39,10 @@ public class PublishFactory
         logininfor.setOs(os);
         logininfor.setMsg(message);
         // 日志状态
-        if (Constants.LOGIN_SUCCESS.equals(status) || Constants.LOGOUT.equals(status))
-        {
+        if (Constants.LOGIN_SUCCESS.equals(status) || Constants.LOGOUT.equals(status)) {
             logininfor.setStatus(Constants.SUCCESS);
         }
-        else if (Constants.LOGIN_FAIL.equals(status))
-        {
+        else if (Constants.LOGIN_FAIL.equals(status)) {
             logininfor.setStatus(Constants.FAIL);
         }
         // 发布事件

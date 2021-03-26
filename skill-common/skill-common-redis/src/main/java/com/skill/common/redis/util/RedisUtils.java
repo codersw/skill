@@ -15,8 +15,7 @@ import com.alibaba.fastjson.JSON;
  * Redis工具类
  */
 @Component
-public class RedisUtils
-{
+public class RedisUtils {
     @Autowired
     private RedisTemplate<String, Object>   redisTemplate;
 
@@ -33,10 +32,9 @@ public class RedisUtils
      * 插入缓存默认时间
      * @param key 键
      * @param value 值
-     * @author zy
+     * @author swen
      */
-    public void set(String key, Object value)
-    {
+    public void set(String key, Object value) {
         set(key, value, DEFAULT_EXPIRE);
     }
 
@@ -45,10 +43,9 @@ public class RedisUtils
      * @param key 键
      * @param value 值
      * @param expire 过期时间(s)
-     * @author zy
+     * @author swen
      */
-    public void set(String key, Object value, long expire)
-    {
+    public void set(String key, Object value, long expire) {
         valueOperations.set(key, toJson(value));
         redisTemplate.expire(key, expire, Timeskill.SECONDS);
     }
@@ -57,10 +54,9 @@ public class RedisUtils
      * 返回字符串结果
      * @param key 键
      * @return
-     * @author zy
+     * @author swen
      */
-    public String get(String key)
-    {
+    public String get(String key) {
         return valueOperations.get(key);
     }
 
@@ -69,10 +65,9 @@ public class RedisUtils
      * @param key 键
      * @param clazz 类型class
      * @return
-     * @author zy
+     * @author swen
      */
-    public <T> T get(String key, Class<T> clazz)
-    {
+    public <T> T get(String key, Class<T> clazz) {
         String value = valueOperations.get(key);
         return value == null ? null : fromJson(value, clazz);
     }
@@ -80,21 +75,18 @@ public class RedisUtils
     /**
      * 删除缓存
      * @param key 键
-     * @author zy
+     * @author swen
      */
-    public void delete(String key)
-    {
+    public void delete(String key) {
         redisTemplate.delete(key);
     }
 
     /**
      * Object转成JSON数据
      */
-    private String toJson(Object object)
-    {
+    private String toJson(Object object) {
         if (object instanceof Integer || object instanceof Long || object instanceof Float || object instanceof Double
-                || object instanceof Boolean || object instanceof String)
-        {
+                || object instanceof Boolean || object instanceof String) {
             return String.valueOf(object);
         }
         return JSON.toJSONString(object);
@@ -103,8 +95,7 @@ public class RedisUtils
     /**
      * JSON数据，转成Object
      */
-    private <T> T fromJson(String json, Class<T> clazz)
-    {
+    private <T> T fromJson(String json, Class<T> clazz) {
         return JSON.parseObject(json, clazz);
     }
 }

@@ -3,10 +3,9 @@ package com.skill.common.log.enums;
 /**
  * 操作人类别
  * 
- * @author zy
+ * @author swen
  */
-public enum OperatorType
-{
+public enum OperatorType {
     /**
      * 其它
      */

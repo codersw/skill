@@ -12,13 +12,12 @@ import com.skill.common.log.enums.OperatorType;
 /**
  * 自定义操作日志记录注解
  * 
- * @author zy
+ * @author swen
  */
 @Target({ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface OperLog
-{
+public @interface OperLog {
     /**
      * 模块 
      */
