@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.skill.common.log.aspect.ControllerAspect,\
+  com.skill.common.log.aspect.OperLogAspect,\
+  com.skill.common.log.LogAutoConfiguration

@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @ConditionalOnWebApplication
 public class LogAutoConfiguration {
+
     private final RemoteLogService logService;
 
     @Bean
