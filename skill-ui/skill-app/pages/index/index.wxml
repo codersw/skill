@@ -1,20 +1,90 @@
-<!--index.wxml-->
-<view class="body_gray">
-    <view bindtap="goNext" class="home_list" data-index="{{index}}" data-item="{{item}}" data-link="{{item.navi_url}}" wx:for="{{languageList}}" wx:key="id">
-        <view class="list_box">
-            <view class="list-left">
-                <image class="pay_icon" src=" {{item.icon_url}}"></image>
-                <view class="left_text">
-                    <text class="title">{{item.title}}</text>
-                    <text class="message">{{item.description}}</text>
-                </view>
-            </view>
-            <view class="list-right">
-                <image class="right_icon" src="/images/right_arrow_deep.png"></image>
-            </view>
+
+<!--pages/huangli/huangli.wxml-->
+<import src="template/template.wxml" />
+<view class="container">
+  <view class="calendar-main">
+    <picker mode="date" value="{{date}}" bindchange="bindDateChange">
+      <view class="picker">
+        <view class="calendar-title">
+          <text class="font-medium">2017年1月</text>
+          <image class="arrow" src="/images/arrow-bottom.png"></image>
         </view>
+      </view>
+    </picker>
+    <view class="calendar-dayView">
+      <text class="calendar-day">22</text>
+      <text class="calendar-nongli">农历腊月廿五</text>
+      <text class="calendar-week">星期日</text>
     </view>
-    <view class="home_listx">
-        <official-account class="list_boxx"></official-account>
+  </view>
+  <view class="calendar-detail">
+    <view class="calendar-table">
+      <view class="row">
+        <view class="cell">
+          <view class="cell-left2">
+            <view class="circle-bgc">
+              <text class="font-circle">宜</text>
+            </view>
+            <view class="yi">
+              <view class="content-max">
+                <view class="content-name">洗澡</view>
+                <view class="content-txt">你几天没洗澡了？</view>
+              </view>
+              <view class="content-max">
+                <view class="content-name">洗澡</view>
+                <view class="content-txt">你几天没洗澡了？</view>
+              </view>
+              <view class="content-max">
+                <view class="content-name">洗澡</view>
+                <view class="content-txt">你几天没洗澡了？</view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="cell">
+          <view class="cell-middle1">
+            <image class="cell-img" src="/images/luopan.png"></image>
+          </view>
+          <view class="cell-middle2">
+            <text>座位朝向：面向西南方向写程序，BUG最少。</text>
+          </view>
+        </view>
+        <view class="cell">
+          <view class="cell-left2">
+            <view class="circle-bgc">
+              <text class="font-circle">忌</text>
+            </view>
+            <view class="yi">
+              <view class="content-max">
+                <view class="content-name">在妹子面前吹牛</view>
+                <view class="content-txt" style="color:red">你几天没洗澡了？</view>
+              </view>
+              <view class="content-max">
+                <view class="content-name">打LOL</view>
+                <view class="content-txt" style="color:red">你几天没洗澡了？</view>
+              </view>
+              <view class="content-max">
+                <view class="content-name">上AB站</view>
+                <view class="content-txt" style="color:red">你几天没洗澡了？</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
     </view>
+    <view class="calendar-table">
+      <view class="row">
+        <view class="cell cell-2">
+          <text class="font-small color-green">今日宜饮</text>
+          <view class="content-name">果味汽水，运动饮料</view>
+        </view>
+      </view>
+      <view class="row">
+        <view class="cell cell-2">
+          <text class="font-small color-green">女神亲近指数</text>
+          <view class="content-name">★★★★★</view>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>

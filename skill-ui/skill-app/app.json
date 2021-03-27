@@ -1,6 +1,7 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/course/course",
     "pages/inter/inter",
     "pages/question/list/list",
     "pages/question/detail/detail",
@@ -18,10 +19,15 @@
   },
   "tabBar": {
     "list": [{
-        "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home_select.png"
+      "pagePath": "pages/index/index",
+      "text": "首页",
+      "iconPath": "images/home.png",
+      "selectedIconPath": "images/home_select.png"
+    },{
+        "pagePath": "pages/course/course",
+        "text": "教程",
+        "iconPath": "images/course.png",
+        "selectedIconPath": "images/course_select.png"
       },{
         "pagePath": "pages/inter/inter",
         "text": "面试",

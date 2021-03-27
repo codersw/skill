@@ -1,148 +1,231 @@
-/**index.wxss**/
+/* pages/huangli/huangli.wxss */
 page {
-  background-color: rgba(245,245,245,1);
+    background-color: rgba(245,245,245,1);
 }
 
-.list_boxx {
-  width: 100%;
-  box-sizing: border-box;
-  background: rgba(255,255,255,0);
-  padding: 46rpx 30rpx 46rpx 40rpx;
-  border-radius: 16rpx;
-  box-shadow: 0px 4px 10px 0px rgba(51,51,51,0);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.container {
+    display: flex;
+    flex-direction: column;
+    margin: 10rpx;
 }
 
-.redClass {
-  padding: 16rpx;
-  display: flex;
-  flex-direction: row;
-  margin: 25rpx;
-  border-radius: 15rpx;
-  background-color: gainsboro;
-  box-shadow: 0 8rpx 12rpx 4rpx rgb(241,241,241);
+.calendar-main {
+    margin-bottom: 10rpx;
+    margin-left: 10rpx;
 }
 
-.weui-grid__icon {
-  width: 32px;
-  height: 32px;
-  margin: 0 auto;
+.calendar-title {
+    text-align: center;
+    vertical-align: middle;
 }
 
-.mainImg {
-  width: 32px;
-  height: 32px;
-  margin: 0 auto;
+.arrow {
+    float: none;
+    width: 16px;
+    height: 9px;
+    padding-left: 10rpx;
+    vertical-align: middle;
 }
 
-.titleFront {
-  margin-left: 25rpx;
+.calendar-dayView {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 
-.banner {
-  width: 100%;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
+.calendar-day {
+    font-family: impact;
+    font-size: 150px;
+    font-weight: bold;
+    line-height: 135px;
+    padding: 0;
+    color: seagreen;
 }
 
-.notice {
-  width: 100%;
-  overflow: hidden;
-  height: 60rpx;
-  margin: 0;
-  padding: 0;
-  background: #FFF;
-  display: flex;
-  align-items: center;
+.calendar-nongli {
+    font-size: 18px;
+    font-weight: 500;
+    color: seagreen;
 }
 
-.notice_icon {
-  flex: 0 0 36rpx;
-  height: 36rpx;
-  margin-left: 70rpx;
-  vertical-align: middle;
+.calendar-week {
+    font-size: 18px;
+    font-weight: 500;
+    color: seagreen;
 }
 
-.notice_text {
-  height: 60rpx;
-  flex: 1;
-  font-size: 24rpx;
-  color: #F96432;
-  line-height: 60rpx;
-  margin-left: 18rpx;
-  vertical-align: middle;
+.font-medium {
+    font-size: 15px;
 }
 
-.content {
-  width: 100%;
-  background: #f5f5f5;
-  min-height: 100VH;
-  padding-bottom: 58rpx;
-  font-size: 0;
+.calendar-detail {
+    margin-bottom: 5px;
+    padding: 2px;
+    border: 2px solid seagreen;
+    border-radius: 10rpx 10rpx;
 }
 
-.home_list {
-  margin: 20rpx 30rpx;
-  box-sizing: border-box;
+.color-green {
+    font-weight: bold;
+    color: seagreen;
 }
 
-.home_listx {
-  margin: 10rpx 15rpx;
-  box-sizing: border-box;
+.calendar-table {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid seagreen;
+    border-bottom: none;    
 }
 
-.list_box {
-  width: 100%;
-  box-sizing: border-box;
-  background: #fff;
-  padding: 46rpx 30rpx 46rpx 40rpx;
-  border-radius: 16rpx;
-  box-shadow: 0px 4px 10px 0px rgba(51,51,51,0.06);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.row {
+    display: table-row;
+    vertical-align: middle;
 }
 
-.list-left {
-  display: flex;
-  align-items: center;
+.cell {
+    display: table-cell;
+    width: 33%;
+    height: 450rpx;
+    vertical-align: middle;
+    border-right: 1px solid seagreen;
 }
 
-.pay_icon {
-  width: 80rpx;
-  height: 80rpx;
-  vertical-align: middle;
+.cell-img {
+    display: block;
+    width: 200rpx;
+    height: 200rpx;
+    margin-top: -20px;
 }
 
-.right_icon {
-  width: 20rpx;
-  height: 30rpx;
+.cell-left1 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 80rpx;
+    vertical-align: middle;
+    border-bottom: 1px solid seagreen;
+    align-items: center;
+}
+.content-max {
+    padding: 5px 10px;
 }
 
-.left_text {
-  padding-left: 40rpx;
+.content-name {
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  
+.content-txt {
+    white-space: nowrap;
+    font-size: 12px;
+    color:blue;
+ }
+  
+.cell-left2 {
+    display: flex;
+    flex-direction: column;
+    height: 450rpx;
+    align-items: center;
 }
 
-.title {
-  display: block;
-  height: 30rpx;
-  font-size: 30rpx;
-  font-family: PingFangSC-Semibold;
-  line-height: 30rpx;
-  margin-bottom: 20rpx;
+.cell-middle1 {
+    display: flex;
+    flex-direction: column;
+    height: 210rpx;
+    align-items: center;
 }
 
-.message {
-  height: 26rpx;
-  font-size: 24rpx;
-  font-family: PingFangSC-Regular;
-  color: rgba(153,153,153,1);
-  line-height: 26rpx;
+.cell-middle2 {
+    padding: 3px;
+    width: 100%;
+}
+.cell-middle2 text{
+    color: blue;
+    font-size: 12px;
 }
 
-.body_gray {
-  color: rgba(53,53,53,1);
+.circle-bgc {
+    height: 25px;
+    width: 25px;
+    margin: 8rpx;
+    padding: 8rpx;
+    border-radius: 58%;
+    background-color: seagreen;
+}
+
+.circle-1 {
+    display: block;
+    padding: 2rpx;
+    border: 1px solid seagreen;
+    border-radius: 50%;
+}
+
+.font-circle {
+    font-size: 18px;
+    color: #fff;
+    padding: 4px;
+}
+
+.yi {
+    width: 100%;
+}
+
+.yi  .text1 {
+    float: left;
+    width: 100%;
+}
+.yi  .text2 {
+    float: left;
+    color: blue;
+    font-size: 10px;
+}
+
+.cell-1 {
+    width: 20%;
+    height: 185rpx;
+    text-align: center;
+}
+
+.cell-2 {
+    width: 60%;
+    height: 185rpx;
+    text-align: center;
+}
+
+.cell-3 {
+    width: 40%;
+    height: 150rpx;
+    text-align: center;
+}
+
+.cell-4 {
+    width: 20%;
+    height: 150rpx;
+    text-align: center;
+}
+
+.table {
+    display: table;
+    width: 100%;
+}
+
+.tr {
+    display: table-row;
+}
+
+.td {
+    display: table-cell;
+}
+
+.table-3 .cell > view:first-child {
+    height: 50rpx;
+}
+
+.table-3 .cell > view:last-child {
+    height: 100rpx;
+}
+.table-3{
+    border-bottom: 1px solid seagreen;
 }
