@@ -14,7 +14,7 @@
       production remove this Ads
     -->
     <!-- <ads v-if="isProPreviewSite&&!collapsed"/> -->
-    <ads v-if="!collapsed" />
+    <!--<ads v-if="!collapsed" />-->
     <!-- Ads end -->
 
     <!-- 1.0.0+ 版本 pro-layout 提供 API，我们推荐使用这种方式进行 LOGO 和 title 自定义 -->
