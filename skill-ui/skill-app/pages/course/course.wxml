@@ -1,0 +1,20 @@
+<!--index.wxml-->
+<view class="body_gray">
+    <view bindtap="goNext" class="home_list" data-index="{{index}}" data-item="{{item}}" data-link="{{item.navi_url}}" wx:for="{{languageList}}" wx:key="id">
+        <view class="list_box">
+            <view class="list-left">
+                <image class="pay_icon" src=" {{item.icon_url}}"></image>
+                <view class="left_text">
+                    <text class="title">{{item.title}}</text>
+                    <text class="message">{{item.description}}</text>
+                </view>
+            </view>
+            <view class="list-right">
+                <image class="right_icon" src="/images/right_arrow_deep.png"></image>
+            </view>
+        </view>
+    </view>
+    <view class="home_listx">
+        <official-account class="list_boxx"></official-account>
+    </view>
+</view>
