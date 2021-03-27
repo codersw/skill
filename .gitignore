@@ -44,3 +44,5 @@ nbdist/
 
 *.log
 logs/
+node_modules/
+yarn.lock
