@@ -1,8 +1,30 @@
 /* pages/huangli/huangli.wxss */
 page {
-    background-color: rgba(245,245,245,1);
+    background-color: white;
 }
 
+.date {
+    font-weight: bold;
+    justify-content: center;
+    font-size: 22px;
+    flex-direction: row;
+    display: inline-block;
+    text-align: left;
+    height: 22px;
+    line-height: 22px;
+    padding: 20rpx;
+}
+
+.candt {
+    display: inline-block;
+    position: absolute;
+    top: 20rpx;
+    left: 250rpx;
+    font-size: 36rpx;
+    height: 22px;
+    line-height: 22px;
+    font-weight: 500;
+}
 .container {
     display: flex;
     flex-direction: column;
@@ -76,6 +98,7 @@ page {
     border-collapse: collapse;
     border: 1px solid seagreen;
     border-bottom: none;    
+    height: 100px;
 }
 
 .row {
@@ -108,18 +131,20 @@ page {
     align-items: center;
 }
 .content-max {
-    padding: 5px 10px;
+    padding: 5px 5px;
+    word-wrap:break-word;
+    width: 98%;
 }
 
 .content-name {
-    white-space: nowrap;
+    word-wrap:break-word;
     font-weight: 700;
-    font-size: 13px;
-  }
+    font-size: 12px;
+}
   
 .content-txt {
-    white-space: nowrap;
-    font-size: 12px;
+    word-wrap:break-word;
+    font-size: 10px;
     color:blue;
  }
   
@@ -190,7 +215,7 @@ page {
 
 .cell-2 {
     width: 60%;
-    height: 185rpx;
+    height: 166rpx;
     text-align: center;
 }
 
