@@ -30,4 +30,20 @@
     <% } %>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+    let langObj = {
+      '"zh-CN"': {
+        'h1': '后台管理系统',
+        'title': '管理系统'
+      },
+      '"en-US"': {
+        'h1': 'Admin Management System',
+        'title': 'Management System'
+      }
+    }
+    if (langObj[localStorage.app_language]) {
+      document.querySelector('.title-main').innerText = langObj[localStorage.app_language].h1
+      document.querySelector('title').innerText = langObj[localStorage.app_language].title
+    }
+  </script>
 </html>
